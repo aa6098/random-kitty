@@ -12,7 +12,7 @@ type Props = {
 
 export function MemberSideBar({ member }: Props) {
   return (
-    <aside className="flex flex-col w-60 shrink-0 border border-border rounded-lg overflow-hidden bg-card">
+    <aside className="flex flex-col w-full md:w-60 shrink-0 border border-border rounded-lg overflow-hidden bg-card">
       <div className="flex flex-col items-center gap-3 p-6">
         <div className="size-32 rounded-full overflow-hidden bg-muted ring-2 ring-border">
           <img

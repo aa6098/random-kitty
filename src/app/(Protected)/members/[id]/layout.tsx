@@ -24,7 +24,7 @@ export default async function MemberLayout({ children, params }: Props) {
 
   return (
     <div className="mx-auto w-full max-w-[1130px] flex flex-1 flex-col md:flex-row gap-6 px-4 py-6">
-      <MemberSideBar member={member} />
+      <MemberSideBar member={member}  />
       <div className="flex-1 min-w-0">{children}</div>
     </div>
   )
