@@ -8,6 +8,11 @@ export const auth = betterAuth({
         provider: "postgresql",
     
     }),
+  trustedOrigins: [
+    'https://my-production-domain.com',
+    `https://${process.env.VERCEL_URL}` // Dynamically trusts Vercel preview domains
+  ],
+
     emailAndPassword: {
         enabled: true,
         requireEmailVerification: true,
