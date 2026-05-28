@@ -154,7 +154,8 @@ export const MemberScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   description: 'description',
-  locationId: 'locationId'
+  locationId: 'locationId',
+  deactivated: 'deactivated'
 } as const
 
 export type MemberScalarFieldEnum = (typeof MemberScalarFieldEnum)[keyof typeof MemberScalarFieldEnum]
@@ -164,7 +165,8 @@ export const PhotoScalarFieldEnum = {
   id: 'id',
   url: 'url',
   publicId: 'publicId',
-  memberId: 'memberId'
+  memberId: 'memberId',
+  delete: 'delete'
 } as const
 
 export type PhotoScalarFieldEnum = (typeof PhotoScalarFieldEnum)[keyof typeof PhotoScalarFieldEnum]

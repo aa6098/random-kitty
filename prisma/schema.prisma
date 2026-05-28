@@ -101,6 +101,9 @@ model Member {
   user User     @relation(fields: [userId], references:[id], onDelete: Cascade)
   location Location  @relation(fields: [locationId], references:[id], onDelete: Cascade)
   photos        Photo[]
+  deactivated Boolean @default(false)
+  @@map("member")
+
 }
 
 model Photo {
@@ -108,6 +111,8 @@ model Photo {
   url       String
   publicId  String?
   memberId  String
+  delete Boolean @default(false)
   member Member @relation( fields:[memberId], references:[id], onDelete: Cascade)
+  @@map("photo")
 
 }

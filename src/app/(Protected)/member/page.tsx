@@ -13,6 +13,11 @@ export default async function MemberPage() {
           location: {
             select: { id: true, city: true, state: true, zip: true },
           },
+          photos: {
+            where: { delete: false },
+            select: { id: true, url: true },
+            orderBy: { id: "asc" },
+          },
         },
       })
     : null

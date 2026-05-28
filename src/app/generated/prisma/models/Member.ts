@@ -33,6 +33,7 @@ export type MemberMinAggregateOutputType = {
   updatedAt: Date | null
   description: string | null
   locationId: string | null
+  deactivated: boolean | null
 }
 
 export type MemberMaxAggregateOutputType = {
@@ -44,6 +45,7 @@ export type MemberMaxAggregateOutputType = {
   updatedAt: Date | null
   description: string | null
   locationId: string | null
+  deactivated: boolean | null
 }
 
 export type MemberCountAggregateOutputType = {
@@ -55,6 +57,7 @@ export type MemberCountAggregateOutputType = {
   updatedAt: number
   description: number
   locationId: number
+  deactivated: number
   _all: number
 }
 
@@ -68,6 +71,7 @@ export type MemberMinAggregateInputType = {
   updatedAt?: true
   description?: true
   locationId?: true
+  deactivated?: true
 }
 
 export type MemberMaxAggregateInputType = {
@@ -79,6 +83,7 @@ export type MemberMaxAggregateInputType = {
   updatedAt?: true
   description?: true
   locationId?: true
+  deactivated?: true
 }
 
 export type MemberCountAggregateInputType = {
@@ -90,6 +95,7 @@ export type MemberCountAggregateInputType = {
   updatedAt?: true
   description?: true
   locationId?: true
+  deactivated?: true
   _all?: true
 }
 
@@ -174,6 +180,7 @@ export type MemberGroupByOutputType = {
   updatedAt: Date
   description: string
   locationId: string
+  deactivated: boolean
   _count: MemberCountAggregateOutputType | null
   _min: MemberMinAggregateOutputType | null
   _max: MemberMaxAggregateOutputType | null
@@ -206,6 +213,7 @@ export type MemberWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   description?: Prisma.StringFilter<"Member"> | string
   locationId?: Prisma.StringFilter<"Member"> | string
+  deactivated?: Prisma.BoolFilter<"Member"> | boolean
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   location?: Prisma.XOR<Prisma.LocationScalarRelationFilter, Prisma.LocationWhereInput>
   photos?: Prisma.PhotoListRelationFilter
@@ -220,6 +228,7 @@ export type MemberOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   description?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
+  deactivated?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   location?: Prisma.LocationOrderByWithRelationInput
   photos?: Prisma.PhotoOrderByRelationAggregateInput
@@ -237,6 +246,7 @@ export type MemberWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   description?: Prisma.StringFilter<"Member"> | string
   locationId?: Prisma.StringFilter<"Member"> | string
+  deactivated?: Prisma.BoolFilter<"Member"> | boolean
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   location?: Prisma.XOR<Prisma.LocationScalarRelationFilter, Prisma.LocationWhereInput>
   photos?: Prisma.PhotoListRelationFilter
@@ -251,6 +261,7 @@ export type MemberOrderByWithAggregationInput = {
   updatedAt?: Prisma.SortOrder
   description?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
+  deactivated?: Prisma.SortOrder
   _count?: Prisma.MemberCountOrderByAggregateInput
   _max?: Prisma.MemberMaxOrderByAggregateInput
   _min?: Prisma.MemberMinOrderByAggregateInput
@@ -268,6 +279,7 @@ export type MemberScalarWhereWithAggregatesInput = {
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Member"> | Date | string
   description?: Prisma.StringWithAggregatesFilter<"Member"> | string
   locationId?: Prisma.StringWithAggregatesFilter<"Member"> | string
+  deactivated?: Prisma.BoolWithAggregatesFilter<"Member"> | boolean
 }
 
 export type MemberCreateInput = {
@@ -277,6 +289,7 @@ export type MemberCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  deactivated?: boolean
   user: Prisma.UserCreateNestedOneWithoutMemberInput
   location: Prisma.LocationCreateNestedOneWithoutMemberInput
   photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
@@ -291,6 +304,7 @@ export type MemberUncheckedCreateInput = {
   updatedAt?: Date | string
   description: string
   locationId: string
+  deactivated?: boolean
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
 }
 
@@ -301,6 +315,7 @@ export type MemberUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
   location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
@@ -315,6 +330,7 @@ export type MemberUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
 }
 
@@ -327,6 +343,7 @@ export type MemberCreateManyInput = {
   updatedAt?: Date | string
   description: string
   locationId: string
+  deactivated?: boolean
 }
 
 export type MemberUpdateManyMutationInput = {
@@ -336,6 +353,7 @@ export type MemberUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type MemberUncheckedUpdateManyInput = {
@@ -347,6 +365,7 @@ export type MemberUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type MemberNullableScalarRelationFilter = {
@@ -373,6 +392,7 @@ export type MemberCountOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   description?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
+  deactivated?: Prisma.SortOrder
 }
 
 export type MemberMaxOrderByAggregateInput = {
@@ -384,6 +404,7 @@ export type MemberMaxOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   description?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
+  deactivated?: Prisma.SortOrder
 }
 
 export type MemberMinOrderByAggregateInput = {
@@ -395,6 +416,7 @@ export type MemberMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   description?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
+  deactivated?: Prisma.SortOrder
 }
 
 export type MemberScalarRelationFilter = {
@@ -497,6 +519,7 @@ export type MemberCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  deactivated?: boolean
   location: Prisma.LocationCreateNestedOneWithoutMemberInput
   photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
 }
@@ -509,6 +532,7 @@ export type MemberUncheckedCreateWithoutUserInput = {
   updatedAt?: Date | string
   description: string
   locationId: string
+  deactivated?: boolean
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
 }
 
@@ -535,6 +559,7 @@ export type MemberUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
 }
@@ -547,6 +572,7 @@ export type MemberUncheckedUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
 }
 
@@ -557,6 +583,7 @@ export type MemberCreateWithoutLocationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  deactivated?: boolean
   user: Prisma.UserCreateNestedOneWithoutMemberInput
   photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
 }
@@ -569,6 +596,7 @@ export type MemberUncheckedCreateWithoutLocationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  deactivated?: boolean
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
 }
 
@@ -610,6 +638,7 @@ export type MemberScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   description?: Prisma.StringFilter<"Member"> | string
   locationId?: Prisma.StringFilter<"Member"> | string
+  deactivated?: Prisma.BoolFilter<"Member"> | boolean
 }
 
 export type MemberCreateWithoutPhotosInput = {
@@ -619,6 +648,7 @@ export type MemberCreateWithoutPhotosInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  deactivated?: boolean
   user: Prisma.UserCreateNestedOneWithoutMemberInput
   location: Prisma.LocationCreateNestedOneWithoutMemberInput
 }
@@ -632,6 +662,7 @@ export type MemberUncheckedCreateWithoutPhotosInput = {
   updatedAt?: Date | string
   description: string
   locationId: string
+  deactivated?: boolean
 }
 
 export type MemberCreateOrConnectWithoutPhotosInput = {
@@ -657,6 +688,7 @@ export type MemberUpdateWithoutPhotosInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
   location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
 }
@@ -670,6 +702,7 @@ export type MemberUncheckedUpdateWithoutPhotosInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type MemberCreateManyLocationInput = {
@@ -680,6 +713,7 @@ export type MemberCreateManyLocationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  deactivated?: boolean
 }
 
 export type MemberUpdateWithoutLocationInput = {
@@ -689,6 +723,7 @@ export type MemberUpdateWithoutLocationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
 }
@@ -701,6 +736,7 @@ export type MemberUncheckedUpdateWithoutLocationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
 }
 
@@ -712,6 +748,7 @@ export type MemberUncheckedUpdateManyWithoutLocationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
@@ -754,6 +791,7 @@ export type MemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   updatedAt?: boolean
   description?: boolean
   locationId?: boolean
+  deactivated?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   location?: boolean | Prisma.LocationDefaultArgs<ExtArgs>
   photos?: boolean | Prisma.Member$photosArgs<ExtArgs>
@@ -769,6 +807,7 @@ export type MemberSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   updatedAt?: boolean
   description?: boolean
   locationId?: boolean
+  deactivated?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   location?: boolean | Prisma.LocationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["member"]>
@@ -782,6 +821,7 @@ export type MemberSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   updatedAt?: boolean
   description?: boolean
   locationId?: boolean
+  deactivated?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   location?: boolean | Prisma.LocationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["member"]>
@@ -795,9 +835,10 @@ export type MemberSelectScalar = {
   updatedAt?: boolean
   description?: boolean
   locationId?: boolean
+  deactivated?: boolean
 }
 
-export type MemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "displayName" | "image" | "createdAt" | "updatedAt" | "description" | "locationId", ExtArgs["result"]["member"]>
+export type MemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "displayName" | "image" | "createdAt" | "updatedAt" | "description" | "locationId" | "deactivated", ExtArgs["result"]["member"]>
 export type MemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   location?: boolean | Prisma.LocationDefaultArgs<ExtArgs>
@@ -829,6 +870,7 @@ export type $MemberPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     updatedAt: Date
     description: string
     locationId: string
+    deactivated: boolean
   }, ExtArgs["result"]["member"]>
   composites: {}
 }
@@ -1263,6 +1305,7 @@ export interface MemberFieldRefs {
   readonly updatedAt: Prisma.FieldRef<"Member", 'DateTime'>
   readonly description: Prisma.FieldRef<"Member", 'String'>
   readonly locationId: Prisma.FieldRef<"Member", 'String'>
+  readonly deactivated: Prisma.FieldRef<"Member", 'Boolean'>
 }
     
 
