@@ -27,7 +27,7 @@ export function MemberCard({ id, displayName, image, location, distanceMiles }: 
               {location.city}, {location.state}
             </p>
             {distanceMiles !== null && (
-              <p className="text-sm font-bold text-sky-400">
+              <p className="text-sm font-bold text-primary text-muted">
                 {distanceMiles < 1
                   ? "< 1 mi away"
                   : `${Math.round(distanceMiles).toLocaleString()} mi away`}
