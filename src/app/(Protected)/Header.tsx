@@ -11,11 +11,11 @@ export function Header() {
 
   const initials = name
     ? name
-        .split(" ")
-        .map((w) => w[0])
-        .slice(0, 2)
-        .join("")
-        .toUpperCase()
+      .split(" ")
+      .map((w) => w[0])
+      .slice(0, 2)
+      .join("")
+      .toUpperCase()
     : "?"
 
   return (
@@ -35,19 +35,21 @@ export function Header() {
           href="/member"
           className="flex items-center gap-2.5 hover:opacity-85 transition-opacity"
         >
-          <span className="text-sm font-medium">{name}</span>
-          <div className="relative size-8 rounded-full overflow-hidden bg-primary-foreground/20 flex items-center justify-center shrink-0">
-            {image ? (
-              <Image
-                src={image}
-                alt={name ?? "Profile"}
-                fill
-                className="object-cover"
-                sizes="32px"
-              />
-            ) : (
-              <span className="text-xs font-semibold leading-none">{initials}</span>
-            )}
+          <div className="flex flex-col items-center">
+            <div className="relative size-8 rounded-full overflow-hidden bg-primary-foreground/20 flex items-center justify-center shrink-0">
+              {image ? (
+                <Image
+                  src={image}
+                  alt={name ?? "Profile"}
+                  fill
+                  className="object-cover"
+                  sizes="32px"
+                />
+              ) : (
+                <span className="text-xs font-semibold leading-none">{initials}</span>
+              )}
+            </div>
+            <span className="text-sm font-medium text-xs hidden md:block">{name}</span>
           </div>
         </Link>
       </div>
