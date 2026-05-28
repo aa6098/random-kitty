@@ -1,0 +1,4 @@
+Generate User Store using Zustand.
+If the logged in user has Member record created then store DisplayName as Name, Image field from Member table in User Store.
+If the logged in user has no member record created then store name and image from user table.
+Once the Member record is created, update the user store.
