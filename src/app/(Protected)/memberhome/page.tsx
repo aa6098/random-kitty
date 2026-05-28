@@ -106,7 +106,7 @@ export default async function MemberHomePage({ searchParams }: Props) {
   return (
     <div className="mx-auto w-full max-w-[1130px] px-4 py-3">
       <div className="mb-6 flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold tracking-tight whitespace-nowrap">Latest Members</h1>
+        <h1 className="text-2xl font-semibold tracking-tight whitespace-nowrap hidden md:block">Latest Members</h1>
         <SearchBar />
       </div>
 
