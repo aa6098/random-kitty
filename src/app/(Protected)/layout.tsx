@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma"
 import { UserStoreInitializer } from "@/components/UserStoreInitializer"
 import { Header } from "./Header"
 import { IncomingCallListener } from "./IncomingCallListener"
+import { PresenceProvider } from "./PresenceProvider"
 
 export default async function ProtectedLayout({
   children,
@@ -27,6 +28,7 @@ export default async function ProtectedLayout({
   return (
     <div className="min-h-screen flex flex-col">
       <UserStoreInitializer name={name} image={image} />
+      <PresenceProvider />
       <Header />
       {member && <IncomingCallListener currentMemberId={member.id} />}
       <main className="flex flex-1 flex-col">{children}</main>
