@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { UserStoreInitializer } from "@/components/UserStoreInitializer"
 import { Header } from "./Header"
+import { IncomingCallListener } from "./IncomingCallListener"
 
 export default async function ProtectedLayout({
   children,
@@ -17,7 +18,7 @@ export default async function ProtectedLayout({
 
   const member = await prisma.member.findUnique({
     where: { userId: session.user.id },
-    select: { displayName: true, image: true },
+    select: { id: true, displayName: true, image: true },
   })
 
   const name = member ? member.displayName : (session.user.name ?? null)
@@ -27,6 +28,7 @@ export default async function ProtectedLayout({
     <div className="min-h-screen flex flex-col">
       <UserStoreInitializer name={name} image={image} />
       <Header />
+      {member && <IncomingCallListener currentMemberId={member.id} />}
       <main className="flex flex-1 flex-col">{children}</main>
     </div>
   )

@@ -2,20 +2,25 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import {
-  VideoCameraIcon,
+  PhoneIcon,
   PhoneSlashIcon,
+  VideoCameraIcon,
   MicrophoneIcon,
   MicrophoneSlashIcon,
   CameraIcon,
   CameraSlashIcon,
 } from "@phosphor-icons/react"
 import { getPusherClient } from "@/lib/pusherClient"
-import { getChatChannel } from "@/lib/pusherUtils"
-import { useUserStore } from "@/lib/stores/userStore"
+import { getChatChannel, getUserChannel } from "@/lib/pusherUtils"
 import { cn } from "@/lib/utils"
-import { sendCallOffer, sendIceCandidate, sendCallEnded } from "@/app/(Protected)/videoCallActions"
+import {
+  sendCallAnswer,
+  sendIceCandidate,
+  sendCallDeclined,
+  sendCallEnded,
+} from "./videoCallActions"
 
-type CallState = "idle" | "calling" | "connected"
+type CallState = "idle" | "ringing" | "connected"
 
 const ICE_SERVERS: RTCConfiguration = {
   iceServers: [
@@ -26,14 +31,11 @@ const ICE_SERVERS: RTCConfiguration = {
 
 type Props = {
   currentMemberId: string
-  recipientId: string
-  recipientName: string
-  triggerClassName?: string
 }
 
-export function VideoCall({ currentMemberId, recipientId, recipientName, triggerClassName }: Props) {
-  const callerName = useUserStore((s) => s.name)
+export function IncomingCallListener({ currentMemberId }: Props) {
   const [callState, setCallState] = useState<CallState>("idle")
+  const [callerName, setCallerName] = useState("")
   const [isMuted, setIsMuted] = useState(false)
   const [isCameraOff, setIsCameraOff] = useState(false)
 
@@ -41,9 +43,9 @@ export function VideoCall({ currentMemberId, recipientId, recipientName, trigger
   const remoteVideoRef = useRef<HTMLVideoElement>(null)
   const peerConnRef = useRef<RTCPeerConnection | null>(null)
   const localStreamRef = useRef<MediaStream | null>(null)
+  const incomingOfferRef = useRef<RTCSessionDescriptionInit | null>(null)
+  const callerIdRef = useRef<string>("")
   const iceCandidateBuffer = useRef<RTCIceCandidateInit[]>([])
-
-  const channelName = getChatChannel(currentMemberId, recipientId)
 
   // Safety-net: sync local stream → video element after every render.
   useEffect(() => {
@@ -57,10 +59,13 @@ export function VideoCall({ currentMemberId, recipientId, recipientName, trigger
     localStreamRef.current = null
     peerConnRef.current?.close()
     peerConnRef.current = null
+    incomingOfferRef.current = null
+    callerIdRef.current = ""
     iceCandidateBuffer.current = []
     if (localVideoRef.current) localVideoRef.current.srcObject = null
     if (remoteVideoRef.current) remoteVideoRef.current.srcObject = null
     setCallState("idle")
+    setCallerName("")
     setIsMuted(false)
     setIsCameraOff(false)
   }, [])
@@ -72,12 +77,17 @@ export function VideoCall({ currentMemberId, recipientId, recipientName, trigger
     iceCandidateBuffer.current = []
   }
 
-  function buildPeerConnection(stream: MediaStream) {
+  async function acceptCall() {
+    if (!incomingOfferRef.current) return
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+    localStreamRef.current = stream
+    if (localVideoRef.current) localVideoRef.current.srcObject = stream
+
     const pc = new RTCPeerConnection(ICE_SERVERS)
     stream.getTracks().forEach(track => pc.addTrack(track, stream))
 
     pc.onicecandidate = ({ candidate }) => {
-      if (candidate) sendIceCandidate(recipientId, candidate.toJSON())
+      if (candidate) sendIceCandidate(callerIdRef.current, candidate.toJSON())
     }
 
     pc.ontrack = ({ streams }) => {
@@ -87,23 +97,21 @@ export function VideoCall({ currentMemberId, recipientId, recipientName, trigger
     }
 
     peerConnRef.current = pc
-    return pc
+    await pc.setRemoteDescription(incomingOfferRef.current)
+    await flushIceCandidateBuffer(pc)
+    const answer = await pc.createAnswer()
+    await pc.setLocalDescription(answer)
+    await sendCallAnswer(callerIdRef.current, answer)
+    setCallState("connected")
   }
 
-  async function startCall() {
-    setCallState("calling")
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-    localStreamRef.current = stream
-    if (localVideoRef.current) localVideoRef.current.srcObject = stream
-
-    const pc = buildPeerConnection(stream)
-    const offer = await pc.createOffer()
-    await pc.setLocalDescription(offer)
-    await sendCallOffer(recipientId, offer, callerName ?? "")
+  async function declineCall() {
+    await sendCallDeclined(callerIdRef.current)
+    stopCall()
   }
 
   async function endCall() {
-    await sendCallEnded(recipientId)
+    await sendCallEnded(callerIdRef.current)
     stopCall()
   }
 
@@ -117,17 +125,33 @@ export function VideoCall({ currentMemberId, recipientId, recipientName, trigger
     setIsCameraOff(prev => !prev)
   }
 
+  // Subscribe to personal notification channel for incoming call offers
   useEffect(() => {
-    const ch = getPusherClient().subscribe(channelName)
+    const ch = getPusherClient().subscribe(getUserChannel(currentMemberId))
 
-    ch.bind("call-answer", async ({ sdp, fromMemberId }: { sdp: RTCSessionDescriptionInit; fromMemberId: string }) => {
+    ch.bind("call-offer", ({ sdp, fromMemberId, fromName }: {
+      sdp: RTCSessionDescriptionInit
+      fromMemberId: string
+      fromName: string
+      channel: string
+    }) => {
       if (fromMemberId === currentMemberId) return
-      const pc = peerConnRef.current
-      if (!pc) return
-      await pc.setRemoteDescription(sdp)
-      await flushIceCandidateBuffer(pc)
-      setCallState("connected")
+      incomingOfferRef.current = sdp
+      callerIdRef.current = fromMemberId
+      setCallerName(fromName)
+      setCallState("ringing")
     })
+
+    return () => {
+      getPusherClient().unsubscribe(getUserChannel(currentMemberId))
+    }
+  }, [currentMemberId])
+
+  // Subscribe to shared chat channel once a call is in progress
+  useEffect(() => {
+    if (callState === "idle" || !callerIdRef.current) return
+    const channelName = getChatChannel(currentMemberId, callerIdRef.current)
+    const ch = getPusherClient().subscribe(channelName)
 
     ch.bind("ice-candidate", async ({ candidate, fromMemberId }: { candidate: RTCIceCandidateInit; fromMemberId: string }) => {
       if (fromMemberId === currentMemberId) return
@@ -139,98 +163,83 @@ export function VideoCall({ currentMemberId, recipientId, recipientName, trigger
       }
     })
 
-    ch.bind("call-declined", ({ fromMemberId }: { fromMemberId: string }) => {
-      if (fromMemberId === currentMemberId) return
-      stopCall()
-    })
-
     ch.bind("call-ended", ({ fromMemberId }: { fromMemberId: string }) => {
       if (fromMemberId === currentMemberId) return
       stopCall()
     })
 
     return () => {
-      ch.unbind("call-answer")
       ch.unbind("ice-candidate")
-      ch.unbind("call-declined")
       ch.unbind("call-ended")
     }
-  }, [channelName, currentMemberId, stopCall])
+  }, [callState, currentMemberId, stopCall])
+
+  if (callState === "idle") return null
 
   return (
-    <>
-      {callState === "idle" && (
-        <button
-          onClick={startCall}
-          className={triggerClassName ?? "inline-flex items-center gap-1.5 rounded-md border border-input bg-background px-3 py-2 text-sm font-medium hover:bg-muted transition-colors"}
-          title="Start video call"
-        >
-          <VideoCameraIcon size={16} weight="fill" />
-          Video Call
-        </button>
-      )}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+      <div className="flex w-full max-w-[576px] flex-col overflow-hidden rounded-2xl bg-zinc-950 shadow-2xl">
 
-      <div
-        className={cn(
-          "fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4",
-          callState === "idle" ? "hidden" : "flex"
-        )}
-      >
-        <div className="flex w-full max-w-[576px] flex-col overflow-hidden rounded-2xl bg-zinc-950 shadow-2xl">
+        <div className="shrink-0 px-4 py-3 text-sm text-white/70">
+          {callState === "ringing"   && `Incoming call from ${callerName}`}
+          {callState === "connected" && callerName}
+        </div>
 
-          <div className="shrink-0 px-4 py-3 text-sm text-white/70">
-            {callState === "calling"   && `Calling ${recipientName}…`}
-            {callState === "connected" && recipientName}
-          </div>
+        <div className="relative w-full overflow-hidden bg-zinc-900" style={{ aspectRatio: "16/9" }}>
+          <video
+            ref={remoteVideoRef}
+            autoPlay
+            playsInline
+            className={cn("absolute inset-0 h-full w-full object-cover", callState !== "connected" && "hidden")}
+          />
 
-          <div className="relative w-full overflow-hidden bg-zinc-900" style={{ aspectRatio: "16/9" }}>
-            <video
-              ref={remoteVideoRef}
-              autoPlay
-              playsInline
-              className={cn("absolute inset-0 h-full w-full object-cover", callState !== "connected" && "hidden")}
-            />
+          {callState === "ringing" && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white/30">
+              <VideoCameraIcon size={40} />
+            </div>
+          )}
 
-            {callState !== "connected" && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white/30">
-                <VideoCameraIcon size={40} />
-                <p className="animate-pulse text-sm text-white/60">Waiting for {recipientName}…</p>
-              </div>
+          <video
+            ref={localVideoRef}
+            autoPlay
+            muted
+            playsInline
+            className={cn(
+              "absolute object-cover rounded-lg border border-white/20",
+              callState === "connected" && "bottom-2 right-2 h-[22%] w-[30%] shadow-lg",
+              callState === "ringing"   && "hidden",
             )}
+          />
+        </div>
 
-            <video
-              ref={localVideoRef}
-              autoPlay
-              muted
-              playsInline
-              className={cn(
-                "absolute object-cover rounded-lg border border-white/20",
-                callState === "connected" && "bottom-2 right-2 h-[22%] w-[30%] shadow-lg",
-                callState === "calling"   && "left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-xl",
-              )}
-            />
-          </div>
+        <div className="flex shrink-0 items-center justify-center gap-4 bg-zinc-950 py-4">
+          {callState === "ringing" && (
+            <>
+              <CallButton onClick={acceptCall} color="green" label="Accept">
+                <PhoneIcon size={22} weight="fill" />
+              </CallButton>
+              <CallButton onClick={declineCall} color="red" label="Decline">
+                <PhoneSlashIcon size={22} weight="fill" />
+              </CallButton>
+            </>
+          )}
 
-          <div className="flex shrink-0 items-center justify-center gap-4 bg-zinc-950 py-4">
-            {callState === "connected" && (
+          {callState === "connected" && (
+            <>
               <CallButton onClick={toggleMute} color={isMuted ? "dim" : "ghost"} label={isMuted ? "Unmute" : "Mute"}>
                 {isMuted ? <MicrophoneSlashIcon size={18} weight="fill" /> : <MicrophoneIcon size={18} weight="fill" />}
               </CallButton>
-            )}
-
-            <CallButton onClick={endCall} color="red" label="End">
-              <PhoneSlashIcon size={22} weight="fill" />
-            </CallButton>
-
-            {callState === "connected" && (
+              <CallButton onClick={endCall} color="red" label="End">
+                <PhoneSlashIcon size={22} weight="fill" />
+              </CallButton>
               <CallButton onClick={toggleCamera} color={isCameraOff ? "dim" : "ghost"} label={isCameraOff ? "Cam on" : "Cam off"}>
                 {isCameraOff ? <CameraSlashIcon size={18} weight="fill" /> : <CameraIcon size={18} weight="fill" />}
               </CallButton>
-            )}
-          </div>
+            </>
+          )}
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
