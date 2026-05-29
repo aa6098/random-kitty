@@ -1,6 +1,6 @@
 import { MapPinIcon } from "@phosphor-icons/react/dist/ssr"
 import { MemberSideBarTabs } from "./MemberSideBarTabs"
-import { VideoCallPresence } from "./messages/VideoCallPresence"
+import { VideoCall } from "./messages/VideoCall"
 
 type Props = {
   member: {
@@ -32,10 +32,10 @@ export function MemberSideBar({ member, currentMemberId }: Props) {
             {member.location.city}, {member.location.state}
           </p>
           {showVideoCall && (
-              <VideoCallPresence
+              <VideoCall
                 currentMemberId={currentMemberId}
                 recipientId={member.id}
-                recipientName={member.displayName}
+                recipientName=""
                 triggerClassName="w-full px-4 py-2.5 text-sm font-medium border-b border-border transition-colors hover:bg-muted text-foreground flex items-center gap-2"
               />
           )}
