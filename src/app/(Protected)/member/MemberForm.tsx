@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/card"
 import { ImageUpload } from "./ImageUpload"
 import { LocationPicker } from "./LocationPicker"
-import { UploadMemberPhotos } from "./UploadMemberPhotos"
 import { CheckCircle, WarningCircle } from "@phosphor-icons/react"
 
 type LocationOption = { id: string; city: string; state: string; zip: string }
@@ -28,7 +27,6 @@ type MemberData = {
   image: string | null
   description: string
   location: LocationOption
-  photos: { id: string; url: string }[]
 }
 
 type Props = {
@@ -102,17 +100,6 @@ export function MemberForm({ member }: Props) {
               Type at least 2 characters to search for a city.
             </p>
           </div>
-
-          {/* Member Photos */}
-          {isEdit && (
-            <div className="space-y-1.5">
-              <Label>Photos</Label>
-              <UploadMemberPhotos
-                memberId={member!.id}
-                initialPhotos={member!.photos}
-              />
-            </div>
-          )}
 
           {/* Feedback */}
           {state?.error && (
