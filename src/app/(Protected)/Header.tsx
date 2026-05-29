@@ -8,46 +8,14 @@ import { Menu } from "@base-ui/react/menu"
 import {
   ListIcon,
   XIcon,
-  CaretDown,
   House,
   Envelope,
-  ChatsCircle,
-  VideoCamera,
   User,
   SignOutIcon,
 } from "@phosphor-icons/react"
 import logo from "@/app/logo.png"
 import { useUserStore } from "@/lib/stores/userStore"
 import { authClient } from "@/lib/auth-client"
-
-const messagingLinks = [
-  { label: "Messages", href: "/messages", Icon: Envelope },
-  { label: "Chat", href: "/chat", Icon: ChatsCircle },
-  { label: "Video Call", href: "/videocall", Icon: VideoCamera },
-]
-
-function MessagingDropdown() {
-  return (
-    <Menu.Root>
-      <Menu.Trigger className="flex items-center gap-1 px-2 py-1 rounded hover:bg-primary-foreground/10 transition-colors cursor-pointer focus:outline-none text-sm font-medium">
-        Messaging <CaretDown size={12} weight="bold" />
-      </Menu.Trigger>
-      <Menu.Portal>
-        <Menu.Positioner side="bottom" align="start" sideOffset={6}>
-          <Menu.Popup className="z-50 min-w-[10rem] rounded-md border border-border bg-popover text-primary shadow-md py-1 focus:outline-none">
-            {messagingLinks.map(({ label, href, Icon }) => (
-              <Menu.Item key={href} render={<Link href={href} />}
-                className="flex items-center gap-2 px-3 py-2 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none"
-              >
-                <Icon size={15} /> {label}
-              </Menu.Item>
-            ))}
-          </Menu.Popup>
-        </Menu.Positioner>
-      </Menu.Portal>
-    </Menu.Root>
-  )
-}
 
 function DesktopNav() {
   return (
@@ -58,7 +26,12 @@ function DesktopNav() {
       >
         <House size={15} /> Home
       </Link>
-      <MessagingDropdown />
+      <Link
+        href="/messages"
+        className="flex items-center gap-1.5 px-2 py-1 rounded hover:bg-primary-foreground/10 transition-colors text-sm font-medium"
+      >
+        <Envelope size={15} /> Messages
+      </Link>
       <Link
         href="/member"
         className="flex items-center gap-1.5 px-2 py-1 rounded hover:bg-primary-foreground/10 transition-colors text-sm font-medium"
@@ -81,19 +54,13 @@ function MobileNav({ open, onClose, onSignOut }: { open: boolean; onClose: () =>
         >
           <House size={16} /> Home
         </Link>
-        <div className="px-4 py-2 text-xs font-semibold uppercase tracking-wider opacity-60">
-          Messaging
-        </div>
-        {messagingLinks.map(({ label, href, Icon }) => (
-          <Link
-            key={href}
-            href={href}
-            onClick={onClose}
-            className="flex items-center gap-2 px-6 py-2.5 text-sm hover:bg-primary-foreground/10 transition-colors"
-          >
-            <Icon size={15} /> {label}
-          </Link>
-        ))}
+        <Link
+          href="/messages"
+          onClick={onClose}
+          className="flex items-center gap-2 px-4 py-3 text-sm font-medium hover:bg-primary-foreground/10 transition-colors"
+        >
+          <Envelope size={16} /> Messages
+        </Link>
         <Link
           href="/member"
           onClick={onClose}
