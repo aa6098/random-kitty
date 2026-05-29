@@ -7,8 +7,9 @@ import {
   TrashIcon,
 } from "@phosphor-icons/react"
 import { sendMessage, deleteMessage } from "./actions"
-import { pusherClient } from "@/lib/pusherClient"
+import { getPusherClient } from "@/lib/pusherClient"
 import { getChatChannel } from "@/lib/pusherUtils"
+import { VideoCall } from "./VideoCall"
 import { cn } from "@/lib/utils"
 
 type Message = {
@@ -43,7 +44,7 @@ export function MessageThread({ messages, currentMemberId, recipientId, recipien
   // Subscribe to Pusher channel for real-time messages
   useEffect(() => {
     const channel = getChatChannel(currentMemberId, recipientId)
-    const pusherChannel = pusherClient.subscribe(channel)
+    const pusherChannel = getPusherClient().subscribe(channel)
 
     pusherChannel.bind("new-message", (message: Message) => {
       setLocalMessages(prev =>
@@ -52,7 +53,7 @@ export function MessageThread({ messages, currentMemberId, recipientId, recipien
     })
 
     return () => {
-      pusherClient.unsubscribe(channel)
+      pusherChannel.unbind("new-message")
     }
   }, [currentMemberId, recipientId])
 
@@ -77,9 +78,16 @@ export function MessageThread({ messages, currentMemberId, recipientId, recipien
 
   return (
     <div className="flex flex-col gap-4 h-[70vh]">
-      <h2 className="text-xl font-semibold tracking-tight">
-        Chat with {recipientName}
-      </h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-semibold tracking-tight">
+          Chat with {recipientName}
+        </h2>
+        <VideoCall
+          currentMemberId={currentMemberId}
+          recipientId={recipientId}
+          recipientName={recipientName}
+        />
+      </div>
 
       {/* Message list */}
       <div ref={listRef} className="flex flex-col gap-3 flex-1 overflow-y-auto pr-1">
