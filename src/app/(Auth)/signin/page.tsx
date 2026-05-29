@@ -33,7 +33,7 @@ export default function SignInPage() {
       callbackURL: "/memberhome",
     })
 
-    setPending(false)
+    
 
     if (signInError) {
       setError(signInError.message ?? "Invalid email or password.")
@@ -42,6 +42,7 @@ export default function SignInPage() {
 
     router.push("/memberhome")
     router.refresh()
+    setPending(false)
   }
 
   return (
