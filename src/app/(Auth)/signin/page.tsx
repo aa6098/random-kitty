@@ -36,6 +36,7 @@ export default function SignInPage() {
     
 
     if (signInError) {
+      setPending(false)
       setError(signInError.message ?? "Invalid email or password.")
       return
     }
