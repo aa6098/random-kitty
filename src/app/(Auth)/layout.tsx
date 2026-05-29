@@ -10,7 +10,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           {/* Branding */}
           <Link href="/" className="flex items-center gap-2.5 hover:opacity-85 transition-opacity">
           <Image src={logo} alt="Random Kitty" width={75} height={75} />
-            <span className="text-base font-semibold tracking-tight">Random Kitty</span>
+            <span className="text-base hidden md:block font-semibold tracking-tight">Random Kitty</span>
           </Link>
 
           {/* Nav links */}
