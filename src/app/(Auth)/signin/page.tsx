@@ -11,6 +11,7 @@ export default function SignInPage() {
   const router = useRouter()
   const [error, setError] = useState("")
   const [pending, setPending] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -78,17 +79,26 @@ export default function SignInPage() {
             >
               Password
             </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              className={cn(
-                "w-full border bg-white dark:bg-zinc-900 px-3 py-2 text-sm text-black dark:text-zinc-50 outline-none",
-                "focus:ring-1 focus:ring-ring border-border"
-              )}
-            />
+            <div className="relative">
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
+                required
+                className={cn(
+                  "w-full border bg-white dark:bg-zinc-900 px-3 py-2 pr-16 text-sm text-black dark:text-zinc-50 outline-none",
+                  "focus:ring-1 focus:ring-ring border-border"
+                )}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+              >
+                {showPassword ? "hide" : "show"}
+              </button>
+            </div>
           </div>
 
           {error && (
