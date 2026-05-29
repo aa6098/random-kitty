@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { haversineDistance } from "@/lib/distance"
 import { getAllLocations } from "@/lib/locationCache"
-import { MemberCard } from "./MemberCard"
+import { MemberListClient } from "./MemberListClient"
 import { NavButton } from "./NavButton"
 import { SearchBar } from "./SearchBar"
 import {
@@ -114,18 +114,7 @@ export default async function MemberHomePage({ searchParams }: Props) {
         <p className="text-muted-foreground text-sm">No members yet.</p>
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {members.map((member) => (
-              <MemberCard
-                key={member.id}
-                id={member.id}
-                displayName={member.displayName}
-                image={member.image}
-                location={member.location}
-                distanceMiles={member.distanceMiles}
-              />
-            ))}
-          </div>
+          <MemberListClient members={members} />
 
           <div className="mt-8 flex items-center gap-1">
             <NavButton href={qs(1)} disabled={!hasPrev} label="First page">

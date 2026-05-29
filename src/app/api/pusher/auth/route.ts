@@ -23,7 +23,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Bad request" }, { status: 400 })
   }
 
-  // Only authorize if this member is part of the requested channel
+  // Presence channels: any authenticated member can join
+  if (channel.startsWith("presence-")) {
+    const authResponse = pusherServer.authorizeChannel(socketId, channel, {
+      user_id: member.id,
+      user_info: {},
+    })
+    return NextResponse.json(authResponse)
+  }
+
+  // Private channels: only authorize if this member is part of the channel
   if (!channel.includes(member.id)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   }

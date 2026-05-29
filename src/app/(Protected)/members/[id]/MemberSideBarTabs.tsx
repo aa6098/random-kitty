@@ -3,7 +3,6 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { VideoCall } from "./messages/VideoCall"
 
 const tabs = [
   { label: "Profile", segment: "profile" },
@@ -20,7 +19,6 @@ export function MemberSideBarTabs({ memberId, currentMemberId }: Props) {
   const pathname = usePathname()
 
   // Don't show Video Call when viewing your own profile
-  const showVideoCall = currentMemberId && currentMemberId !== memberId
 
   return (
     <nav className="flex flex-col w-full border-t border-border">
@@ -41,14 +39,7 @@ export function MemberSideBarTabs({ memberId, currentMemberId }: Props) {
         )
       })}
 
-      {showVideoCall && (
-        <VideoCall
-          currentMemberId={currentMemberId}
-          recipientId={memberId}
-          recipientName=""
-          triggerClassName="w-full px-4 py-2.5 text-sm font-medium border-b border-border transition-colors hover:bg-muted text-foreground flex items-center gap-2"
-        />
-      )}
+      
     </nav>
   )
 }
