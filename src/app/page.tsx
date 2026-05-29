@@ -25,7 +25,7 @@ export default function HomePage() {
             </span>
             <h1 className="text-4xl sm:text-5xl font-bold leading-tight mb-5">
               Where Couples Meet,{" "}
-              <span className="text-primary">Secretly</span>
+              <span className="text-primary">Socialize</span>
             </h1>
             <p className="text-lg text-white/85 mb-8 leading-relaxed">
               A safe, anonymous space for married and partnered individuals to connect, chat, and build genuine trust — with complete privacy and zero judgment.
