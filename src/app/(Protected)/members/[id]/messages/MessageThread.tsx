@@ -9,7 +9,6 @@ import {
 import { sendMessage, deleteMessage } from "./actions"
 import { getPusherClient } from "@/lib/pusherClient"
 import { getChatChannel } from "@/lib/pusherUtils"
-import { VideoCall } from "./VideoCall"
 import { cn } from "@/lib/utils"
 
 type Message = {
@@ -78,16 +77,9 @@ export function MessageThread({ messages, currentMemberId, recipientId, recipien
 
   return (
     <div className="flex flex-col gap-4 h-[70vh]">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold tracking-tight">
-          Chat with {recipientName}
-        </h2>
-        <VideoCall
-          currentMemberId={currentMemberId}
-          recipientId={recipientId}
-          recipientName={recipientName}
-        />
-      </div>
+      <h2 className="text-xl font-semibold tracking-tight">
+        Chat with {recipientName}
+      </h2>
 
       {/* Message list */}
       <div ref={listRef} className="flex flex-col gap-3 flex-1 overflow-y-auto pr-1">

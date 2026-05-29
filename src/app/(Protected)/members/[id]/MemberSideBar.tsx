@@ -8,9 +8,10 @@ type Props = {
     image: string | null
     location: { city: string; state: string }
   }
+  currentMemberId: string | null
 }
 
-export function MemberSideBar({ member }: Props) {
+export function MemberSideBar({ member, currentMemberId }: Props) {
   return (
     <aside className="flex flex-col w-full md:w-60 shrink-0 border border-border rounded-lg overflow-hidden bg-card">
       <div className="flex flex-col items-center gap-3 p-6">
@@ -29,7 +30,7 @@ export function MemberSideBar({ member }: Props) {
           </p>
         </div>
       </div>
-      <MemberSideBarTabs memberId={member.id} />
+      <MemberSideBarTabs memberId={member.id} currentMemberId={currentMemberId} />
     </aside>
   )
 }
