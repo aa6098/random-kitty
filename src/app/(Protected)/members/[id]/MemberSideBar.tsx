@@ -12,6 +12,7 @@ type Props = {
   currentMemberId: string | null
 }
 
+
 export function MemberSideBar({ member, currentMemberId }: Props) {
   const showVideoCall = currentMemberId && currentMemberId !== member.id
 
