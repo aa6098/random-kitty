@@ -21,7 +21,7 @@ export function SearchBar() {
   )
 
   return (
-    <div className="flex flex-row items-center gap-4">
+    <div className="flex flex-row items-center gap-2 md:gap-4">
       <div className="flex flex-row items-center gap-2">
         <label htmlFor="distance" className="text-xs font-medium text-muted-foreground whitespace-nowrap">
           Distance
