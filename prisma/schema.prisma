@@ -102,6 +102,8 @@ model Member {
   location Location  @relation(fields: [locationId], references:[id], onDelete: Cascade)
   photos        Photo[]
   deactivated Boolean @default(false)
+  senderMessages Message[] @relation("sender")
+  recipientMessages Message[] @relation("recipient")
   @@map("member")
 
 }
@@ -115,4 +117,18 @@ model Photo {
   member Member @relation( fields:[memberId], references:[id], onDelete: Cascade)
   @@map("photo")
 
+}
+
+model Message {
+  id String @id @default(cuid())
+  senderId String?
+  text String
+   createdAt     DateTime  @default(now())
+   recipientId String?
+   dateRead DateTime?
+   senderDeleted Boolean @default(false)
+   recipientDeleted Boolean @default(false)
+  sender Member? @relation("sender", fields: [senderId], references: [id], onDelete: SetNull)
+  recipient Member? @relation("recipient", fields: [recipientId], references: [id], onDelete: SetNull)
+  @@map("message")
 }

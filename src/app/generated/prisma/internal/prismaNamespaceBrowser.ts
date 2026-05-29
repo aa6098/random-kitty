@@ -57,7 +57,8 @@ export const ModelName = {
   Verification: 'Verification',
   Location: 'Location',
   Member: 'Member',
-  Photo: 'Photo'
+  Photo: 'Photo',
+  Message: 'Message'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -170,6 +171,20 @@ export const PhotoScalarFieldEnum = {
 } as const
 
 export type PhotoScalarFieldEnum = (typeof PhotoScalarFieldEnum)[keyof typeof PhotoScalarFieldEnum]
+
+
+export const MessageScalarFieldEnum = {
+  id: 'id',
+  senderId: 'senderId',
+  text: 'text',
+  createdAt: 'createdAt',
+  recipientId: 'recipientId',
+  dateRead: 'dateRead',
+  senderDeleted: 'senderDeleted',
+  recipientDeleted: 'recipientDeleted'
+} as const
+
+export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
 
 
 export const SortOrder = {

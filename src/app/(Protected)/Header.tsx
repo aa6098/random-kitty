@@ -8,9 +8,9 @@ import { Menu } from "@base-ui/react/menu"
 import {
   ListIcon,
   XIcon,
-  House,
-  Envelope,
-  User,
+  HouseIcon,
+  EnvelopeIcon,
+  UsersIcon,
   SignOutIcon,
 } from "@phosphor-icons/react"
 import logo from "@/app/logo.png"
@@ -24,19 +24,19 @@ function DesktopNav() {
         href="/memberhome"
         className="flex items-center gap-1.5 px-2 py-1 rounded hover:bg-primary-foreground/10 transition-colors text-sm font-medium"
       >
-        <House size={15} /> Home
+        <HouseIcon size={15} /> Home
       </Link>
       <Link
         href="/messages"
         className="flex items-center gap-1.5 px-2 py-1 rounded hover:bg-primary-foreground/10 transition-colors text-sm font-medium"
       >
-        <Envelope size={15} /> Messages
+        <EnvelopeIcon size={15} /> Messages
       </Link>
       <Link
         href="/member"
         className="flex items-center gap-1.5 px-2 py-1 rounded hover:bg-primary-foreground/10 transition-colors text-sm font-medium"
       >
-        <User size={15} /> Profile
+        <UsersIcon size={15} /> Profile
       </Link>
     </nav>
   )
@@ -45,33 +45,33 @@ function DesktopNav() {
 function MobileNav({ open, onClose, onSignOut }: { open: boolean; onClose: () => void; onSignOut: () => void }) {
   if (!open) return null
   return (
-    <div className="md:hidden absolute top-14 left-0 right-0 z-40 bg-primary text-primary-foreground border-t border-primary-foreground/10 shadow-lg">
+    <div className="md:hidden absolute top-14 left-0 right-0 z-40 bg-popover  text-primary border-t border-primary-foreground/10 shadow-lg">
       <nav className="flex flex-col py-2">
         <Link
           href="/memberhome"
           onClick={onClose}
-          className="flex items-center gap-2 px-4 py-3 text-sm font-medium hover:bg-primary-foreground/10 transition-colors"
+          className="flex items-center gap-2 px-4 py-1 text-sm font-medium hover:font-bold hover:bg-primary/10 transition-colors"
         >
-          <House size={16} /> Home
+          <HouseIcon size={16} /> Home
         </Link>
         <Link
           href="/messages"
           onClick={onClose}
-          className="flex items-center gap-2 px-4 py-3 text-sm font-medium hover:bg-primary-foreground/10 transition-colors"
+          className="flex items-center gap-2 px-4 py-1 text-sm font-medium hover:font-bold hover:bg-primary/10 transition-colors"
         >
-          <Envelope size={16} /> Messages
+          <EnvelopeIcon size={16} /> Messages
         </Link>
         <Link
           href="/member"
           onClick={onClose}
-          className="flex items-center gap-2 px-4 py-3 text-sm font-medium hover:bg-primary-foreground/10 transition-colors"
+          className="flex items-center gap-2 px-4 py-1 text-sm font-medium hover:font-bold hover:bg-primary/10 transition-colors"
         >
-          <User size={16} /> Profile
+          <UsersIcon size={16} /> Profile
         </Link>
-        <div className="my-1 border-t border-primary-foreground/10" />
+        <div className="my-1 border-t border-primary/10" />
         <button
           onClick={onSignOut}
-          className="flex items-center gap-2 px-4 py-3 text-sm font-medium hover:bg-primary-foreground/10 transition-colors text-left"
+          className="flex items-center gap-2 px-2 py-1 text-sm font-medium hover:font-bold hover:bg-primary/10 transition-colors text-left"
         >
           <SignOutIcon size={16} /> Sign out
         </button>

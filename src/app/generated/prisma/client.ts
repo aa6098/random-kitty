@@ -76,3 +76,8 @@ export type Member = Prisma.MemberModel
  * 
  */
 export type Photo = Prisma.PhotoModel
+/**
+ * Model Message
+ * 
+ */
+export type Message = Prisma.MessageModel

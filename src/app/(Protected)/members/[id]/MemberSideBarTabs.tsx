@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 const tabs = [
   { label: "Profile", segment: "profile" },
   { label: "Photos", segment: "photos" },
-  { label: "Chat", segment: "chat" },
+  { label: "Chat", segment: "messages" },
 ]
 
 export function MemberSideBarTabs({ memberId }: { memberId: string }) {

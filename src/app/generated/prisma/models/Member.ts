@@ -217,6 +217,8 @@ export type MemberWhereInput = {
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   location?: Prisma.XOR<Prisma.LocationScalarRelationFilter, Prisma.LocationWhereInput>
   photos?: Prisma.PhotoListRelationFilter
+  senderMessages?: Prisma.MessageListRelationFilter
+  recipientMessages?: Prisma.MessageListRelationFilter
 }
 
 export type MemberOrderByWithRelationInput = {
@@ -232,6 +234,8 @@ export type MemberOrderByWithRelationInput = {
   user?: Prisma.UserOrderByWithRelationInput
   location?: Prisma.LocationOrderByWithRelationInput
   photos?: Prisma.PhotoOrderByRelationAggregateInput
+  senderMessages?: Prisma.MessageOrderByRelationAggregateInput
+  recipientMessages?: Prisma.MessageOrderByRelationAggregateInput
 }
 
 export type MemberWhereUniqueInput = Prisma.AtLeast<{
@@ -250,6 +254,8 @@ export type MemberWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   location?: Prisma.XOR<Prisma.LocationScalarRelationFilter, Prisma.LocationWhereInput>
   photos?: Prisma.PhotoListRelationFilter
+  senderMessages?: Prisma.MessageListRelationFilter
+  recipientMessages?: Prisma.MessageListRelationFilter
 }, "id" | "userId">
 
 export type MemberOrderByWithAggregationInput = {
@@ -293,6 +299,8 @@ export type MemberCreateInput = {
   user: Prisma.UserCreateNestedOneWithoutMemberInput
   location: Prisma.LocationCreateNestedOneWithoutMemberInput
   photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
+  senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
 }
 
 export type MemberUncheckedCreateInput = {
@@ -306,6 +314,8 @@ export type MemberUncheckedCreateInput = {
   locationId: string
   deactivated?: boolean
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
+  senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type MemberUpdateInput = {
@@ -319,6 +329,8 @@ export type MemberUpdateInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
   location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
 }
 
 export type MemberUncheckedUpdateInput = {
@@ -332,6 +344,8 @@ export type MemberUncheckedUpdateInput = {
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type MemberCreateManyInput = {
@@ -512,6 +526,38 @@ export type MemberUpdateOneRequiredWithoutPhotosNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutPhotosInput, Prisma.MemberUpdateWithoutPhotosInput>, Prisma.MemberUncheckedUpdateWithoutPhotosInput>
 }
 
+export type MemberCreateNestedOneWithoutSenderMessagesInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutSenderMessagesInput, Prisma.MemberUncheckedCreateWithoutSenderMessagesInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutSenderMessagesInput
+  connect?: Prisma.MemberWhereUniqueInput
+}
+
+export type MemberCreateNestedOneWithoutRecipientMessagesInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutRecipientMessagesInput, Prisma.MemberUncheckedCreateWithoutRecipientMessagesInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutRecipientMessagesInput
+  connect?: Prisma.MemberWhereUniqueInput
+}
+
+export type MemberUpdateOneWithoutSenderMessagesNestedInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutSenderMessagesInput, Prisma.MemberUncheckedCreateWithoutSenderMessagesInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutSenderMessagesInput
+  upsert?: Prisma.MemberUpsertWithoutSenderMessagesInput
+  disconnect?: Prisma.MemberWhereInput | boolean
+  delete?: Prisma.MemberWhereInput | boolean
+  connect?: Prisma.MemberWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutSenderMessagesInput, Prisma.MemberUpdateWithoutSenderMessagesInput>, Prisma.MemberUncheckedUpdateWithoutSenderMessagesInput>
+}
+
+export type MemberUpdateOneWithoutRecipientMessagesNestedInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutRecipientMessagesInput, Prisma.MemberUncheckedCreateWithoutRecipientMessagesInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutRecipientMessagesInput
+  upsert?: Prisma.MemberUpsertWithoutRecipientMessagesInput
+  disconnect?: Prisma.MemberWhereInput | boolean
+  delete?: Prisma.MemberWhereInput | boolean
+  connect?: Prisma.MemberWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutRecipientMessagesInput, Prisma.MemberUpdateWithoutRecipientMessagesInput>, Prisma.MemberUncheckedUpdateWithoutRecipientMessagesInput>
+}
+
 export type MemberCreateWithoutUserInput = {
   id?: string
   displayName: string
@@ -522,6 +568,8 @@ export type MemberCreateWithoutUserInput = {
   deactivated?: boolean
   location: Prisma.LocationCreateNestedOneWithoutMemberInput
   photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
+  senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
 }
 
 export type MemberUncheckedCreateWithoutUserInput = {
@@ -534,6 +582,8 @@ export type MemberUncheckedCreateWithoutUserInput = {
   locationId: string
   deactivated?: boolean
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
+  senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type MemberCreateOrConnectWithoutUserInput = {
@@ -562,6 +612,8 @@ export type MemberUpdateWithoutUserInput = {
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutUserInput = {
@@ -574,6 +626,8 @@ export type MemberUncheckedUpdateWithoutUserInput = {
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type MemberCreateWithoutLocationInput = {
@@ -586,6 +640,8 @@ export type MemberCreateWithoutLocationInput = {
   deactivated?: boolean
   user: Prisma.UserCreateNestedOneWithoutMemberInput
   photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
+  senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
 }
 
 export type MemberUncheckedCreateWithoutLocationInput = {
@@ -598,6 +654,8 @@ export type MemberUncheckedCreateWithoutLocationInput = {
   description: string
   deactivated?: boolean
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
+  senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type MemberCreateOrConnectWithoutLocationInput = {
@@ -651,6 +709,8 @@ export type MemberCreateWithoutPhotosInput = {
   deactivated?: boolean
   user: Prisma.UserCreateNestedOneWithoutMemberInput
   location: Prisma.LocationCreateNestedOneWithoutMemberInput
+  senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
 }
 
 export type MemberUncheckedCreateWithoutPhotosInput = {
@@ -663,6 +723,8 @@ export type MemberUncheckedCreateWithoutPhotosInput = {
   description: string
   locationId: string
   deactivated?: boolean
+  senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
 }
 
 export type MemberCreateOrConnectWithoutPhotosInput = {
@@ -691,6 +753,8 @@ export type MemberUpdateWithoutPhotosInput = {
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
   location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutPhotosInput = {
@@ -703,6 +767,152 @@ export type MemberUncheckedUpdateWithoutPhotosInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
+}
+
+export type MemberCreateWithoutSenderMessagesInput = {
+  id?: string
+  displayName: string
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  description: string
+  deactivated?: boolean
+  user: Prisma.UserCreateNestedOneWithoutMemberInput
+  location: Prisma.LocationCreateNestedOneWithoutMemberInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
+  recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
+}
+
+export type MemberUncheckedCreateWithoutSenderMessagesInput = {
+  id?: string
+  userId: string
+  displayName: string
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  description: string
+  locationId: string
+  deactivated?: boolean
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
+  recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
+}
+
+export type MemberCreateOrConnectWithoutSenderMessagesInput = {
+  where: Prisma.MemberWhereUniqueInput
+  create: Prisma.XOR<Prisma.MemberCreateWithoutSenderMessagesInput, Prisma.MemberUncheckedCreateWithoutSenderMessagesInput>
+}
+
+export type MemberCreateWithoutRecipientMessagesInput = {
+  id?: string
+  displayName: string
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  description: string
+  deactivated?: boolean
+  user: Prisma.UserCreateNestedOneWithoutMemberInput
+  location: Prisma.LocationCreateNestedOneWithoutMemberInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
+  senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+}
+
+export type MemberUncheckedCreateWithoutRecipientMessagesInput = {
+  id?: string
+  userId: string
+  displayName: string
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  description: string
+  locationId: string
+  deactivated?: boolean
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
+  senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type MemberCreateOrConnectWithoutRecipientMessagesInput = {
+  where: Prisma.MemberWhereUniqueInput
+  create: Prisma.XOR<Prisma.MemberCreateWithoutRecipientMessagesInput, Prisma.MemberUncheckedCreateWithoutRecipientMessagesInput>
+}
+
+export type MemberUpsertWithoutSenderMessagesInput = {
+  update: Prisma.XOR<Prisma.MemberUpdateWithoutSenderMessagesInput, Prisma.MemberUncheckedUpdateWithoutSenderMessagesInput>
+  create: Prisma.XOR<Prisma.MemberCreateWithoutSenderMessagesInput, Prisma.MemberUncheckedCreateWithoutSenderMessagesInput>
+  where?: Prisma.MemberWhereInput
+}
+
+export type MemberUpdateToOneWithWhereWithoutSenderMessagesInput = {
+  where?: Prisma.MemberWhereInput
+  data: Prisma.XOR<Prisma.MemberUpdateWithoutSenderMessagesInput, Prisma.MemberUncheckedUpdateWithoutSenderMessagesInput>
+}
+
+export type MemberUpdateWithoutSenderMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
+  location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
+  recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
+}
+
+export type MemberUncheckedUpdateWithoutSenderMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
+  recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
+}
+
+export type MemberUpsertWithoutRecipientMessagesInput = {
+  update: Prisma.XOR<Prisma.MemberUpdateWithoutRecipientMessagesInput, Prisma.MemberUncheckedUpdateWithoutRecipientMessagesInput>
+  create: Prisma.XOR<Prisma.MemberCreateWithoutRecipientMessagesInput, Prisma.MemberUncheckedCreateWithoutRecipientMessagesInput>
+  where?: Prisma.MemberWhereInput
+}
+
+export type MemberUpdateToOneWithWhereWithoutRecipientMessagesInput = {
+  where?: Prisma.MemberWhereInput
+  data: Prisma.XOR<Prisma.MemberUpdateWithoutRecipientMessagesInput, Prisma.MemberUncheckedUpdateWithoutRecipientMessagesInput>
+}
+
+export type MemberUpdateWithoutRecipientMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
+  location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+}
+
+export type MemberUncheckedUpdateWithoutRecipientMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type MemberCreateManyLocationInput = {
@@ -726,6 +936,8 @@ export type MemberUpdateWithoutLocationInput = {
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutLocationInput = {
@@ -738,6 +950,8 @@ export type MemberUncheckedUpdateWithoutLocationInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
 }
 
 export type MemberUncheckedUpdateManyWithoutLocationInput = {
@@ -758,10 +972,14 @@ export type MemberUncheckedUpdateManyWithoutLocationInput = {
 
 export type MemberCountOutputType = {
   photos: number
+  senderMessages: number
+  recipientMessages: number
 }
 
 export type MemberCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   photos?: boolean | MemberCountOutputTypeCountPhotosArgs
+  senderMessages?: boolean | MemberCountOutputTypeCountSenderMessagesArgs
+  recipientMessages?: boolean | MemberCountOutputTypeCountRecipientMessagesArgs
 }
 
 /**
@@ -781,6 +999,20 @@ export type MemberCountOutputTypeCountPhotosArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.PhotoWhereInput
 }
 
+/**
+ * MemberCountOutputType without action
+ */
+export type MemberCountOutputTypeCountSenderMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MessageWhereInput
+}
+
+/**
+ * MemberCountOutputType without action
+ */
+export type MemberCountOutputTypeCountRecipientMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MessageWhereInput
+}
+
 
 export type MemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -795,6 +1027,8 @@ export type MemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   location?: boolean | Prisma.LocationDefaultArgs<ExtArgs>
   photos?: boolean | Prisma.Member$photosArgs<ExtArgs>
+  senderMessages?: boolean | Prisma.Member$senderMessagesArgs<ExtArgs>
+  recipientMessages?: boolean | Prisma.Member$recipientMessagesArgs<ExtArgs>
   _count?: boolean | Prisma.MemberCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["member"]>
 
@@ -843,6 +1077,8 @@ export type MemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   location?: boolean | Prisma.LocationDefaultArgs<ExtArgs>
   photos?: boolean | Prisma.Member$photosArgs<ExtArgs>
+  senderMessages?: boolean | Prisma.Member$senderMessagesArgs<ExtArgs>
+  recipientMessages?: boolean | Prisma.Member$recipientMessagesArgs<ExtArgs>
   _count?: boolean | Prisma.MemberCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MemberIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -860,6 +1096,8 @@ export type $MemberPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     user: Prisma.$UserPayload<ExtArgs>
     location: Prisma.$LocationPayload<ExtArgs>
     photos: Prisma.$PhotoPayload<ExtArgs>[]
+    senderMessages: Prisma.$MessagePayload<ExtArgs>[]
+    recipientMessages: Prisma.$MessagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1268,6 +1506,8 @@ export interface Prisma__MemberClient<T, Null = never, ExtArgs extends runtime.T
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   location<T extends Prisma.LocationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LocationDefaultArgs<ExtArgs>>): Prisma.Prisma__LocationClient<runtime.Types.Result.GetResult<Prisma.$LocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   photos<T extends Prisma.Member$photosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$photosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  senderMessages<T extends Prisma.Member$senderMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$senderMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  recipientMessages<T extends Prisma.Member$recipientMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$recipientMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1728,6 +1968,54 @@ export type Member$photosArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.PhotoScalarFieldEnum | Prisma.PhotoScalarFieldEnum[]
+}
+
+/**
+ * Member.senderMessages
+ */
+export type Member$senderMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Message
+   */
+  select?: Prisma.MessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Message
+   */
+  omit?: Prisma.MessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessageInclude<ExtArgs> | null
+  where?: Prisma.MessageWhereInput
+  orderBy?: Prisma.MessageOrderByWithRelationInput | Prisma.MessageOrderByWithRelationInput[]
+  cursor?: Prisma.MessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[]
+}
+
+/**
+ * Member.recipientMessages
+ */
+export type Member$recipientMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Message
+   */
+  select?: Prisma.MessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Message
+   */
+  omit?: Prisma.MessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessageInclude<ExtArgs> | null
+  where?: Prisma.MessageWhereInput
+  orderBy?: Prisma.MessageOrderByWithRelationInput | Prisma.MessageOrderByWithRelationInput[]
+  cursor?: Prisma.MessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[]
 }
 
 /**
