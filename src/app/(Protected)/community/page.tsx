@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { NavButton } from "@/app/(Protected)/memberhome/NavButton"
 import { CommunityFilter } from "./CommunityFilter"
 import { CommunitySearch } from "./CommunitySearch"
+import { PageSizeSync } from "./PageSizeSync"
 import {
   CaretLeftIcon,
   CaretRightIcon,
@@ -14,18 +15,20 @@ import {
   CaretDoubleRightIcon,
 } from "@phosphor-icons/react/dist/ssr"
 
-const PAGE_SIZE = 20
+const VALID_SIZES = [12, 18, 24] as const
 
 type Props = {
-  searchParams: Promise<{ page?: string; filter?: string; search?: string }>
+  searchParams: Promise<{ page?: string; filter?: string; search?: string; size?: string }>
 }
 
 export default async function CommunityPage({ searchParams }: Props) {
   const session = await auth.api.getSession({ headers: await headers() })
 
-  const { page: pageParam, filter: filterParam, search: searchParam } = await searchParams
+  const { page: pageParam, filter: filterParam, search: searchParam, size: sizeParam } = await searchParams
+  const sizeRaw = parseInt(sizeParam ?? "0", 10)
+  const pageSize = (VALID_SIZES as readonly number[]).includes(sizeRaw) ? sizeRaw : 24
   const page = Math.max(1, parseInt(pageParam ?? "1", 10) || 1)
-  const skip = (page - 1) * PAGE_SIZE
+  const skip = (page - 1) * pageSize
   const filter: "all" | "blocked" = filterParam === "blocked" ? "blocked" : "all"
   const search = searchParam?.trim() ?? ""
 
@@ -47,10 +50,7 @@ export default async function CommunityPage({ searchParams }: Props) {
         }
       : {
           ...searchFilter,
-          NOT: [
-            { id: currentMemberId },
-            { BlockedMembers: { some: { active: true, sourceMemberId: currentMemberId } } },
-          ],
+          NOT: { id: currentMemberId },
         }
     : searchFilter
 
@@ -63,14 +63,18 @@ export default async function CommunityPage({ searchParams }: Props) {
         displayName: true,
         image: true,
         location: { select: { city: true, state: true } },
+        BlockedMembers: {
+          where: { active: true, sourceMemberId: currentMemberId ?? "" },
+          select: { id: true },
+        },
       },
       orderBy: { displayName: "asc" },
       skip,
-      take: PAGE_SIZE,
+      take: pageSize,
     }),
   ])
 
-  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+  const totalPages = Math.max(1, Math.ceil(total / pageSize))
   const hasPrev = page > 1
   const hasNext = page < totalPages
 
@@ -78,14 +82,16 @@ export default async function CommunityPage({ searchParams }: Props) {
     const params = new URLSearchParams()
     params.set("page", String(p))
     params.set("filter", filter)
+    params.set("size", String(pageSize))
     if (search) params.set("search", search)
     return `/community?${params.toString()}`
   }
 
   return (
     <div className="mx-auto w-full max-w-[1130px] px-4 py-3">
+      <PageSizeSync />
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold tracking-tight whitespace-nowrap hidden md:block">Community</h1>
+        <h1 className="text-2xl font-semibold  whitespace-nowrap hidden md:block">Community</h1>
         <CommunitySearch initialValue={search} filter={filter} />
         <CommunityFilter filter={filter} />
       </div>
@@ -95,11 +101,13 @@ export default async function CommunityPage({ searchParams }: Props) {
       ) : (
         <>
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
-            {members.map((member) => (
+            {members.map((member) => {
+              const isBlocked = member.BlockedMembers.length > 0
+              return (
               <Link key={member.id} href={`/members/${member.id}`}>
                 <Card className="hover:shadow-md transition-shadow cursor-pointer h-full rounded-lg overflow-hidden">
                   <CardContent className="p-2 flex flex-col items-center gap-1">
-                    <div className="relative w-full aspect-square rounded-md overflow-hidden bg-muted">
+                    <div className={`relative w-full aspect-square  overflow-hidden bg-muted ${isBlocked ? "ring-2 ring-red-500" : "ring-2 ring-green-500"}`}>
                       {member.image ? (
                         <Image
                           src={member.image}
@@ -125,7 +133,8 @@ export default async function CommunityPage({ searchParams }: Props) {
                   </CardContent>
                 </Card>
               </Link>
-            ))}
+              )
+            })}
           </div>
 
           <div className="mt-8 flex items-center gap-1">

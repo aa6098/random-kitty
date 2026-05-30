@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
@@ -12,6 +12,7 @@ type Props = {
 
 export function CommunitySearch({ initialValue, filter }: Props) {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [value, setValue] = useState(initialValue)
 
   function handleSearch() {
@@ -19,6 +20,8 @@ export function CommunitySearch({ initialValue, filter }: Props) {
     params.set("page", "1")
     params.set("filter", filter)
     if (value.trim()) params.set("search", value.trim())
+    const size = searchParams.get("size")
+    if (size) params.set("size", size)
     router.push(`/community?${params.toString()}`)
   }
 
