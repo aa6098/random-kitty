@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { MapPinIcon } from "@phosphor-icons/react/dist/ssr"
-
+import PresenceIndicator from "@/components/custom/presenceIndicator"
 type Props = {
   id: string
   displayName: string
@@ -28,10 +28,11 @@ export function MemberCard({ id, displayName, image, location, distanceMiles, is
               <span
                 className={[
                   "block w-[15px] h-[15px] rounded-full border-1",
-                  isOnline ? "border-green-800" : "border-red-800",
-                  isOnline ? "bg-green-500" : "bg-red-400",
+                  isOnline ? "border-green-800/60" : "border-red-800/60",
+                  isOnline ? "bg-green-500/60" : "bg-red-500/60",
                 ].join(" ")}
               />
+              {/* <PresenceIndicator isOnline={isOnline}/> */}
               {/* Tooltip */}
               <span className="pointer-events-none absolute bottom-full right-0 -mb-10 whitespace-nowrap rounded bg-black/80 px-1.5 py-0.5 text-[10px] text-white opacity-0 group-hover/dot:opacity-100 transition-opacity">
                 {isOnline ? "Online" : "Offline"}
