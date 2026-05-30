@@ -1,7 +1,7 @@
 "use client"
 
-import { useActionState, useEffect } from "react"
-import { saveMemberAction, type MemberActionState } from "./actions"
+import { useActionState, useEffect, useState } from "react"
+import { saveMemberAction, type MemberActionState, type FieldErrors } from "./actions"
 import { useUserStore } from "@/lib/stores/userStore"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/card"
 import { ImageUpload } from "./ImageUpload"
 import { LocationPicker } from "./LocationPicker"
-import { CheckCircle, WarningCircle } from "@phosphor-icons/react"
+import { CheckCircleIcon, WarningCircleIcon } from "@phosphor-icons/react"
 
 type LocationOption = { id: string; city: string; state: string; zip: string }
 
@@ -26,6 +26,7 @@ type MemberData = {
   displayName: string
   image: string | null
   description: string
+  whatareWelookingFor: string | null
   location: LocationOption
 }
 
@@ -39,6 +40,7 @@ export function MemberForm({ member }: Props) {
     null
   )
   const setUser = useUserStore((s) => s.setUser)
+  const [clearedErrors, setClearedErrors] = useState<Set<keyof FieldErrors>>(new Set())
 
   useEffect(() => {
     if (state?.success && state.name !== undefined) {
@@ -46,7 +48,20 @@ export function MemberForm({ member }: Props) {
     }
   }, [state, setUser])
 
+  useEffect(() => {
+    setClearedErrors(new Set())
+  }, [state])
+
   const isEdit = member !== null
+
+  function fieldError(field: keyof FieldErrors): string | null {
+    if (clearedErrors.has(field)) return null
+    return state?.fieldErrors?.[field] ?? null
+  }
+
+  function clearError(field: keyof FieldErrors) {
+    setClearedErrors((prev) => new Set([...prev, field]))
+  }
 
   return (
     <form action={action} encType="multipart/form-data">
@@ -63,15 +78,24 @@ export function MemberForm({ member }: Props) {
         <CardContent className="space-y-6">
           {/* Display Name */}
           <div className="space-y-1.5">
-            <Label htmlFor="displayName">Display Name</Label>
+            <Label htmlFor="displayName">
+              Display Name <span className="text-destructive">*</span>
+            </Label>
             <Input
               id="displayName"
               name="displayName"
               defaultValue={member?.displayName ?? ""}
               placeholder="Enter your display name"
-              required
               maxLength={100}
+              aria-invalid={!!fieldError("displayName")}
+              onChange={() => clearError("displayName")}
             />
+            {fieldError("displayName") && (
+              <p className="flex items-center gap-1.5 text-sm text-destructive">
+                <WarningCircleIcon size={14} weight="fill" />
+                {fieldError("displayName")}
+              </p>
+            )}
           </div>
 
           {/* Profile Image */}
@@ -80,37 +104,84 @@ export function MemberForm({ member }: Props) {
             <ImageUpload currentImage={member?.image} />
           </div>
 
-          {/* Description */}
+          {/* About Us */}
           <div className="space-y-1.5">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">
+              About Us <span className="text-destructive">*</span>
+            </Label>
             <Textarea
               id="description"
               name="description"
+              maxLength={1000}
               defaultValue={member?.description ?? ""}
-              placeholder="Tell us about yourself. You can use plain text or markup."
+              placeholder="Tell us about yourself."
               className="min-h-[120px]"
+              aria-invalid={!!fieldError("description")}
+              onChange={() => clearError("description")}
             />
+            {fieldError("description") && (
+              <p className="flex items-center gap-1.5 text-sm text-destructive">
+                <WarningCircleIcon size={14} weight="fill" />
+                {fieldError("description")}
+              </p>
+            )}
+          </div>
+
+          {/* What Are We Looking For */}
+          <div className="space-y-1.5">
+            <Label htmlFor="whatareWelookingFor">
+              What Are We Looking For <span className="text-destructive">*</span>
+            </Label>
+            <Textarea
+              id="whatareWelookingFor"
+              name="whatareWelookingFor"
+              defaultValue={member?.whatareWelookingFor ?? ""}
+              placeholder="Describe what you're looking for."
+              className="min-h-[120px]"
+              maxLength={1000}
+              aria-invalid={!!fieldError("whatareWelookingFor")}
+              onChange={() => clearError("whatareWelookingFor")}
+            />
+            {fieldError("whatareWelookingFor") && (
+              <p className="flex items-center gap-1.5 text-sm text-destructive">
+                <WarningCircleIcon size={14} weight="fill" />
+                {fieldError("whatareWelookingFor")}
+              </p>
+            )}
           </div>
 
           {/* Location */}
           <div className="space-y-1.5">
-            <Label>Location</Label>
-            <LocationPicker initialLocation={member?.location} />
+            <Label>
+              Location <span className="text-destructive">*</span>
+            </Label>
+            <LocationPicker
+              initialLocation={member?.location}
+              onSelect={() => clearError("locationId")}
+            />
             <p className="text-xs text-muted-foreground">
               Type at least 2 characters to search for a city.
             </p>
+            {fieldError("locationId") && (
+              <p className="flex items-center gap-1.5 text-sm text-destructive">
+                <WarningCircleIcon size={14} weight="fill" />
+                {fieldError("locationId")}
+              </p>
+            )}
           </div>
 
-          {/* Feedback */}
+          {/* General error */}
           {state?.error && (
             <div className="flex items-center gap-2 text-sm text-destructive">
-              <WarningCircle size={16} weight="fill" />
+              <WarningCircleIcon size={16} weight="fill" />
               {state.error}
             </div>
           )}
+
+          {/* Success */}
           {state?.success && (
             <div className="flex items-center gap-2 text-sm text-green-700 dark:text-green-400">
-              <CheckCircle size={16} weight="fill" />
+              <CheckCircleIcon size={16} weight="fill" />
               Profile saved successfully.
             </div>
           )}

@@ -1270,8 +1270,7 @@ export const MemberScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   description: 'description',
-  whatWeAreLookingFor: 'whatWeAreLookingFor',
-  aboutUs: 'aboutUs',
+  whatareWelookingFor: 'whatareWelookingFor',
   locationId: 'locationId',
   deactivated: 'deactivated'
 } as const

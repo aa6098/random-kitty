@@ -2,6 +2,7 @@ import { MapPinIcon } from "@phosphor-icons/react/dist/ssr"
 import { MemberSideBarTabs } from "./MemberSideBarTabs"
 import { VideoCall } from "./messages/VideoCall"
 import { BlockMemberButton } from "./BlockMemberButton"
+import { LikeButton } from "./LikeButton"
 
 type Props = {
   member: {
@@ -12,15 +13,23 @@ type Props = {
   }
   currentMemberId: string | null
   isBlocked: boolean
+  isLiked: boolean
 }
 
 
-export function MemberSideBar({ member, currentMemberId, isBlocked }: Props) {
+export function MemberSideBar({ member, currentMemberId, isBlocked, isLiked }: Props) {
   const showVideoCall = currentMemberId && currentMemberId !== member.id
   const showBlockButton = currentMemberId && currentMemberId !== member.id
 
+  const showLikeButton = currentMemberId && currentMemberId !== member.id
+
   return (
-    <aside className="flex flex-col w-full md:w-80 shrink-0 border border-border rounded-lg overflow-hidden bg-card">
+    <aside className="relative flex flex-col w-full md:w-80 shrink-0 border border-border rounded-lg overflow-hidden bg-card">
+      {showLikeButton && (
+        <div className="absolute top-2 right-2 z-10">
+          <LikeButton memberId={member.id} isLiked={isLiked} />
+        </div>
+      )}
       <div className="flex flex-col items-center gap-3 p-2">
         <div className="size-45 rounded-full overflow-hidden bg-muted ring-2 ring-border">
           <img

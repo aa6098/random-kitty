@@ -7,11 +7,19 @@ import prisma from "@/lib/prisma"
 import { writeFile, mkdir } from "fs/promises"
 import path from "path"
 
+export type FieldErrors = {
+  displayName?: string
+  description?: string
+  whatareWelookingFor?: string
+  locationId?: string
+}
+
 export type MemberActionState = {
   error?: string
   success?: boolean
   name?: string
   image?: string | null
+  fieldErrors?: FieldErrors
 } | null
 
 export async function saveMemberAction(
@@ -22,12 +30,29 @@ export async function saveMemberAction(
   if (!session) return { error: "Not authenticated." }
 
   const displayName = (formData.get("displayName") as string)?.trim()
-  const description = (formData.get("description") as string) ?? ""
+  const description = (formData.get("description") as string)?.trim()
+  const whatareWelookingFor = (formData.get("whatareWelookingFor") as string)?.trim()
   const locationId = (formData.get("locationId") as string)?.trim()
   const imageFile = formData.get("image") as File | null
 
-  if (!displayName) return { error: "Display name is required." }
-  if (!locationId) return { error: "Please select a location." }
+  const fieldErrors: FieldErrors = {}
+  if (!displayName) fieldErrors.displayName = "Display name is required."
+  if (!description) fieldErrors.description = "About Us is required."
+  if (!whatareWelookingFor) fieldErrors.whatareWelookingFor = "What are we looking for is required."
+  if (!locationId) fieldErrors.locationId = "Please select a location."
+
+  if (Object.keys(fieldErrors).length > 0) return { fieldErrors }
+
+  if (displayName) {
+    const taken = await prisma.member.findFirst({
+      where: {
+        displayName: { equals: displayName, mode: "insensitive" },
+        NOT: { userId: session.user.id },
+      },
+      select: { id: true },
+    })
+    if (taken) return { fieldErrors: { displayName: "Display name is already taken." } }
+  }
 
   let imageUrl: string | undefined
   if (imageFile && imageFile.size > 0) {
@@ -52,6 +77,7 @@ export async function saveMemberAction(
       update: {
         displayName,
         description,
+        whatareWelookingFor,
         locationId,
         ...(imageUrl !== undefined && { image: imageUrl }),
       },
@@ -59,6 +85,7 @@ export async function saveMemberAction(
         userId: session.user.id,
         displayName,
         description,
+        whatareWelookingFor,
         locationId,
         image: imageUrl ?? null,
       },

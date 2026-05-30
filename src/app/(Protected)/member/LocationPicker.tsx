@@ -9,9 +9,10 @@ type LocationOption = { id: string; city: string; state: string; zip: string }
 
 type Props = {
   initialLocation?: LocationOption | null
+  onSelect?: () => void
 }
 
-export function LocationPicker({ initialLocation }: Props) {
+export function LocationPicker({ initialLocation, onSelect }: Props) {
   const [query, setQuery] = useState(
     initialLocation ? `${initialLocation.city}, ${initialLocation.state}` : ""
   )
@@ -52,6 +53,7 @@ export function LocationPicker({ initialLocation }: Props) {
     setQuery(`${loc.city}, ${loc.state}`)
     setOpen(false)
     setResults([])
+    onSelect?.()
   }
 
   return (
