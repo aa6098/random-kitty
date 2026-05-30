@@ -391,7 +391,8 @@ export const ModelName = {
   Location: 'Location',
   Member: 'Member',
   Photo: 'Photo',
-  Message: 'Message'
+  Message: 'Message',
+  BlockUser: 'BlockUser'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -407,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "location" | "member" | "photo" | "message"
+    modelProps: "user" | "session" | "account" | "verification" | "location" | "member" | "photo" | "message" | "blockUser"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1003,6 +1004,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    BlockUser: {
+      payload: Prisma.$BlockUserPayload<ExtArgs>
+      fields: Prisma.BlockUserFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BlockUserFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockUserPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BlockUserFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockUserPayload>
+        }
+        findFirst: {
+          args: Prisma.BlockUserFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockUserPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BlockUserFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockUserPayload>
+        }
+        findMany: {
+          args: Prisma.BlockUserFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockUserPayload>[]
+        }
+        create: {
+          args: Prisma.BlockUserCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockUserPayload>
+        }
+        createMany: {
+          args: Prisma.BlockUserCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BlockUserCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockUserPayload>[]
+        }
+        delete: {
+          args: Prisma.BlockUserDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockUserPayload>
+        }
+        update: {
+          args: Prisma.BlockUserUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockUserPayload>
+        }
+        deleteMany: {
+          args: Prisma.BlockUserDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BlockUserUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BlockUserUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockUserPayload>[]
+        }
+        upsert: {
+          args: Prisma.BlockUserUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockUserPayload>
+        }
+        aggregate: {
+          args: Prisma.BlockUserAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBlockUser>
+        }
+        groupBy: {
+          args: Prisma.BlockUserGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BlockUserGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BlockUserCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BlockUserCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1150,6 +1225,17 @@ export const MessageScalarFieldEnum = {
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
+export const BlockUserScalarFieldEnum = {
+  id: 'id',
+  sourceMemberId: 'sourceMemberId',
+  createdAt: 'createdAt',
+  blockedMemberId: 'blockedMemberId',
+  active: 'active'
+} as const
+
+export type BlockUserScalarFieldEnum = (typeof BlockUserScalarFieldEnum)[keyof typeof BlockUserScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1362,6 +1448,7 @@ export type GlobalOmitConfig = {
   member?: Prisma.MemberOmit
   photo?: Prisma.PhotoOmit
   message?: Prisma.MessageOmit
+  blockUser?: Prisma.BlockUserOmit
 }
 
 /* Types for Logging */

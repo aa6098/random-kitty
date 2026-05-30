@@ -1,6 +1,8 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 import {
   PhoneIcon,
   PhoneSlashIcon,
@@ -9,10 +11,12 @@ import {
   MicrophoneSlashIcon,
   CameraIcon,
   CameraSlashIcon,
+  PhoneXIcon,
 } from "@phosphor-icons/react"
 import { getPusherClient } from "@/lib/pusherClient"
 import { getChatChannel, getUserChannel } from "@/lib/pusherUtils"
 import { cn } from "@/lib/utils"
+import { useUserStore } from "@/lib/stores/userStore"
 import {
   sendCallAnswer,
   sendIceCandidate,
@@ -34,10 +38,17 @@ type Props = {
 }
 
 export function IncomingCallListener({ currentMemberId }: Props) {
+  const router = useRouter()
   const [callState, setCallState] = useState<CallState>("idle")
   const [callerName, setCallerName] = useState("")
   const [isMuted, setIsMuted] = useState(false)
   const [isCameraOff, setIsCameraOff] = useState(false)
+
+  const incrementMissedCall = useUserStore((s) => s.incrementMissedCall)
+
+  // Refs to capture values before stopCall() resets them
+  const callerNameRef = useRef("")
+  useEffect(() => { callerNameRef.current = callerName }, [callerName])
 
   const localVideoRef = useRef<HTMLVideoElement>(null)
   const remoteVideoRef = useRef<HTMLVideoElement>(null)
@@ -46,6 +57,8 @@ export function IncomingCallListener({ currentMemberId }: Props) {
   const incomingOfferRef = useRef<RTCSessionDescriptionInit | null>(null)
   const callerIdRef = useRef<string>("")
   const iceCandidateBuffer = useRef<RTCIceCandidateInit[]>([])
+  // True when the user actively declines so we don't count it as a missed call
+  const declinedByUserRef = useRef(false)
 
   // Safety-net: sync local stream → video element after every render.
   useEffect(() => {
@@ -62,6 +75,7 @@ export function IncomingCallListener({ currentMemberId }: Props) {
     incomingOfferRef.current = null
     callerIdRef.current = ""
     iceCandidateBuffer.current = []
+    declinedByUserRef.current = false
     if (localVideoRef.current) localVideoRef.current.srcObject = null
     if (remoteVideoRef.current) remoteVideoRef.current.srcObject = null
     setCallState("idle")
@@ -106,6 +120,7 @@ export function IncomingCallListener({ currentMemberId }: Props) {
   }
 
   async function declineCall() {
+    declinedByUserRef.current = true
     await sendCallDeclined(callerIdRef.current)
     stopCall()
   }
@@ -165,6 +180,30 @@ export function IncomingCallListener({ currentMemberId }: Props) {
 
     ch.bind("call-ended", ({ fromMemberId }: { fromMemberId: string }) => {
       if (fromMemberId === currentMemberId) return
+      if (callState === "ringing" && !declinedByUserRef.current) {
+        // Capture values before stopCall() resets them
+        const missedName = callerNameRef.current
+        const missedId = callerIdRef.current
+        incrementMissedCall()
+        toast.custom(() => (
+          <button
+            onClick={() => {
+              toast.dismiss("missed-call")
+              router.push(`/members/${missedId}/messages`)
+            }}
+            className="flex items-center gap-3 w-full max-w-sm rounded-xl border border-primary bg-popover text-foreground shadow-lg px-4 py-3 text-left hover:bg-accent transition-colors"
+          >
+            <span className="flex items-center justify-center size-9 rounded-full bg-red-500/10 text-red-500 shrink-0">
+              <PhoneXIcon size={18} weight="fill" />
+            </span>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold">Missed call</p>
+              <p className="text-sm text-muted-foreground truncate">{missedName}</p>
+              <p className="text-xs text-muted-foreground/60 mt-0.5">Click to open chat</p>
+            </div>
+          </button>
+        ), { id: "missed-call", duration: 15000 })
+      }
       stopCall()
     })
 

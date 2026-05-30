@@ -219,6 +219,8 @@ export type MemberWhereInput = {
   photos?: Prisma.PhotoListRelationFilter
   senderMessages?: Prisma.MessageListRelationFilter
   recipientMessages?: Prisma.MessageListRelationFilter
+  BlockedMembers?: Prisma.BlockUserListRelationFilter
+  SourceMembers?: Prisma.BlockUserListRelationFilter
 }
 
 export type MemberOrderByWithRelationInput = {
@@ -236,6 +238,8 @@ export type MemberOrderByWithRelationInput = {
   photos?: Prisma.PhotoOrderByRelationAggregateInput
   senderMessages?: Prisma.MessageOrderByRelationAggregateInput
   recipientMessages?: Prisma.MessageOrderByRelationAggregateInput
+  BlockedMembers?: Prisma.BlockUserOrderByRelationAggregateInput
+  SourceMembers?: Prisma.BlockUserOrderByRelationAggregateInput
 }
 
 export type MemberWhereUniqueInput = Prisma.AtLeast<{
@@ -256,6 +260,8 @@ export type MemberWhereUniqueInput = Prisma.AtLeast<{
   photos?: Prisma.PhotoListRelationFilter
   senderMessages?: Prisma.MessageListRelationFilter
   recipientMessages?: Prisma.MessageListRelationFilter
+  BlockedMembers?: Prisma.BlockUserListRelationFilter
+  SourceMembers?: Prisma.BlockUserListRelationFilter
 }, "id" | "userId">
 
 export type MemberOrderByWithAggregationInput = {
@@ -301,6 +307,8 @@ export type MemberCreateInput = {
   photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
   senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
+  BlockedMembers?: Prisma.BlockUserCreateNestedManyWithoutBlockedMemberInput
+  SourceMembers?: Prisma.BlockUserCreateNestedManyWithoutSourceMemberInput
 }
 
 export type MemberUncheckedCreateInput = {
@@ -316,6 +324,8 @@ export type MemberUncheckedCreateInput = {
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
   senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
+  BlockedMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutBlockedMemberInput
+  SourceMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutSourceMemberInput
 }
 
 export type MemberUpdateInput = {
@@ -331,6 +341,8 @@ export type MemberUpdateInput = {
   photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
   senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
+  BlockedMembers?: Prisma.BlockUserUpdateManyWithoutBlockedMemberNestedInput
+  SourceMembers?: Prisma.BlockUserUpdateManyWithoutSourceMemberNestedInput
 }
 
 export type MemberUncheckedUpdateInput = {
@@ -346,6 +358,8 @@ export type MemberUncheckedUpdateInput = {
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
   senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
+  BlockedMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutBlockedMemberNestedInput
+  SourceMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutSourceMemberNestedInput
 }
 
 export type MemberCreateManyInput = {
@@ -558,6 +572,38 @@ export type MemberUpdateOneWithoutRecipientMessagesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutRecipientMessagesInput, Prisma.MemberUpdateWithoutRecipientMessagesInput>, Prisma.MemberUncheckedUpdateWithoutRecipientMessagesInput>
 }
 
+export type MemberCreateNestedOneWithoutSourceMembersInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutSourceMembersInput, Prisma.MemberUncheckedCreateWithoutSourceMembersInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutSourceMembersInput
+  connect?: Prisma.MemberWhereUniqueInput
+}
+
+export type MemberCreateNestedOneWithoutBlockedMembersInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutBlockedMembersInput, Prisma.MemberUncheckedCreateWithoutBlockedMembersInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutBlockedMembersInput
+  connect?: Prisma.MemberWhereUniqueInput
+}
+
+export type MemberUpdateOneWithoutSourceMembersNestedInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutSourceMembersInput, Prisma.MemberUncheckedCreateWithoutSourceMembersInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutSourceMembersInput
+  upsert?: Prisma.MemberUpsertWithoutSourceMembersInput
+  disconnect?: Prisma.MemberWhereInput | boolean
+  delete?: Prisma.MemberWhereInput | boolean
+  connect?: Prisma.MemberWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutSourceMembersInput, Prisma.MemberUpdateWithoutSourceMembersInput>, Prisma.MemberUncheckedUpdateWithoutSourceMembersInput>
+}
+
+export type MemberUpdateOneWithoutBlockedMembersNestedInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutBlockedMembersInput, Prisma.MemberUncheckedCreateWithoutBlockedMembersInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutBlockedMembersInput
+  upsert?: Prisma.MemberUpsertWithoutBlockedMembersInput
+  disconnect?: Prisma.MemberWhereInput | boolean
+  delete?: Prisma.MemberWhereInput | boolean
+  connect?: Prisma.MemberWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutBlockedMembersInput, Prisma.MemberUpdateWithoutBlockedMembersInput>, Prisma.MemberUncheckedUpdateWithoutBlockedMembersInput>
+}
+
 export type MemberCreateWithoutUserInput = {
   id?: string
   displayName: string
@@ -570,6 +616,8 @@ export type MemberCreateWithoutUserInput = {
   photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
   senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
+  BlockedMembers?: Prisma.BlockUserCreateNestedManyWithoutBlockedMemberInput
+  SourceMembers?: Prisma.BlockUserCreateNestedManyWithoutSourceMemberInput
 }
 
 export type MemberUncheckedCreateWithoutUserInput = {
@@ -584,6 +632,8 @@ export type MemberUncheckedCreateWithoutUserInput = {
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
   senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
+  BlockedMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutBlockedMemberInput
+  SourceMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutSourceMemberInput
 }
 
 export type MemberCreateOrConnectWithoutUserInput = {
@@ -614,6 +664,8 @@ export type MemberUpdateWithoutUserInput = {
   photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
   senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
+  BlockedMembers?: Prisma.BlockUserUpdateManyWithoutBlockedMemberNestedInput
+  SourceMembers?: Prisma.BlockUserUpdateManyWithoutSourceMemberNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutUserInput = {
@@ -628,6 +680,8 @@ export type MemberUncheckedUpdateWithoutUserInput = {
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
   senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
+  BlockedMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutBlockedMemberNestedInput
+  SourceMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutSourceMemberNestedInput
 }
 
 export type MemberCreateWithoutLocationInput = {
@@ -642,6 +696,8 @@ export type MemberCreateWithoutLocationInput = {
   photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
   senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
+  BlockedMembers?: Prisma.BlockUserCreateNestedManyWithoutBlockedMemberInput
+  SourceMembers?: Prisma.BlockUserCreateNestedManyWithoutSourceMemberInput
 }
 
 export type MemberUncheckedCreateWithoutLocationInput = {
@@ -656,6 +712,8 @@ export type MemberUncheckedCreateWithoutLocationInput = {
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
   senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
+  BlockedMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutBlockedMemberInput
+  SourceMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutSourceMemberInput
 }
 
 export type MemberCreateOrConnectWithoutLocationInput = {
@@ -711,6 +769,8 @@ export type MemberCreateWithoutPhotosInput = {
   location: Prisma.LocationCreateNestedOneWithoutMemberInput
   senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
+  BlockedMembers?: Prisma.BlockUserCreateNestedManyWithoutBlockedMemberInput
+  SourceMembers?: Prisma.BlockUserCreateNestedManyWithoutSourceMemberInput
 }
 
 export type MemberUncheckedCreateWithoutPhotosInput = {
@@ -725,6 +785,8 @@ export type MemberUncheckedCreateWithoutPhotosInput = {
   deactivated?: boolean
   senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
+  BlockedMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutBlockedMemberInput
+  SourceMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutSourceMemberInput
 }
 
 export type MemberCreateOrConnectWithoutPhotosInput = {
@@ -755,6 +817,8 @@ export type MemberUpdateWithoutPhotosInput = {
   location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
   senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
+  BlockedMembers?: Prisma.BlockUserUpdateManyWithoutBlockedMemberNestedInput
+  SourceMembers?: Prisma.BlockUserUpdateManyWithoutSourceMemberNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutPhotosInput = {
@@ -769,6 +833,8 @@ export type MemberUncheckedUpdateWithoutPhotosInput = {
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
+  BlockedMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutBlockedMemberNestedInput
+  SourceMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutSourceMemberNestedInput
 }
 
 export type MemberCreateWithoutSenderMessagesInput = {
@@ -783,6 +849,8 @@ export type MemberCreateWithoutSenderMessagesInput = {
   location: Prisma.LocationCreateNestedOneWithoutMemberInput
   photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
   recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
+  BlockedMembers?: Prisma.BlockUserCreateNestedManyWithoutBlockedMemberInput
+  SourceMembers?: Prisma.BlockUserCreateNestedManyWithoutSourceMemberInput
 }
 
 export type MemberUncheckedCreateWithoutSenderMessagesInput = {
@@ -797,6 +865,8 @@ export type MemberUncheckedCreateWithoutSenderMessagesInput = {
   deactivated?: boolean
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
   recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
+  BlockedMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutBlockedMemberInput
+  SourceMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutSourceMemberInput
 }
 
 export type MemberCreateOrConnectWithoutSenderMessagesInput = {
@@ -816,6 +886,8 @@ export type MemberCreateWithoutRecipientMessagesInput = {
   location: Prisma.LocationCreateNestedOneWithoutMemberInput
   photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
   senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  BlockedMembers?: Prisma.BlockUserCreateNestedManyWithoutBlockedMemberInput
+  SourceMembers?: Prisma.BlockUserCreateNestedManyWithoutSourceMemberInput
 }
 
 export type MemberUncheckedCreateWithoutRecipientMessagesInput = {
@@ -830,6 +902,8 @@ export type MemberUncheckedCreateWithoutRecipientMessagesInput = {
   deactivated?: boolean
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
   senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  BlockedMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutBlockedMemberInput
+  SourceMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutSourceMemberInput
 }
 
 export type MemberCreateOrConnectWithoutRecipientMessagesInput = {
@@ -860,6 +934,8 @@ export type MemberUpdateWithoutSenderMessagesInput = {
   location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
   recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
+  BlockedMembers?: Prisma.BlockUserUpdateManyWithoutBlockedMemberNestedInput
+  SourceMembers?: Prisma.BlockUserUpdateManyWithoutSourceMemberNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutSenderMessagesInput = {
@@ -874,6 +950,8 @@ export type MemberUncheckedUpdateWithoutSenderMessagesInput = {
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
   recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
+  BlockedMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutBlockedMemberNestedInput
+  SourceMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutSourceMemberNestedInput
 }
 
 export type MemberUpsertWithoutRecipientMessagesInput = {
@@ -899,6 +977,8 @@ export type MemberUpdateWithoutRecipientMessagesInput = {
   location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
   senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  BlockedMembers?: Prisma.BlockUserUpdateManyWithoutBlockedMemberNestedInput
+  SourceMembers?: Prisma.BlockUserUpdateManyWithoutSourceMemberNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutRecipientMessagesInput = {
@@ -913,6 +993,168 @@ export type MemberUncheckedUpdateWithoutRecipientMessagesInput = {
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
   senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  BlockedMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutBlockedMemberNestedInput
+  SourceMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutSourceMemberNestedInput
+}
+
+export type MemberCreateWithoutSourceMembersInput = {
+  id?: string
+  displayName: string
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  description: string
+  deactivated?: boolean
+  user: Prisma.UserCreateNestedOneWithoutMemberInput
+  location: Prisma.LocationCreateNestedOneWithoutMemberInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
+  senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
+  BlockedMembers?: Prisma.BlockUserCreateNestedManyWithoutBlockedMemberInput
+}
+
+export type MemberUncheckedCreateWithoutSourceMembersInput = {
+  id?: string
+  userId: string
+  displayName: string
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  description: string
+  locationId: string
+  deactivated?: boolean
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
+  senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
+  BlockedMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutBlockedMemberInput
+}
+
+export type MemberCreateOrConnectWithoutSourceMembersInput = {
+  where: Prisma.MemberWhereUniqueInput
+  create: Prisma.XOR<Prisma.MemberCreateWithoutSourceMembersInput, Prisma.MemberUncheckedCreateWithoutSourceMembersInput>
+}
+
+export type MemberCreateWithoutBlockedMembersInput = {
+  id?: string
+  displayName: string
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  description: string
+  deactivated?: boolean
+  user: Prisma.UserCreateNestedOneWithoutMemberInput
+  location: Prisma.LocationCreateNestedOneWithoutMemberInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
+  senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
+  SourceMembers?: Prisma.BlockUserCreateNestedManyWithoutSourceMemberInput
+}
+
+export type MemberUncheckedCreateWithoutBlockedMembersInput = {
+  id?: string
+  userId: string
+  displayName: string
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  description: string
+  locationId: string
+  deactivated?: boolean
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
+  senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
+  SourceMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutSourceMemberInput
+}
+
+export type MemberCreateOrConnectWithoutBlockedMembersInput = {
+  where: Prisma.MemberWhereUniqueInput
+  create: Prisma.XOR<Prisma.MemberCreateWithoutBlockedMembersInput, Prisma.MemberUncheckedCreateWithoutBlockedMembersInput>
+}
+
+export type MemberUpsertWithoutSourceMembersInput = {
+  update: Prisma.XOR<Prisma.MemberUpdateWithoutSourceMembersInput, Prisma.MemberUncheckedUpdateWithoutSourceMembersInput>
+  create: Prisma.XOR<Prisma.MemberCreateWithoutSourceMembersInput, Prisma.MemberUncheckedCreateWithoutSourceMembersInput>
+  where?: Prisma.MemberWhereInput
+}
+
+export type MemberUpdateToOneWithWhereWithoutSourceMembersInput = {
+  where?: Prisma.MemberWhereInput
+  data: Prisma.XOR<Prisma.MemberUpdateWithoutSourceMembersInput, Prisma.MemberUncheckedUpdateWithoutSourceMembersInput>
+}
+
+export type MemberUpdateWithoutSourceMembersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
+  location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
+  BlockedMembers?: Prisma.BlockUserUpdateManyWithoutBlockedMemberNestedInput
+}
+
+export type MemberUncheckedUpdateWithoutSourceMembersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
+  BlockedMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutBlockedMemberNestedInput
+}
+
+export type MemberUpsertWithoutBlockedMembersInput = {
+  update: Prisma.XOR<Prisma.MemberUpdateWithoutBlockedMembersInput, Prisma.MemberUncheckedUpdateWithoutBlockedMembersInput>
+  create: Prisma.XOR<Prisma.MemberCreateWithoutBlockedMembersInput, Prisma.MemberUncheckedCreateWithoutBlockedMembersInput>
+  where?: Prisma.MemberWhereInput
+}
+
+export type MemberUpdateToOneWithWhereWithoutBlockedMembersInput = {
+  where?: Prisma.MemberWhereInput
+  data: Prisma.XOR<Prisma.MemberUpdateWithoutBlockedMembersInput, Prisma.MemberUncheckedUpdateWithoutBlockedMembersInput>
+}
+
+export type MemberUpdateWithoutBlockedMembersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
+  location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
+  SourceMembers?: Prisma.BlockUserUpdateManyWithoutSourceMemberNestedInput
+}
+
+export type MemberUncheckedUpdateWithoutBlockedMembersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
+  SourceMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutSourceMemberNestedInput
 }
 
 export type MemberCreateManyLocationInput = {
@@ -938,6 +1180,8 @@ export type MemberUpdateWithoutLocationInput = {
   photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
   senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
+  BlockedMembers?: Prisma.BlockUserUpdateManyWithoutBlockedMemberNestedInput
+  SourceMembers?: Prisma.BlockUserUpdateManyWithoutSourceMemberNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutLocationInput = {
@@ -952,6 +1196,8 @@ export type MemberUncheckedUpdateWithoutLocationInput = {
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
   senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
+  BlockedMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutBlockedMemberNestedInput
+  SourceMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutSourceMemberNestedInput
 }
 
 export type MemberUncheckedUpdateManyWithoutLocationInput = {
@@ -974,12 +1220,16 @@ export type MemberCountOutputType = {
   photos: number
   senderMessages: number
   recipientMessages: number
+  BlockedMembers: number
+  SourceMembers: number
 }
 
 export type MemberCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   photos?: boolean | MemberCountOutputTypeCountPhotosArgs
   senderMessages?: boolean | MemberCountOutputTypeCountSenderMessagesArgs
   recipientMessages?: boolean | MemberCountOutputTypeCountRecipientMessagesArgs
+  BlockedMembers?: boolean | MemberCountOutputTypeCountBlockedMembersArgs
+  SourceMembers?: boolean | MemberCountOutputTypeCountSourceMembersArgs
 }
 
 /**
@@ -1013,6 +1263,20 @@ export type MemberCountOutputTypeCountRecipientMessagesArgs<ExtArgs extends runt
   where?: Prisma.MessageWhereInput
 }
 
+/**
+ * MemberCountOutputType without action
+ */
+export type MemberCountOutputTypeCountBlockedMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BlockUserWhereInput
+}
+
+/**
+ * MemberCountOutputType without action
+ */
+export type MemberCountOutputTypeCountSourceMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BlockUserWhereInput
+}
+
 
 export type MemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1029,6 +1293,8 @@ export type MemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   photos?: boolean | Prisma.Member$photosArgs<ExtArgs>
   senderMessages?: boolean | Prisma.Member$senderMessagesArgs<ExtArgs>
   recipientMessages?: boolean | Prisma.Member$recipientMessagesArgs<ExtArgs>
+  BlockedMembers?: boolean | Prisma.Member$BlockedMembersArgs<ExtArgs>
+  SourceMembers?: boolean | Prisma.Member$SourceMembersArgs<ExtArgs>
   _count?: boolean | Prisma.MemberCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["member"]>
 
@@ -1079,6 +1345,8 @@ export type MemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   photos?: boolean | Prisma.Member$photosArgs<ExtArgs>
   senderMessages?: boolean | Prisma.Member$senderMessagesArgs<ExtArgs>
   recipientMessages?: boolean | Prisma.Member$recipientMessagesArgs<ExtArgs>
+  BlockedMembers?: boolean | Prisma.Member$BlockedMembersArgs<ExtArgs>
+  SourceMembers?: boolean | Prisma.Member$SourceMembersArgs<ExtArgs>
   _count?: boolean | Prisma.MemberCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MemberIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1098,6 +1366,8 @@ export type $MemberPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     photos: Prisma.$PhotoPayload<ExtArgs>[]
     senderMessages: Prisma.$MessagePayload<ExtArgs>[]
     recipientMessages: Prisma.$MessagePayload<ExtArgs>[]
+    BlockedMembers: Prisma.$BlockUserPayload<ExtArgs>[]
+    SourceMembers: Prisma.$BlockUserPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1508,6 +1778,8 @@ export interface Prisma__MemberClient<T, Null = never, ExtArgs extends runtime.T
   photos<T extends Prisma.Member$photosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$photosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   senderMessages<T extends Prisma.Member$senderMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$senderMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   recipientMessages<T extends Prisma.Member$recipientMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$recipientMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  BlockedMembers<T extends Prisma.Member$BlockedMembersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$BlockedMembersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BlockUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  SourceMembers<T extends Prisma.Member$SourceMembersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$SourceMembersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BlockUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2016,6 +2288,54 @@ export type Member$recipientMessagesArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[]
+}
+
+/**
+ * Member.BlockedMembers
+ */
+export type Member$BlockedMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BlockUser
+   */
+  select?: Prisma.BlockUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BlockUser
+   */
+  omit?: Prisma.BlockUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BlockUserInclude<ExtArgs> | null
+  where?: Prisma.BlockUserWhereInput
+  orderBy?: Prisma.BlockUserOrderByWithRelationInput | Prisma.BlockUserOrderByWithRelationInput[]
+  cursor?: Prisma.BlockUserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BlockUserScalarFieldEnum | Prisma.BlockUserScalarFieldEnum[]
+}
+
+/**
+ * Member.SourceMembers
+ */
+export type Member$SourceMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BlockUser
+   */
+  select?: Prisma.BlockUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BlockUser
+   */
+  omit?: Prisma.BlockUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BlockUserInclude<ExtArgs> | null
+  where?: Prisma.BlockUserWhereInput
+  orderBy?: Prisma.BlockUserOrderByWithRelationInput | Prisma.BlockUserOrderByWithRelationInput[]
+  cursor?: Prisma.BlockUserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BlockUserScalarFieldEnum | Prisma.BlockUserScalarFieldEnum[]
 }
 
 /**

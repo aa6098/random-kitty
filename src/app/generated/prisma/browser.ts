@@ -57,3 +57,8 @@ export type Photo = Prisma.PhotoModel
  * 
  */
 export type Message = Prisma.MessageModel
+/**
+ * Model BlockUser
+ * 
+ */
+export type BlockUser = Prisma.BlockUserModel

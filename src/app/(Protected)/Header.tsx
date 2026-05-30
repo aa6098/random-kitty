@@ -9,7 +9,7 @@ import {
   ListIcon,
   XIcon,
   HouseIcon,
-  EnvelopeIcon,
+  BellIcon,
   UsersIcon,
   SignOutIcon,
 } from "@phosphor-icons/react"
@@ -18,6 +18,9 @@ import { useUserStore } from "@/lib/stores/userStore"
 import { authClient } from "@/lib/auth-client"
 
 function DesktopNav() {
+  const unreadCount = useUserStore((s) => s.unreadCount)
+  const missedCallCount = useUserStore((s) => s.missedCallCount)
+  const totalCount = unreadCount + missedCallCount
   return (
     <nav className="hidden md:flex items-center gap-1">
       <Link
@@ -27,10 +30,15 @@ function DesktopNav() {
         <HouseIcon size={15} /> Home
       </Link>
       <Link
-        href="/messages"
+        href="/notifications"
         className="flex items-center gap-1.5 px-2 py-1 rounded hover:bg-primary-foreground/10 transition-colors text-sm font-medium"
       >
-        <EnvelopeIcon size={15} /> Messages
+        <BellIcon size={15} /> Notifications
+        {totalCount > 0 && (
+          <span className="inline-flex items-center justify-center min-w-[1.125rem] h-[1.125rem] rounded-full bg-red-500 text-white text-[10px] font-bold -px-2 leading-none">
+            {totalCount > 99 ? "99+" : totalCount}
+          </span>
+        )}
       </Link>
       <Link
         href="/member"
@@ -43,6 +51,9 @@ function DesktopNav() {
 }
 
 function MobileNav({ open, onClose, onSignOut }: { open: boolean; onClose: () => void; onSignOut: () => void }) {
+  const unreadCount = useUserStore((s) => s.unreadCount)
+  const missedCallCount = useUserStore((s) => s.missedCallCount)
+  const totalCount = unreadCount + missedCallCount
   if (!open) return null
   return (
     <div className="md:hidden absolute top-14 left-0 right-0 z-40 bg-popover  text-primary border-t border-primary-foreground/10 shadow-lg">
@@ -55,11 +66,16 @@ function MobileNav({ open, onClose, onSignOut }: { open: boolean; onClose: () =>
           <HouseIcon size={16} /> Home
         </Link>
         <Link
-          href="/messages"
+          href="/notifications"
           onClick={onClose}
           className="flex items-center gap-2 px-4 py-1 text-sm font-medium hover:font-bold hover:bg-primary/10 transition-colors"
         >
-          <EnvelopeIcon size={16} /> Messages
+          <BellIcon size={16} /> Notifications
+          {totalCount > 0 && (
+            <span className="inline-flex items-center justify-center min-w-[1.125rem] h-[1.125rem] rounded-full bg-red-500 text-white text-[10px] font-bold px-1 leading-none">
+              {totalCount > 99 ? "99+" : totalCount}
+            </span>
+          )}
         </Link>
         <Link
           href="/member"

@@ -58,7 +58,8 @@ export const ModelName = {
   Location: 'Location',
   Member: 'Member',
   Photo: 'Photo',
-  Message: 'Message'
+  Message: 'Message',
+  BlockUser: 'BlockUser'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -185,6 +186,17 @@ export const MessageScalarFieldEnum = {
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
+export const BlockUserScalarFieldEnum = {
+  id: 'id',
+  sourceMemberId: 'sourceMemberId',
+  createdAt: 'createdAt',
+  blockedMemberId: 'blockedMemberId',
+  active: 'active'
+} as const
+
+export type BlockUserScalarFieldEnum = (typeof BlockUserScalarFieldEnum)[keyof typeof BlockUserScalarFieldEnum]
 
 
 export const SortOrder = {

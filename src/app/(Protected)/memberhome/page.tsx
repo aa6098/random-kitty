@@ -32,10 +32,11 @@ export default async function MemberHomePage({ searchParams }: Props) {
   const currentMember = session
     ? await prisma.member.findUnique({
         where: { userId: session.user.id },
-        select: { location: { select: { id: true, lat: true, lng: true } } },
+        select: { id: true, location: { select: { id: true, lat: true, lng: true } } },
       })
     : null
   const myLocation = currentMember?.location ?? null
+  const currentMemberId = currentMember?.id ?? null
 
   // Build locationId → distanceMiles map from the Location table (smaller than Member table)
   const locationDistanceMap = new Map<string, number>()
@@ -60,6 +61,21 @@ export default async function MemberHomePage({ searchParams }: Props) {
 
   // Fetch only members whose locationId is in the nearby set (DB-level filter), excluding self
   const excludeUserId = session?.user.id
+  const notClauses: object[] = [
+    ...(excludeUserId ? [{ userId: excludeUserId }] : []),
+    ...(currentMemberId ? [{ id: currentMemberId }] : []),
+    ...(currentMemberId
+      ? [
+          {
+            OR: [
+              { BlockedMembers: { some: { active: true, sourceMemberId: currentMemberId } } },
+              { SourceMembers: { some: { active: true, blockedMemberId: currentMemberId } } },
+            ],
+          },
+        ]
+      : []),
+  ]
+
   const allMembers = await prisma.member.findMany({
     select: {
       id: true,
@@ -70,7 +86,7 @@ export default async function MemberHomePage({ searchParams }: Props) {
       location: { select: { city: true, state: true } },
     },
     where: {
-      ...(excludeUserId ? { NOT: { userId: excludeUserId } } : {}),
+      ...(notClauses.length > 0 ? { NOT: notClauses } : {}),
       ...(nearbyLocationIds ? { locationId: { in: nearbyLocationIds } } : {}),
     },
     orderBy: { updatedAt: "desc" },

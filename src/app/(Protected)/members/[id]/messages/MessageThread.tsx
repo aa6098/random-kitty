@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef, useTransition, useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import {
   PaperPlaneTiltIcon,
   EnvelopeSimpleOpenIcon,
@@ -25,13 +26,21 @@ type Props = {
   currentMemberId: string
   recipientId: string
   recipientName: string
+  hadUnread?: boolean
 }
 
-export function MessageThread({ messages, currentMemberId, recipientId, recipientName }: Props) {
+export function MessageThread({ messages, currentMemberId, recipientId, recipientName, hadUnread = false }: Props) {
+  const router = useRouter()
   const formRef = useRef<HTMLFormElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
   const [localMessages, setLocalMessages] = useState<Message[]>(messages)
   const [isPending, startTransition] = useTransition()
+
+  // Refresh server components (layout badge) once after unread messages are marked read
+  useEffect(() => {
+    if (hadUnread) router.refresh()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Scroll to bottom whenever messages change
   useEffect(() => {

@@ -1,6 +1,7 @@
 import { MapPinIcon } from "@phosphor-icons/react/dist/ssr"
 import { MemberSideBarTabs } from "./MemberSideBarTabs"
 import { VideoCall } from "./messages/VideoCall"
+import { BlockMemberButton } from "./BlockMemberButton"
 
 type Props = {
   member: {
@@ -10,16 +11,18 @@ type Props = {
     location: { city: string; state: string }
   }
   currentMemberId: string | null
+  isBlocked: boolean
 }
 
 
-export function MemberSideBar({ member, currentMemberId }: Props) {
+export function MemberSideBar({ member, currentMemberId, isBlocked }: Props) {
   const showVideoCall = currentMemberId && currentMemberId !== member.id
+  const showBlockButton = currentMemberId && currentMemberId !== member.id
 
   return (
-    <aside className="flex flex-col w-full md:w-60 shrink-0 border border-border rounded-lg overflow-hidden bg-card">
-      <div className="flex flex-col items-center gap-3 p-6">
-        <div className="size-32 rounded-full overflow-hidden bg-muted ring-2 ring-border">
+    <aside className="flex flex-col w-full md:w-80 shrink-0 border border-border rounded-lg overflow-hidden bg-card">
+      <div className="flex flex-col items-center gap-3 p-2">
+        <div className="size-45 rounded-full overflow-hidden bg-muted ring-2 ring-border">
           <img
             src={member.image ?? "/defaultProfile.jpg"}
             alt={member.displayName}
@@ -32,16 +35,23 @@ export function MemberSideBar({ member, currentMemberId }: Props) {
             <MapPinIcon size={14} />
             {member.location.city}, {member.location.state}
           </p>
-          {showVideoCall && (
+          
+        </div>
+        
+      </div>
+      <div className="flex flex-row gap-2 mb-2">
+            {showVideoCall && (
               <VideoCall
                 currentMemberId={currentMemberId}
                 recipientId={member.id}
                 recipientName=""
-                triggerClassName="w-full px-4 py-2.5 text-sm font-medium border-b border-border transition-colors hover:bg-muted text-foreground flex items-center gap-2"
+                triggerClassName="w-full px-4 py-2.5 text-sm font-medium border-1 border-destructive transition-colors hover:bg-muted text-foreground flex items-center gap-2"
               />
-          )}
-        </div>
-      </div>
+            )}
+            {showBlockButton && (
+              <BlockMemberButton memberId={member.id} isBlocked={isBlocked} />
+            )}
+          </div>
       <MemberSideBarTabs memberId={member.id} currentMemberId={currentMemberId} />
     </aside>
   )

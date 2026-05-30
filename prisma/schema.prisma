@@ -104,6 +104,8 @@ model Member {
   deactivated Boolean @default(false)
   senderMessages Message[] @relation("sender")
   recipientMessages Message[] @relation("recipient")
+  BlockedMembers BlockUser[] @relation("blockedMember")
+  SourceMembers BlockUser[] @relation("sourceMember")
   @@map("member")
 
 }
@@ -131,4 +133,15 @@ model Message {
   sender Member? @relation("sender", fields: [senderId], references: [id], onDelete: SetNull)
   recipient Member? @relation("recipient", fields: [recipientId], references: [id], onDelete: SetNull)
   @@map("message")
+}
+
+model BlockUser {
+  id String @id @default(cuid())
+  sourceMemberId String?
+  createdAt     DateTime  @default(now())
+  blockedMemberId String?
+  active Boolean @default(true)
+  sourceMember Member? @relation("sourceMember", fields: [sourceMemberId], references: [id], onDelete: SetNull)
+  blockedMember Member? @relation("blockedMember", fields: [blockedMemberId], references: [id], onDelete: SetNull)
+  @@map("blockuser")
 }

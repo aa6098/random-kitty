@@ -80,6 +80,7 @@ export default async function MessagesPage({ params }: Props) {
       currentMemberId={currentMember.id}
       recipientId={recipientMemberId}
       recipientName={recipientMember.displayName}
+      hadUnread={unreadIds.length > 0}
     />
   )
 }
