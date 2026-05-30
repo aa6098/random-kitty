@@ -11,6 +11,7 @@ import {
   HouseIcon,
   BellIcon,
   UsersIcon,
+  UsersThreeIcon,
   SignOutIcon,
 } from "@phosphor-icons/react"
 import logo from "@/app/logo.png"
@@ -39,6 +40,12 @@ function DesktopNav() {
             {totalCount > 99 ? "99+" : totalCount}
           </span>
         )}
+      </Link>
+      <Link
+        href="/community"
+        className="flex items-center gap-1.5 px-2 py-1 rounded hover:bg-primary-foreground/10 transition-colors text-sm font-medium"
+      >
+        <UsersThreeIcon size={15} /> Community
       </Link>
       <Link
         href="/member"
@@ -76,6 +83,13 @@ function MobileNav({ open, onClose, onSignOut }: { open: boolean; onClose: () =>
               {totalCount > 99 ? "99+" : totalCount}
             </span>
           )}
+        </Link>
+        <Link
+          href="/community"
+          onClick={onClose}
+          className="flex items-center gap-2 px-4 py-1 text-sm font-medium hover:font-bold hover:bg-primary/10 transition-colors"
+        >
+          <UsersThreeIcon size={16} /> Community
         </Link>
         <Link
           href="/member"
