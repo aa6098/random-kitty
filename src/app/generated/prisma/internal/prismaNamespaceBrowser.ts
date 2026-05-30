@@ -59,7 +59,8 @@ export const ModelName = {
   Member: 'Member',
   Photo: 'Photo',
   Message: 'Message',
-  BlockUser: 'BlockUser'
+  BlockUser: 'BlockUser',
+  Likes: 'Likes'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -156,6 +157,8 @@ export const MemberScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   description: 'description',
+  whatWeAreLookingFor: 'whatWeAreLookingFor',
+  aboutUs: 'aboutUs',
   locationId: 'locationId',
   deactivated: 'deactivated'
 } as const
@@ -197,6 +200,18 @@ export const BlockUserScalarFieldEnum = {
 } as const
 
 export type BlockUserScalarFieldEnum = (typeof BlockUserScalarFieldEnum)[keyof typeof BlockUserScalarFieldEnum]
+
+
+export const LikesScalarFieldEnum = {
+  id: 'id',
+  LikedMemberId: 'LikedMemberId',
+  createdAt: 'createdAt',
+  LikedById: 'LikedById',
+  dateRead: 'dateRead',
+  checked: 'checked'
+} as const
+
+export type LikesScalarFieldEnum = (typeof LikesScalarFieldEnum)[keyof typeof LikesScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -26,15 +26,17 @@ export default async function ProtectedLayout({
   const name = member ? member.displayName : (session.user.name ?? null)
   const image = member ? member.image : (session.user.image ?? null)
 
-  const unreadCount = member
-    ? await prisma.message.count({
-        where: {
-          recipientId: member.id,
-          dateRead: null,
-          recipientDeleted: false,
-        },
-      })
-    : 0
+  const [unreadMessages, unreadLikes] = member
+    ? await Promise.all([
+        prisma.message.count({
+          where: { recipientId: member.id, dateRead: null, recipientDeleted: false },
+        }),
+        prisma.likes.count({
+          where: { LikedMemberId: member.id, dateRead: null, checked: true },
+        }),
+      ])
+    : [0, 0]
+  const unreadCount = unreadMessages + unreadLikes
 
   return (
     <div className="min-h-screen flex flex-col">

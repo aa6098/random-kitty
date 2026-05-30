@@ -76,21 +76,31 @@ export default async function MemberHomePage({ searchParams }: Props) {
       : []),
   ]
 
-  const allMembers = await prisma.member.findMany({
-    select: {
-      id: true,
-      displayName: true,
-      image: true,
-      updatedAt: true,
-      locationId: true,
-      location: { select: { city: true, state: true } },
-    },
-    where: {
-      ...(notClauses.length > 0 ? { NOT: notClauses } : {}),
-      ...(nearbyLocationIds ? { locationId: { in: nearbyLocationIds } } : {}),
-    },
-    orderBy: { updatedAt: "desc" },
-  })
+  const [allMembers, likedRows] = await Promise.all([
+    prisma.member.findMany({
+      select: {
+        id: true,
+        displayName: true,
+        image: true,
+        updatedAt: true,
+        locationId: true,
+        location: { select: { city: true, state: true } },
+      },
+      where: {
+        ...(notClauses.length > 0 ? { NOT: notClauses } : {}),
+        ...(nearbyLocationIds ? { locationId: { in: nearbyLocationIds } } : {}),
+      },
+      orderBy: { updatedAt: "desc" },
+    }),
+    currentMemberId
+      ? prisma.likes.findMany({
+          where: { LikedById: currentMemberId, checked: true },
+          select: { LikedMemberId: true },
+        })
+      : Promise.resolve([]),
+  ])
+
+  const likedMemberIds = likedRows.map((r) => r.LikedMemberId).filter(Boolean) as string[]
 
   type MemberWithDistance = (typeof allMembers)[number] & { distanceMiles: number | null }
 
@@ -130,7 +140,7 @@ export default async function MemberHomePage({ searchParams }: Props) {
         <p className="text-muted-foreground text-sm">No members yet.</p>
       ) : (
         <>
-          <MemberListClient members={members} />
+          <MemberListClient members={members} likedMemberIds={likedMemberIds} />
 
           <div className="mt-8 flex items-center gap-1">
             <NavButton href={qs(1)} disabled={!hasPrev} label="First page">

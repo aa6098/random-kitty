@@ -1,20 +1,35 @@
 "use client"
 
+import { useTransition } from "react"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
-import { BellSlashIcon, ChatCircleTextIcon, ArrowRightIcon } from "@phosphor-icons/react"
+import { BellSlashIcon, ChatCircleTextIcon, HeartIcon, ArrowRightIcon } from "@phosphor-icons/react"
+import { markLikeRead } from "./actions"
 
-export type NotificationItem = {
+export type MessageNotification = {
+  kind: "message"
   senderId: string
   senderName: string
   senderImage: string | null
   count: number
   latestMessage: string
-  latestAt: string
+  sortAt: string
 }
 
+export type LikeNotification = {
+  kind: "like"
+  likeId: number
+  likerId: string
+  likerName: string
+  likerImage: string | null
+  sortAt: string
+}
+
+export type UnifiedNotification = MessageNotification | LikeNotification
+
 type Props = {
-  items: NotificationItem[]
+  items: UnifiedNotification[]
 }
 
 function relativeTime(isoString: string): string {
@@ -30,6 +45,56 @@ function relativeTime(isoString: string): string {
   return new Date(isoString).toLocaleDateString()
 }
 
+function Avatar({ src, name }: { src: string | null; name: string }) {
+  return (
+    <div className="relative size-12 rounded-full overflow-hidden bg-muted shrink-0 ring-2 ring-primary/20">
+      {src ? (
+        <Image src={src} alt={name} fill className="object-cover" sizes="48px" />
+      ) : (
+        <div className="flex items-center justify-center h-full text-base font-bold text-muted-foreground">
+          {name[0].toUpperCase()}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function LikeItem({ item }: { item: LikeNotification }) {
+  const router = useRouter()
+  const [isPending, startTransition] = useTransition()
+
+  function handleClick() {
+    startTransition(async () => {
+      await markLikeRead(item.likeId)
+      router.push(`/members/${item.likerId}/profile`)
+    })
+  }
+
+  return (
+    <button
+      onClick={handleClick}
+      disabled={isPending}
+      className="w-full flex items-center gap-4 p-4 rounded-xl border border-border bg-card hover:bg-accent hover:border-rose-300/40 hover:shadow-sm transition-all group text-left disabled:opacity-60"
+    >
+      <Avatar src={item.likerImage} name={item.likerName} />
+
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2">
+          <HeartIcon size={13} weight="fill" className="text-rose-500 shrink-0" />
+          <span className="text-sm font-semibold truncate">{item.likerName}</span>
+        </div>
+        <p className="text-sm text-muted-foreground mt-0.5">liked your profile</p>
+        <p className="text-xs text-muted-foreground/60 mt-1">{relativeTime(item.sortAt)}</p>
+      </div>
+
+      <ArrowRightIcon
+        size={16}
+        className="text-muted-foreground/40 group-hover:text-rose-500 group-hover:translate-x-0.5 transition-all shrink-0"
+      />
+    </button>
+  )
+}
+
 export function NotificationList({ items }: Props) {
   if (items.length === 0) {
     return (
@@ -39,7 +104,7 @@ export function NotificationList({ items }: Props) {
         </div>
         <div className="text-center">
           <p className="font-medium text-foreground">No new notifications</p>
-          <p className="text-sm mt-1">When someone messages you, it will appear here.</p>
+          <p className="text-sm mt-1">When someone messages or likes your profile, it will appear here.</p>
         </div>
       </div>
     )
@@ -48,57 +113,36 @@ export function NotificationList({ items }: Props) {
   return (
     <ul className="flex flex-col gap-2">
       {items.map((item) => (
-        <li key={item.senderId}>
-          <Link
-            href={`/members/${item.senderId}/messages`}
-            className="flex items-center gap-4 p-4 rounded-xl border border-border bg-card hover:bg-accent hover:border-primary/20 hover:shadow-sm transition-all group"
-          >
-            {/* Avatar */}
-            <div className="relative size-12 rounded-full overflow-hidden bg-muted shrink-0 ring-2 ring-primary/20">
-              {item.senderImage ? (
-                <Image
-                  src={item.senderImage}
-                  alt={item.senderName}
-                  fill
-                  className="object-cover"
-                  sizes="48px"
-                />
-              ) : (
-                <div className="flex items-center justify-center h-full text-base font-bold text-muted-foreground">
-                  {item.senderName[0].toUpperCase()}
+        <li key={item.kind === "message" ? `msg-${item.senderId}` : `like-${item.likeId}`}>
+          {item.kind === "message" ? (
+            <Link
+              href={`/members/${item.senderId}/messages`}
+              className="flex items-center gap-4 p-4 rounded-xl border border-border bg-card hover:bg-accent hover:border-primary/20 hover:shadow-sm transition-all group"
+            >
+              <Avatar src={item.senderImage} name={item.senderName} />
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <ChatCircleTextIcon size={13} weight="fill" className="text-primary shrink-0" />
+                  <span className="text-sm font-semibold truncate">{item.senderName}</span>
                 </div>
-              )}
-            </div>
-
-            {/* Main content */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <ChatCircleTextIcon
-                  size={13}
-                  weight="fill"
-                  className="text-primary shrink-0"
-                />
-                <span className="text-sm font-semibold truncate">{item.senderName}</span>
+                <p className="text-sm text-muted-foreground truncate mt-0.5">{item.latestMessage}</p>
+                <p className="text-xs text-muted-foreground/60 mt-1">{relativeTime(item.sortAt)}</p>
               </div>
-              <p className="text-sm text-muted-foreground truncate mt-0.5">
-                {item.latestMessage}
-              </p>
-              <p className="text-xs text-muted-foreground/60 mt-1">
-                {relativeTime(item.latestAt)}
-              </p>
-            </div>
 
-            {/* Unread badge + arrow */}
-            <div className="flex items-center gap-3 shrink-0">
-              <span className="inline-flex items-center justify-center min-w-[1.5rem] h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold px-1.5">
-                {item.count}
-              </span>
-              <ArrowRightIcon
-                size={16}
-                className="text-muted-foreground/40 group-hover:text-primary group-hover:translate-x-0.5 transition-all"
-              />
-            </div>
-          </Link>
+              <div className="flex items-center gap-3 shrink-0">
+                <span className="inline-flex items-center justify-center min-w-[1.5rem] h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold px-1.5">
+                  {item.count}
+                </span>
+                <ArrowRightIcon
+                  size={16}
+                  className="text-muted-foreground/40 group-hover:text-primary group-hover:translate-x-0.5 transition-all"
+                />
+              </div>
+            </Link>
+          ) : (
+            <LikeItem item={item} />
+          )}
         </li>
       ))}
     </ul>

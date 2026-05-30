@@ -62,3 +62,8 @@ export type Message = Prisma.MessageModel
  * 
  */
 export type BlockUser = Prisma.BlockUserModel
+/**
+ * Model Likes
+ * 
+ */
+export type Likes = Prisma.LikesModel

@@ -12,10 +12,12 @@ type Member = {
 
 type Props = {
   members: Member[]
+  likedMemberIds: string[]
 }
 
-export function MemberListClient({ members }: Props) {
+export function MemberListClient({ members, likedMemberIds }: Props) {
   const onlineIds = usePresenceChannel()
+  const likedSet = new Set(likedMemberIds)
 
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -28,6 +30,7 @@ export function MemberListClient({ members }: Props) {
           location={member.location}
           distanceMiles={member.distanceMiles}
           isOnline={onlineIds.has(member.id)}
+          isLiked={likedSet.has(member.id)}
         />
       ))}
     </div>

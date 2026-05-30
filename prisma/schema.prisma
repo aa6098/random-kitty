@@ -97,6 +97,8 @@ model Member {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   description   String
+  whatWeAreLookingFor   String?
+  aboutUs       String?
   locationId      String
   user User     @relation(fields: [userId], references:[id], onDelete: Cascade)
   location Location  @relation(fields: [locationId], references:[id], onDelete: Cascade)
@@ -106,6 +108,9 @@ model Member {
   recipientMessages Message[] @relation("recipient")
   BlockedMembers BlockUser[] @relation("blockedMember")
   SourceMembers BlockUser[] @relation("sourceMember")
+  LikedMember Likes[] @relation("likedMember")
+  LikingMember Likes[] @relation("likingMember")
+
   @@map("member")
 
 }
@@ -144,4 +149,18 @@ model BlockUser {
   sourceMember Member? @relation("sourceMember", fields: [sourceMemberId], references: [id], onDelete: SetNull)
   blockedMember Member? @relation("blockedMember", fields: [blockedMemberId], references: [id], onDelete: SetNull)
   @@map("blockuser")
+}
+
+model Likes {
+  id Int @id @default(autoincrement())
+  LikedMemberId String?
+   createdAt     DateTime  @default(now())
+   LikedById String?
+   dateRead DateTime?
+   checked Boolean
+  likedMember Member? @relation("likedMember", fields: [LikedMemberId], references: [id], onDelete: SetNull)
+  likingMember Member? @relation("likingMember", fields: [LikedById], references: [id], onDelete: SetNull)
+  @@map("likes")
+  @@unique([LikedMemberId, LikedById])
+
 }

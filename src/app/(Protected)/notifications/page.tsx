@@ -2,7 +2,7 @@ import { headers } from "next/headers"
 import { notFound } from "next/navigation"
 import { auth } from "@/lib/auth"
 import prisma from "@/lib/prisma"
-import { NotificationList } from "./NotificationList"
+import { NotificationList, type UnifiedNotification } from "./NotificationList"
 
 export default async function NotificationsPage() {
   const session = await auth.api.getSession({ headers: await headers() })
@@ -14,36 +14,32 @@ export default async function NotificationsPage() {
   })
   if (!currentMember) notFound()
 
-  // Unread messages where current member is the recipient
-  const unreadMessages = await prisma.message.findMany({
-    where: {
-      recipientId: currentMember.id,
-      dateRead: null,
-      recipientDeleted: false,
-    },
-    orderBy: { createdAt: "desc" },
-    select: {
-      text: true,
-      createdAt: true,
-      sender: {
-        select: { id: true, displayName: true, image: true },
+  const [unreadMessages, unreadLikes] = await Promise.all([
+    prisma.message.findMany({
+      where: { recipientId: currentMember.id, dateRead: null, recipientDeleted: false },
+      orderBy: { createdAt: "desc" },
+      select: {
+        text: true,
+        createdAt: true,
+        sender: { select: { id: true, displayName: true, image: true } },
       },
-    },
-  })
+    }),
+    prisma.likes.findMany({
+      where: { LikedMemberId: currentMember.id, dateRead: null, checked: true },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        createdAt: true,
+        likingMember: { select: { id: true, displayName: true, image: true } },
+      },
+    }),
+  ])
 
-  // Group by sender — map preserves insertion order (latest message per sender first)
+  // Group messages by sender, preserving latest-first order
   const senderMap = new Map<
     string,
-    {
-      senderId: string
-      senderName: string
-      senderImage: string | null
-      count: number
-      latestMessage: string
-      latestAt: string
-    }
+    { senderId: string; senderName: string; senderImage: string | null; count: number; latestMessage: string; sortAt: string }
   >()
-
   for (const msg of unreadMessages) {
     if (!msg.sender) continue
     if (!senderMap.has(msg.sender.id)) {
@@ -53,39 +49,56 @@ export default async function NotificationsPage() {
         senderImage: msg.sender.image,
         count: 1,
         latestMessage: msg.text,
-        latestAt: msg.createdAt.toISOString(),
+        sortAt: msg.createdAt.toISOString(),
       })
     } else {
       senderMap.get(msg.sender.id)!.count++
     }
   }
 
-  const items = Array.from(senderMap.values())
-  const totalUnread = items.reduce((sum, i) => sum + i.count, 0)
+  const messageItems: UnifiedNotification[] = Array.from(senderMap.values()).map((m) => ({
+    kind: "message",
+    ...m,
+  }))
+
+  const likeItems: UnifiedNotification[] = unreadLikes
+    .filter((l) => l.likingMember)
+    .map((l) => ({
+      kind: "like",
+      likeId: l.id,
+      likerId: l.likingMember!.id,
+      likerName: l.likingMember!.displayName,
+      likerImage: l.likingMember!.image,
+      sortAt: l.createdAt.toISOString(),
+    }))
+
+  const items = [...messageItems, ...likeItems].sort(
+    (a, b) => new Date(b.sortAt).getTime() - new Date(a.sortAt).getTime(),
+  )
+
+  const totalMessages = messageItems.reduce(
+    (sum, m) => sum + (m.kind === "message" ? m.count : 0),
+    0,
+  )
+  const totalLikes = likeItems.length
 
   return (
     <div className="mx-auto w-full max-w-2xl px-4 py-8">
-      {/* Page header */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold tracking-tight">Notifications</h1>
         {items.length > 0 ? (
           <p className="text-sm text-muted-foreground mt-1">
-            {totalUnread} unread message{totalUnread !== 1 ? "s" : ""} from{" "}
-            {items.length} conversation{items.length !== 1 ? "s" : ""}
+            {[
+              totalMessages > 0 && `${totalMessages} unread message${totalMessages !== 1 ? "s" : ""}`,
+              totalLikes > 0 && `${totalLikes} new like${totalLikes !== 1 ? "s" : ""}`,
+            ]
+              .filter(Boolean)
+              .join(" · ")}
           </p>
         ) : (
           <p className="text-sm text-muted-foreground mt-1">You&apos;re all caught up</p>
         )}
       </div>
-
-      {items.length > 0 && (
-        <div className="flex items-start gap-2.5 rounded-lg border border-border bg-muted/50 px-4 py-3 mb-5 text-sm text-muted-foreground">
-          <span className="mt-px shrink-0 text-base leading-none">💬</span>
-          <p>
-            You have unread messages. Click any conversation below to open the chat and reply.
-          </p>
-        </div>
-      )}
 
       <NotificationList items={items} />
     </div>

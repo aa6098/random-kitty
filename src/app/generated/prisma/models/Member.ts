@@ -32,6 +32,8 @@ export type MemberMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   description: string | null
+  whatWeAreLookingFor: string | null
+  aboutUs: string | null
   locationId: string | null
   deactivated: boolean | null
 }
@@ -44,6 +46,8 @@ export type MemberMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   description: string | null
+  whatWeAreLookingFor: string | null
+  aboutUs: string | null
   locationId: string | null
   deactivated: boolean | null
 }
@@ -56,6 +60,8 @@ export type MemberCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   description: number
+  whatWeAreLookingFor: number
+  aboutUs: number
   locationId: number
   deactivated: number
   _all: number
@@ -70,6 +76,8 @@ export type MemberMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   description?: true
+  whatWeAreLookingFor?: true
+  aboutUs?: true
   locationId?: true
   deactivated?: true
 }
@@ -82,6 +90,8 @@ export type MemberMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   description?: true
+  whatWeAreLookingFor?: true
+  aboutUs?: true
   locationId?: true
   deactivated?: true
 }
@@ -94,6 +104,8 @@ export type MemberCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   description?: true
+  whatWeAreLookingFor?: true
+  aboutUs?: true
   locationId?: true
   deactivated?: true
   _all?: true
@@ -179,6 +191,8 @@ export type MemberGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   description: string
+  whatWeAreLookingFor: string | null
+  aboutUs: string | null
   locationId: string
   deactivated: boolean
   _count: MemberCountAggregateOutputType | null
@@ -212,6 +226,8 @@ export type MemberWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   description?: Prisma.StringFilter<"Member"> | string
+  whatWeAreLookingFor?: Prisma.StringNullableFilter<"Member"> | string | null
+  aboutUs?: Prisma.StringNullableFilter<"Member"> | string | null
   locationId?: Prisma.StringFilter<"Member"> | string
   deactivated?: Prisma.BoolFilter<"Member"> | boolean
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -221,6 +237,8 @@ export type MemberWhereInput = {
   recipientMessages?: Prisma.MessageListRelationFilter
   BlockedMembers?: Prisma.BlockUserListRelationFilter
   SourceMembers?: Prisma.BlockUserListRelationFilter
+  LikedMember?: Prisma.LikesListRelationFilter
+  LikingMember?: Prisma.LikesListRelationFilter
 }
 
 export type MemberOrderByWithRelationInput = {
@@ -231,6 +249,8 @@ export type MemberOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  whatWeAreLookingFor?: Prisma.SortOrderInput | Prisma.SortOrder
+  aboutUs?: Prisma.SortOrderInput | Prisma.SortOrder
   locationId?: Prisma.SortOrder
   deactivated?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -240,6 +260,8 @@ export type MemberOrderByWithRelationInput = {
   recipientMessages?: Prisma.MessageOrderByRelationAggregateInput
   BlockedMembers?: Prisma.BlockUserOrderByRelationAggregateInput
   SourceMembers?: Prisma.BlockUserOrderByRelationAggregateInput
+  LikedMember?: Prisma.LikesOrderByRelationAggregateInput
+  LikingMember?: Prisma.LikesOrderByRelationAggregateInput
 }
 
 export type MemberWhereUniqueInput = Prisma.AtLeast<{
@@ -253,6 +275,8 @@ export type MemberWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   description?: Prisma.StringFilter<"Member"> | string
+  whatWeAreLookingFor?: Prisma.StringNullableFilter<"Member"> | string | null
+  aboutUs?: Prisma.StringNullableFilter<"Member"> | string | null
   locationId?: Prisma.StringFilter<"Member"> | string
   deactivated?: Prisma.BoolFilter<"Member"> | boolean
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -262,6 +286,8 @@ export type MemberWhereUniqueInput = Prisma.AtLeast<{
   recipientMessages?: Prisma.MessageListRelationFilter
   BlockedMembers?: Prisma.BlockUserListRelationFilter
   SourceMembers?: Prisma.BlockUserListRelationFilter
+  LikedMember?: Prisma.LikesListRelationFilter
+  LikingMember?: Prisma.LikesListRelationFilter
 }, "id" | "userId">
 
 export type MemberOrderByWithAggregationInput = {
@@ -272,6 +298,8 @@ export type MemberOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  whatWeAreLookingFor?: Prisma.SortOrderInput | Prisma.SortOrder
+  aboutUs?: Prisma.SortOrderInput | Prisma.SortOrder
   locationId?: Prisma.SortOrder
   deactivated?: Prisma.SortOrder
   _count?: Prisma.MemberCountOrderByAggregateInput
@@ -290,6 +318,8 @@ export type MemberScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Member"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Member"> | Date | string
   description?: Prisma.StringWithAggregatesFilter<"Member"> | string
+  whatWeAreLookingFor?: Prisma.StringNullableWithAggregatesFilter<"Member"> | string | null
+  aboutUs?: Prisma.StringNullableWithAggregatesFilter<"Member"> | string | null
   locationId?: Prisma.StringWithAggregatesFilter<"Member"> | string
   deactivated?: Prisma.BoolWithAggregatesFilter<"Member"> | boolean
 }
@@ -301,6 +331,8 @@ export type MemberCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   deactivated?: boolean
   user: Prisma.UserCreateNestedOneWithoutMemberInput
   location: Prisma.LocationCreateNestedOneWithoutMemberInput
@@ -309,6 +341,8 @@ export type MemberCreateInput = {
   recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
   BlockedMembers?: Prisma.BlockUserCreateNestedManyWithoutBlockedMemberInput
   SourceMembers?: Prisma.BlockUserCreateNestedManyWithoutSourceMemberInput
+  LikedMember?: Prisma.LikesCreateNestedManyWithoutLikedMemberInput
+  LikingMember?: Prisma.LikesCreateNestedManyWithoutLikingMemberInput
 }
 
 export type MemberUncheckedCreateInput = {
@@ -319,6 +353,8 @@ export type MemberUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   locationId: string
   deactivated?: boolean
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
@@ -326,6 +362,8 @@ export type MemberUncheckedCreateInput = {
   recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
   BlockedMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutBlockedMemberInput
   SourceMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutSourceMemberInput
+  LikedMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikedMemberInput
+  LikingMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikingMemberInput
 }
 
 export type MemberUpdateInput = {
@@ -335,6 +373,8 @@ export type MemberUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
   location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
@@ -343,6 +383,8 @@ export type MemberUpdateInput = {
   recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
   BlockedMembers?: Prisma.BlockUserUpdateManyWithoutBlockedMemberNestedInput
   SourceMembers?: Prisma.BlockUserUpdateManyWithoutSourceMemberNestedInput
+  LikedMember?: Prisma.LikesUpdateManyWithoutLikedMemberNestedInput
+  LikingMember?: Prisma.LikesUpdateManyWithoutLikingMemberNestedInput
 }
 
 export type MemberUncheckedUpdateInput = {
@@ -353,6 +395,8 @@ export type MemberUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
@@ -360,6 +404,8 @@ export type MemberUncheckedUpdateInput = {
   recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
   BlockedMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutBlockedMemberNestedInput
   SourceMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutSourceMemberNestedInput
+  LikedMember?: Prisma.LikesUncheckedUpdateManyWithoutLikedMemberNestedInput
+  LikingMember?: Prisma.LikesUncheckedUpdateManyWithoutLikingMemberNestedInput
 }
 
 export type MemberCreateManyInput = {
@@ -370,6 +416,8 @@ export type MemberCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   locationId: string
   deactivated?: boolean
 }
@@ -381,6 +429,8 @@ export type MemberUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
@@ -392,6 +442,8 @@ export type MemberUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
@@ -419,6 +471,8 @@ export type MemberCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  whatWeAreLookingFor?: Prisma.SortOrder
+  aboutUs?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
   deactivated?: Prisma.SortOrder
 }
@@ -431,6 +485,8 @@ export type MemberMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  whatWeAreLookingFor?: Prisma.SortOrder
+  aboutUs?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
   deactivated?: Prisma.SortOrder
 }
@@ -443,6 +499,8 @@ export type MemberMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  whatWeAreLookingFor?: Prisma.SortOrder
+  aboutUs?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
   deactivated?: Prisma.SortOrder
 }
@@ -604,6 +662,38 @@ export type MemberUpdateOneWithoutBlockedMembersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutBlockedMembersInput, Prisma.MemberUpdateWithoutBlockedMembersInput>, Prisma.MemberUncheckedUpdateWithoutBlockedMembersInput>
 }
 
+export type MemberCreateNestedOneWithoutLikedMemberInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutLikedMemberInput, Prisma.MemberUncheckedCreateWithoutLikedMemberInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutLikedMemberInput
+  connect?: Prisma.MemberWhereUniqueInput
+}
+
+export type MemberCreateNestedOneWithoutLikingMemberInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutLikingMemberInput, Prisma.MemberUncheckedCreateWithoutLikingMemberInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutLikingMemberInput
+  connect?: Prisma.MemberWhereUniqueInput
+}
+
+export type MemberUpdateOneWithoutLikedMemberNestedInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutLikedMemberInput, Prisma.MemberUncheckedCreateWithoutLikedMemberInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutLikedMemberInput
+  upsert?: Prisma.MemberUpsertWithoutLikedMemberInput
+  disconnect?: Prisma.MemberWhereInput | boolean
+  delete?: Prisma.MemberWhereInput | boolean
+  connect?: Prisma.MemberWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutLikedMemberInput, Prisma.MemberUpdateWithoutLikedMemberInput>, Prisma.MemberUncheckedUpdateWithoutLikedMemberInput>
+}
+
+export type MemberUpdateOneWithoutLikingMemberNestedInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutLikingMemberInput, Prisma.MemberUncheckedCreateWithoutLikingMemberInput>
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutLikingMemberInput
+  upsert?: Prisma.MemberUpsertWithoutLikingMemberInput
+  disconnect?: Prisma.MemberWhereInput | boolean
+  delete?: Prisma.MemberWhereInput | boolean
+  connect?: Prisma.MemberWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutLikingMemberInput, Prisma.MemberUpdateWithoutLikingMemberInput>, Prisma.MemberUncheckedUpdateWithoutLikingMemberInput>
+}
+
 export type MemberCreateWithoutUserInput = {
   id?: string
   displayName: string
@@ -611,6 +701,8 @@ export type MemberCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   deactivated?: boolean
   location: Prisma.LocationCreateNestedOneWithoutMemberInput
   photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
@@ -618,6 +710,8 @@ export type MemberCreateWithoutUserInput = {
   recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
   BlockedMembers?: Prisma.BlockUserCreateNestedManyWithoutBlockedMemberInput
   SourceMembers?: Prisma.BlockUserCreateNestedManyWithoutSourceMemberInput
+  LikedMember?: Prisma.LikesCreateNestedManyWithoutLikedMemberInput
+  LikingMember?: Prisma.LikesCreateNestedManyWithoutLikingMemberInput
 }
 
 export type MemberUncheckedCreateWithoutUserInput = {
@@ -627,6 +721,8 @@ export type MemberUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   locationId: string
   deactivated?: boolean
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
@@ -634,6 +730,8 @@ export type MemberUncheckedCreateWithoutUserInput = {
   recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
   BlockedMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutBlockedMemberInput
   SourceMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutSourceMemberInput
+  LikedMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikedMemberInput
+  LikingMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikingMemberInput
 }
 
 export type MemberCreateOrConnectWithoutUserInput = {
@@ -659,6 +757,8 @@ export type MemberUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
@@ -666,6 +766,8 @@ export type MemberUpdateWithoutUserInput = {
   recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
   BlockedMembers?: Prisma.BlockUserUpdateManyWithoutBlockedMemberNestedInput
   SourceMembers?: Prisma.BlockUserUpdateManyWithoutSourceMemberNestedInput
+  LikedMember?: Prisma.LikesUpdateManyWithoutLikedMemberNestedInput
+  LikingMember?: Prisma.LikesUpdateManyWithoutLikingMemberNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutUserInput = {
@@ -675,6 +777,8 @@ export type MemberUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
@@ -682,6 +786,8 @@ export type MemberUncheckedUpdateWithoutUserInput = {
   recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
   BlockedMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutBlockedMemberNestedInput
   SourceMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutSourceMemberNestedInput
+  LikedMember?: Prisma.LikesUncheckedUpdateManyWithoutLikedMemberNestedInput
+  LikingMember?: Prisma.LikesUncheckedUpdateManyWithoutLikingMemberNestedInput
 }
 
 export type MemberCreateWithoutLocationInput = {
@@ -691,6 +797,8 @@ export type MemberCreateWithoutLocationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   deactivated?: boolean
   user: Prisma.UserCreateNestedOneWithoutMemberInput
   photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
@@ -698,6 +806,8 @@ export type MemberCreateWithoutLocationInput = {
   recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
   BlockedMembers?: Prisma.BlockUserCreateNestedManyWithoutBlockedMemberInput
   SourceMembers?: Prisma.BlockUserCreateNestedManyWithoutSourceMemberInput
+  LikedMember?: Prisma.LikesCreateNestedManyWithoutLikedMemberInput
+  LikingMember?: Prisma.LikesCreateNestedManyWithoutLikingMemberInput
 }
 
 export type MemberUncheckedCreateWithoutLocationInput = {
@@ -708,12 +818,16 @@ export type MemberUncheckedCreateWithoutLocationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   deactivated?: boolean
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
   senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
   BlockedMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutBlockedMemberInput
   SourceMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutSourceMemberInput
+  LikedMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikedMemberInput
+  LikingMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikingMemberInput
 }
 
 export type MemberCreateOrConnectWithoutLocationInput = {
@@ -753,6 +867,8 @@ export type MemberScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   description?: Prisma.StringFilter<"Member"> | string
+  whatWeAreLookingFor?: Prisma.StringNullableFilter<"Member"> | string | null
+  aboutUs?: Prisma.StringNullableFilter<"Member"> | string | null
   locationId?: Prisma.StringFilter<"Member"> | string
   deactivated?: Prisma.BoolFilter<"Member"> | boolean
 }
@@ -764,6 +880,8 @@ export type MemberCreateWithoutPhotosInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   deactivated?: boolean
   user: Prisma.UserCreateNestedOneWithoutMemberInput
   location: Prisma.LocationCreateNestedOneWithoutMemberInput
@@ -771,6 +889,8 @@ export type MemberCreateWithoutPhotosInput = {
   recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
   BlockedMembers?: Prisma.BlockUserCreateNestedManyWithoutBlockedMemberInput
   SourceMembers?: Prisma.BlockUserCreateNestedManyWithoutSourceMemberInput
+  LikedMember?: Prisma.LikesCreateNestedManyWithoutLikedMemberInput
+  LikingMember?: Prisma.LikesCreateNestedManyWithoutLikingMemberInput
 }
 
 export type MemberUncheckedCreateWithoutPhotosInput = {
@@ -781,12 +901,16 @@ export type MemberUncheckedCreateWithoutPhotosInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   locationId: string
   deactivated?: boolean
   senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
   BlockedMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutBlockedMemberInput
   SourceMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutSourceMemberInput
+  LikedMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikedMemberInput
+  LikingMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikingMemberInput
 }
 
 export type MemberCreateOrConnectWithoutPhotosInput = {
@@ -812,6 +936,8 @@ export type MemberUpdateWithoutPhotosInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
   location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
@@ -819,6 +945,8 @@ export type MemberUpdateWithoutPhotosInput = {
   recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
   BlockedMembers?: Prisma.BlockUserUpdateManyWithoutBlockedMemberNestedInput
   SourceMembers?: Prisma.BlockUserUpdateManyWithoutSourceMemberNestedInput
+  LikedMember?: Prisma.LikesUpdateManyWithoutLikedMemberNestedInput
+  LikingMember?: Prisma.LikesUpdateManyWithoutLikingMemberNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutPhotosInput = {
@@ -829,12 +957,16 @@ export type MemberUncheckedUpdateWithoutPhotosInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
   BlockedMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutBlockedMemberNestedInput
   SourceMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutSourceMemberNestedInput
+  LikedMember?: Prisma.LikesUncheckedUpdateManyWithoutLikedMemberNestedInput
+  LikingMember?: Prisma.LikesUncheckedUpdateManyWithoutLikingMemberNestedInput
 }
 
 export type MemberCreateWithoutSenderMessagesInput = {
@@ -844,6 +976,8 @@ export type MemberCreateWithoutSenderMessagesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   deactivated?: boolean
   user: Prisma.UserCreateNestedOneWithoutMemberInput
   location: Prisma.LocationCreateNestedOneWithoutMemberInput
@@ -851,6 +985,8 @@ export type MemberCreateWithoutSenderMessagesInput = {
   recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
   BlockedMembers?: Prisma.BlockUserCreateNestedManyWithoutBlockedMemberInput
   SourceMembers?: Prisma.BlockUserCreateNestedManyWithoutSourceMemberInput
+  LikedMember?: Prisma.LikesCreateNestedManyWithoutLikedMemberInput
+  LikingMember?: Prisma.LikesCreateNestedManyWithoutLikingMemberInput
 }
 
 export type MemberUncheckedCreateWithoutSenderMessagesInput = {
@@ -861,12 +997,16 @@ export type MemberUncheckedCreateWithoutSenderMessagesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   locationId: string
   deactivated?: boolean
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
   recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
   BlockedMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutBlockedMemberInput
   SourceMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutSourceMemberInput
+  LikedMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikedMemberInput
+  LikingMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikingMemberInput
 }
 
 export type MemberCreateOrConnectWithoutSenderMessagesInput = {
@@ -881,6 +1021,8 @@ export type MemberCreateWithoutRecipientMessagesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   deactivated?: boolean
   user: Prisma.UserCreateNestedOneWithoutMemberInput
   location: Prisma.LocationCreateNestedOneWithoutMemberInput
@@ -888,6 +1030,8 @@ export type MemberCreateWithoutRecipientMessagesInput = {
   senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   BlockedMembers?: Prisma.BlockUserCreateNestedManyWithoutBlockedMemberInput
   SourceMembers?: Prisma.BlockUserCreateNestedManyWithoutSourceMemberInput
+  LikedMember?: Prisma.LikesCreateNestedManyWithoutLikedMemberInput
+  LikingMember?: Prisma.LikesCreateNestedManyWithoutLikingMemberInput
 }
 
 export type MemberUncheckedCreateWithoutRecipientMessagesInput = {
@@ -898,12 +1042,16 @@ export type MemberUncheckedCreateWithoutRecipientMessagesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   locationId: string
   deactivated?: boolean
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
   senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   BlockedMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutBlockedMemberInput
   SourceMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutSourceMemberInput
+  LikedMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikedMemberInput
+  LikingMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikingMemberInput
 }
 
 export type MemberCreateOrConnectWithoutRecipientMessagesInput = {
@@ -929,6 +1077,8 @@ export type MemberUpdateWithoutSenderMessagesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
   location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
@@ -936,6 +1086,8 @@ export type MemberUpdateWithoutSenderMessagesInput = {
   recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
   BlockedMembers?: Prisma.BlockUserUpdateManyWithoutBlockedMemberNestedInput
   SourceMembers?: Prisma.BlockUserUpdateManyWithoutSourceMemberNestedInput
+  LikedMember?: Prisma.LikesUpdateManyWithoutLikedMemberNestedInput
+  LikingMember?: Prisma.LikesUpdateManyWithoutLikingMemberNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutSenderMessagesInput = {
@@ -946,12 +1098,16 @@ export type MemberUncheckedUpdateWithoutSenderMessagesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
   recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
   BlockedMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutBlockedMemberNestedInput
   SourceMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutSourceMemberNestedInput
+  LikedMember?: Prisma.LikesUncheckedUpdateManyWithoutLikedMemberNestedInput
+  LikingMember?: Prisma.LikesUncheckedUpdateManyWithoutLikingMemberNestedInput
 }
 
 export type MemberUpsertWithoutRecipientMessagesInput = {
@@ -972,6 +1128,8 @@ export type MemberUpdateWithoutRecipientMessagesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
   location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
@@ -979,6 +1137,8 @@ export type MemberUpdateWithoutRecipientMessagesInput = {
   senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   BlockedMembers?: Prisma.BlockUserUpdateManyWithoutBlockedMemberNestedInput
   SourceMembers?: Prisma.BlockUserUpdateManyWithoutSourceMemberNestedInput
+  LikedMember?: Prisma.LikesUpdateManyWithoutLikedMemberNestedInput
+  LikingMember?: Prisma.LikesUpdateManyWithoutLikingMemberNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutRecipientMessagesInput = {
@@ -989,12 +1149,16 @@ export type MemberUncheckedUpdateWithoutRecipientMessagesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
   senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   BlockedMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutBlockedMemberNestedInput
   SourceMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutSourceMemberNestedInput
+  LikedMember?: Prisma.LikesUncheckedUpdateManyWithoutLikedMemberNestedInput
+  LikingMember?: Prisma.LikesUncheckedUpdateManyWithoutLikingMemberNestedInput
 }
 
 export type MemberCreateWithoutSourceMembersInput = {
@@ -1004,6 +1168,8 @@ export type MemberCreateWithoutSourceMembersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   deactivated?: boolean
   user: Prisma.UserCreateNestedOneWithoutMemberInput
   location: Prisma.LocationCreateNestedOneWithoutMemberInput
@@ -1011,6 +1177,8 @@ export type MemberCreateWithoutSourceMembersInput = {
   senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
   BlockedMembers?: Prisma.BlockUserCreateNestedManyWithoutBlockedMemberInput
+  LikedMember?: Prisma.LikesCreateNestedManyWithoutLikedMemberInput
+  LikingMember?: Prisma.LikesCreateNestedManyWithoutLikingMemberInput
 }
 
 export type MemberUncheckedCreateWithoutSourceMembersInput = {
@@ -1021,12 +1189,16 @@ export type MemberUncheckedCreateWithoutSourceMembersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   locationId: string
   deactivated?: boolean
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
   senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
   BlockedMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutBlockedMemberInput
+  LikedMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikedMemberInput
+  LikingMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikingMemberInput
 }
 
 export type MemberCreateOrConnectWithoutSourceMembersInput = {
@@ -1041,6 +1213,8 @@ export type MemberCreateWithoutBlockedMembersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   deactivated?: boolean
   user: Prisma.UserCreateNestedOneWithoutMemberInput
   location: Prisma.LocationCreateNestedOneWithoutMemberInput
@@ -1048,6 +1222,8 @@ export type MemberCreateWithoutBlockedMembersInput = {
   senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
   SourceMembers?: Prisma.BlockUserCreateNestedManyWithoutSourceMemberInput
+  LikedMember?: Prisma.LikesCreateNestedManyWithoutLikedMemberInput
+  LikingMember?: Prisma.LikesCreateNestedManyWithoutLikingMemberInput
 }
 
 export type MemberUncheckedCreateWithoutBlockedMembersInput = {
@@ -1058,12 +1234,16 @@ export type MemberUncheckedCreateWithoutBlockedMembersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   locationId: string
   deactivated?: boolean
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
   senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
   SourceMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutSourceMemberInput
+  LikedMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikedMemberInput
+  LikingMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikingMemberInput
 }
 
 export type MemberCreateOrConnectWithoutBlockedMembersInput = {
@@ -1089,6 +1269,8 @@ export type MemberUpdateWithoutSourceMembersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
   location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
@@ -1096,6 +1278,8 @@ export type MemberUpdateWithoutSourceMembersInput = {
   senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
   BlockedMembers?: Prisma.BlockUserUpdateManyWithoutBlockedMemberNestedInput
+  LikedMember?: Prisma.LikesUpdateManyWithoutLikedMemberNestedInput
+  LikingMember?: Prisma.LikesUpdateManyWithoutLikingMemberNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutSourceMembersInput = {
@@ -1106,12 +1290,16 @@ export type MemberUncheckedUpdateWithoutSourceMembersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
   senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
   BlockedMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutBlockedMemberNestedInput
+  LikedMember?: Prisma.LikesUncheckedUpdateManyWithoutLikedMemberNestedInput
+  LikingMember?: Prisma.LikesUncheckedUpdateManyWithoutLikingMemberNestedInput
 }
 
 export type MemberUpsertWithoutBlockedMembersInput = {
@@ -1132,6 +1320,8 @@ export type MemberUpdateWithoutBlockedMembersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
   location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
@@ -1139,6 +1329,8 @@ export type MemberUpdateWithoutBlockedMembersInput = {
   senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
   SourceMembers?: Prisma.BlockUserUpdateManyWithoutSourceMemberNestedInput
+  LikedMember?: Prisma.LikesUpdateManyWithoutLikedMemberNestedInput
+  LikingMember?: Prisma.LikesUpdateManyWithoutLikingMemberNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutBlockedMembersInput = {
@@ -1149,12 +1341,208 @@ export type MemberUncheckedUpdateWithoutBlockedMembersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
   senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
   SourceMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutSourceMemberNestedInput
+  LikedMember?: Prisma.LikesUncheckedUpdateManyWithoutLikedMemberNestedInput
+  LikingMember?: Prisma.LikesUncheckedUpdateManyWithoutLikingMemberNestedInput
+}
+
+export type MemberCreateWithoutLikedMemberInput = {
+  id?: string
+  displayName: string
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
+  deactivated?: boolean
+  user: Prisma.UserCreateNestedOneWithoutMemberInput
+  location: Prisma.LocationCreateNestedOneWithoutMemberInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
+  senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
+  BlockedMembers?: Prisma.BlockUserCreateNestedManyWithoutBlockedMemberInput
+  SourceMembers?: Prisma.BlockUserCreateNestedManyWithoutSourceMemberInput
+  LikingMember?: Prisma.LikesCreateNestedManyWithoutLikingMemberInput
+}
+
+export type MemberUncheckedCreateWithoutLikedMemberInput = {
+  id?: string
+  userId: string
+  displayName: string
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
+  locationId: string
+  deactivated?: boolean
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
+  senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
+  BlockedMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutBlockedMemberInput
+  SourceMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutSourceMemberInput
+  LikingMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikingMemberInput
+}
+
+export type MemberCreateOrConnectWithoutLikedMemberInput = {
+  where: Prisma.MemberWhereUniqueInput
+  create: Prisma.XOR<Prisma.MemberCreateWithoutLikedMemberInput, Prisma.MemberUncheckedCreateWithoutLikedMemberInput>
+}
+
+export type MemberCreateWithoutLikingMemberInput = {
+  id?: string
+  displayName: string
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
+  deactivated?: boolean
+  user: Prisma.UserCreateNestedOneWithoutMemberInput
+  location: Prisma.LocationCreateNestedOneWithoutMemberInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutMemberInput
+  senderMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  recipientMessages?: Prisma.MessageCreateNestedManyWithoutRecipientInput
+  BlockedMembers?: Prisma.BlockUserCreateNestedManyWithoutBlockedMemberInput
+  SourceMembers?: Prisma.BlockUserCreateNestedManyWithoutSourceMemberInput
+  LikedMember?: Prisma.LikesCreateNestedManyWithoutLikedMemberInput
+}
+
+export type MemberUncheckedCreateWithoutLikingMemberInput = {
+  id?: string
+  userId: string
+  displayName: string
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
+  locationId: string
+  deactivated?: boolean
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutMemberInput
+  senderMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  recipientMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutRecipientInput
+  BlockedMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutBlockedMemberInput
+  SourceMembers?: Prisma.BlockUserUncheckedCreateNestedManyWithoutSourceMemberInput
+  LikedMember?: Prisma.LikesUncheckedCreateNestedManyWithoutLikedMemberInput
+}
+
+export type MemberCreateOrConnectWithoutLikingMemberInput = {
+  where: Prisma.MemberWhereUniqueInput
+  create: Prisma.XOR<Prisma.MemberCreateWithoutLikingMemberInput, Prisma.MemberUncheckedCreateWithoutLikingMemberInput>
+}
+
+export type MemberUpsertWithoutLikedMemberInput = {
+  update: Prisma.XOR<Prisma.MemberUpdateWithoutLikedMemberInput, Prisma.MemberUncheckedUpdateWithoutLikedMemberInput>
+  create: Prisma.XOR<Prisma.MemberCreateWithoutLikedMemberInput, Prisma.MemberUncheckedCreateWithoutLikedMemberInput>
+  where?: Prisma.MemberWhereInput
+}
+
+export type MemberUpdateToOneWithWhereWithoutLikedMemberInput = {
+  where?: Prisma.MemberWhereInput
+  data: Prisma.XOR<Prisma.MemberUpdateWithoutLikedMemberInput, Prisma.MemberUncheckedUpdateWithoutLikedMemberInput>
+}
+
+export type MemberUpdateWithoutLikedMemberInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
+  location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
+  BlockedMembers?: Prisma.BlockUserUpdateManyWithoutBlockedMemberNestedInput
+  SourceMembers?: Prisma.BlockUserUpdateManyWithoutSourceMemberNestedInput
+  LikingMember?: Prisma.LikesUpdateManyWithoutLikingMemberNestedInput
+}
+
+export type MemberUncheckedUpdateWithoutLikedMemberInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
+  BlockedMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutBlockedMemberNestedInput
+  SourceMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutSourceMemberNestedInput
+  LikingMember?: Prisma.LikesUncheckedUpdateManyWithoutLikingMemberNestedInput
+}
+
+export type MemberUpsertWithoutLikingMemberInput = {
+  update: Prisma.XOR<Prisma.MemberUpdateWithoutLikingMemberInput, Prisma.MemberUncheckedUpdateWithoutLikingMemberInput>
+  create: Prisma.XOR<Prisma.MemberCreateWithoutLikingMemberInput, Prisma.MemberUncheckedCreateWithoutLikingMemberInput>
+  where?: Prisma.MemberWhereInput
+}
+
+export type MemberUpdateToOneWithWhereWithoutLikingMemberInput = {
+  where?: Prisma.MemberWhereInput
+  data: Prisma.XOR<Prisma.MemberUpdateWithoutLikingMemberInput, Prisma.MemberUncheckedUpdateWithoutLikingMemberInput>
+}
+
+export type MemberUpdateWithoutLikingMemberInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
+  location?: Prisma.LocationUpdateOneRequiredWithoutMemberNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
+  BlockedMembers?: Prisma.BlockUserUpdateManyWithoutBlockedMemberNestedInput
+  SourceMembers?: Prisma.BlockUserUpdateManyWithoutSourceMemberNestedInput
+  LikedMember?: Prisma.LikesUpdateManyWithoutLikedMemberNestedInput
+}
+
+export type MemberUncheckedUpdateWithoutLikingMemberInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
+  senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
+  BlockedMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutBlockedMemberNestedInput
+  SourceMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutSourceMemberNestedInput
+  LikedMember?: Prisma.LikesUncheckedUpdateManyWithoutLikedMemberNestedInput
 }
 
 export type MemberCreateManyLocationInput = {
@@ -1165,6 +1553,8 @@ export type MemberCreateManyLocationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   description: string
+  whatWeAreLookingFor?: string | null
+  aboutUs?: string | null
   deactivated?: boolean
 }
 
@@ -1175,6 +1565,8 @@ export type MemberUpdateWithoutLocationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutMemberNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutMemberNestedInput
@@ -1182,6 +1574,8 @@ export type MemberUpdateWithoutLocationInput = {
   recipientMessages?: Prisma.MessageUpdateManyWithoutRecipientNestedInput
   BlockedMembers?: Prisma.BlockUserUpdateManyWithoutBlockedMemberNestedInput
   SourceMembers?: Prisma.BlockUserUpdateManyWithoutSourceMemberNestedInput
+  LikedMember?: Prisma.LikesUpdateManyWithoutLikedMemberNestedInput
+  LikingMember?: Prisma.LikesUpdateManyWithoutLikingMemberNestedInput
 }
 
 export type MemberUncheckedUpdateWithoutLocationInput = {
@@ -1192,12 +1586,16 @@ export type MemberUncheckedUpdateWithoutLocationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutMemberNestedInput
   senderMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   recipientMessages?: Prisma.MessageUncheckedUpdateManyWithoutRecipientNestedInput
   BlockedMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutBlockedMemberNestedInput
   SourceMembers?: Prisma.BlockUserUncheckedUpdateManyWithoutSourceMemberNestedInput
+  LikedMember?: Prisma.LikesUncheckedUpdateManyWithoutLikedMemberNestedInput
+  LikingMember?: Prisma.LikesUncheckedUpdateManyWithoutLikingMemberNestedInput
 }
 
 export type MemberUncheckedUpdateManyWithoutLocationInput = {
@@ -1208,6 +1606,8 @@ export type MemberUncheckedUpdateManyWithoutLocationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  whatWeAreLookingFor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutUs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deactivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
@@ -1222,6 +1622,8 @@ export type MemberCountOutputType = {
   recipientMessages: number
   BlockedMembers: number
   SourceMembers: number
+  LikedMember: number
+  LikingMember: number
 }
 
 export type MemberCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1230,6 +1632,8 @@ export type MemberCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   recipientMessages?: boolean | MemberCountOutputTypeCountRecipientMessagesArgs
   BlockedMembers?: boolean | MemberCountOutputTypeCountBlockedMembersArgs
   SourceMembers?: boolean | MemberCountOutputTypeCountSourceMembersArgs
+  LikedMember?: boolean | MemberCountOutputTypeCountLikedMemberArgs
+  LikingMember?: boolean | MemberCountOutputTypeCountLikingMemberArgs
 }
 
 /**
@@ -1277,6 +1681,20 @@ export type MemberCountOutputTypeCountSourceMembersArgs<ExtArgs extends runtime.
   where?: Prisma.BlockUserWhereInput
 }
 
+/**
+ * MemberCountOutputType without action
+ */
+export type MemberCountOutputTypeCountLikedMemberArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LikesWhereInput
+}
+
+/**
+ * MemberCountOutputType without action
+ */
+export type MemberCountOutputTypeCountLikingMemberArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LikesWhereInput
+}
+
 
 export type MemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1286,6 +1704,8 @@ export type MemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   createdAt?: boolean
   updatedAt?: boolean
   description?: boolean
+  whatWeAreLookingFor?: boolean
+  aboutUs?: boolean
   locationId?: boolean
   deactivated?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1295,6 +1715,8 @@ export type MemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   recipientMessages?: boolean | Prisma.Member$recipientMessagesArgs<ExtArgs>
   BlockedMembers?: boolean | Prisma.Member$BlockedMembersArgs<ExtArgs>
   SourceMembers?: boolean | Prisma.Member$SourceMembersArgs<ExtArgs>
+  LikedMember?: boolean | Prisma.Member$LikedMemberArgs<ExtArgs>
+  LikingMember?: boolean | Prisma.Member$LikingMemberArgs<ExtArgs>
   _count?: boolean | Prisma.MemberCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["member"]>
 
@@ -1306,6 +1728,8 @@ export type MemberSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   description?: boolean
+  whatWeAreLookingFor?: boolean
+  aboutUs?: boolean
   locationId?: boolean
   deactivated?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1320,6 +1744,8 @@ export type MemberSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   description?: boolean
+  whatWeAreLookingFor?: boolean
+  aboutUs?: boolean
   locationId?: boolean
   deactivated?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1334,11 +1760,13 @@ export type MemberSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   description?: boolean
+  whatWeAreLookingFor?: boolean
+  aboutUs?: boolean
   locationId?: boolean
   deactivated?: boolean
 }
 
-export type MemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "displayName" | "image" | "createdAt" | "updatedAt" | "description" | "locationId" | "deactivated", ExtArgs["result"]["member"]>
+export type MemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "displayName" | "image" | "createdAt" | "updatedAt" | "description" | "whatWeAreLookingFor" | "aboutUs" | "locationId" | "deactivated", ExtArgs["result"]["member"]>
 export type MemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   location?: boolean | Prisma.LocationDefaultArgs<ExtArgs>
@@ -1347,6 +1775,8 @@ export type MemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   recipientMessages?: boolean | Prisma.Member$recipientMessagesArgs<ExtArgs>
   BlockedMembers?: boolean | Prisma.Member$BlockedMembersArgs<ExtArgs>
   SourceMembers?: boolean | Prisma.Member$SourceMembersArgs<ExtArgs>
+  LikedMember?: boolean | Prisma.Member$LikedMemberArgs<ExtArgs>
+  LikingMember?: boolean | Prisma.Member$LikingMemberArgs<ExtArgs>
   _count?: boolean | Prisma.MemberCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MemberIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1368,6 +1798,8 @@ export type $MemberPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     recipientMessages: Prisma.$MessagePayload<ExtArgs>[]
     BlockedMembers: Prisma.$BlockUserPayload<ExtArgs>[]
     SourceMembers: Prisma.$BlockUserPayload<ExtArgs>[]
+    LikedMember: Prisma.$LikesPayload<ExtArgs>[]
+    LikingMember: Prisma.$LikesPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1377,6 +1809,8 @@ export type $MemberPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     createdAt: Date
     updatedAt: Date
     description: string
+    whatWeAreLookingFor: string | null
+    aboutUs: string | null
     locationId: string
     deactivated: boolean
   }, ExtArgs["result"]["member"]>
@@ -1780,6 +2214,8 @@ export interface Prisma__MemberClient<T, Null = never, ExtArgs extends runtime.T
   recipientMessages<T extends Prisma.Member$recipientMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$recipientMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   BlockedMembers<T extends Prisma.Member$BlockedMembersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$BlockedMembersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BlockUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   SourceMembers<T extends Prisma.Member$SourceMembersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$SourceMembersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BlockUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  LikedMember<T extends Prisma.Member$LikedMemberArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$LikedMemberArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LikesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  LikingMember<T extends Prisma.Member$LikingMemberArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$LikingMemberArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LikesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1816,6 +2252,8 @@ export interface MemberFieldRefs {
   readonly createdAt: Prisma.FieldRef<"Member", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Member", 'DateTime'>
   readonly description: Prisma.FieldRef<"Member", 'String'>
+  readonly whatWeAreLookingFor: Prisma.FieldRef<"Member", 'String'>
+  readonly aboutUs: Prisma.FieldRef<"Member", 'String'>
   readonly locationId: Prisma.FieldRef<"Member", 'String'>
   readonly deactivated: Prisma.FieldRef<"Member", 'Boolean'>
 }
@@ -2336,6 +2774,54 @@ export type Member$SourceMembersArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.BlockUserScalarFieldEnum | Prisma.BlockUserScalarFieldEnum[]
+}
+
+/**
+ * Member.LikedMember
+ */
+export type Member$LikedMemberArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Likes
+   */
+  select?: Prisma.LikesSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Likes
+   */
+  omit?: Prisma.LikesOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LikesInclude<ExtArgs> | null
+  where?: Prisma.LikesWhereInput
+  orderBy?: Prisma.LikesOrderByWithRelationInput | Prisma.LikesOrderByWithRelationInput[]
+  cursor?: Prisma.LikesWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LikesScalarFieldEnum | Prisma.LikesScalarFieldEnum[]
+}
+
+/**
+ * Member.LikingMember
+ */
+export type Member$LikingMemberArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Likes
+   */
+  select?: Prisma.LikesSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Likes
+   */
+  omit?: Prisma.LikesOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LikesInclude<ExtArgs> | null
+  where?: Prisma.LikesWhereInput
+  orderBy?: Prisma.LikesOrderByWithRelationInput | Prisma.LikesOrderByWithRelationInput[]
+  cursor?: Prisma.LikesWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LikesScalarFieldEnum | Prisma.LikesScalarFieldEnum[]
 }
 
 /**
