@@ -41,6 +41,6 @@ export function generateSasUrl(blobUrl: string | null | undefined, expiresInMinu
     },
     credential
   )
-
+console.log(`HERE IS: ${blobUrl}?${sas.toString()}`)
   return `${blobUrl}?${sas.toString()}`
 }

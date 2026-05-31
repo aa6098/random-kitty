@@ -85,7 +85,7 @@ model Location {
   city   String @db.VarChar(50)
   state String @db.VarChar(10)
   member Member[]
-   @@index([zip])
+  //  @@index([zip])
   @@map("location")
 }
 
@@ -111,6 +111,7 @@ model Member {
   LikingMember Likes[] @relation("likingMember")
 
   @@map("member")
+  @@index([userId])
 
 }
 
