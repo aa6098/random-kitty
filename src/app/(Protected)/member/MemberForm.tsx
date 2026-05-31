@@ -77,6 +77,12 @@ export function MemberForm({ member, previewImageUrl }: Props) {
         </CardHeader>
 
         <CardContent className="space-y-2">
+          {/* Profile Image */}
+          <div className="space-y-1.25">
+            <Label className="font-bold">Profile Image</Label>
+            <ImageUpload currentImage={member?.image} previewUrl={previewImageUrl} />
+          </div>
+          <div className="grid grid-cols-2 gap-2">
           {/* Display Name */}
           <div className="space-y-1.25">
             <Label className="font-bold" htmlFor="displayName">
@@ -98,12 +104,29 @@ export function MemberForm({ member, previewImageUrl }: Props) {
               </p>
             )}
           </div>
-
-          {/* Profile Image */}
+          {/* Location */}
           <div className="space-y-1.25">
-            <Label className="font-bold">Profile Image</Label>
-            <ImageUpload currentImage={member?.image} previewUrl={previewImageUrl} />
+            <Label className="font-bold">
+              Location <span className="text-destructive">*</span>
+            </Label>
+            <LocationPicker
+              initialLocation={member?.location}
+              onSelect={() => clearError("locationId")}
+            />
+            {/* <p className="text-xs text-muted-foreground">
+              Type at least 2 characters to search for a city.
+            </p> */}
+            {fieldError("locationId") && (
+              <p className="flex items-center gap-1.5 text-sm text-destructive">
+                <WarningCircleIcon size={14} weight="fill" />
+                {fieldError("locationId")}
+              </p>
+            )}
           </div>
+
+          </div>
+
+          
 
           {/* About Us */}
           <div className="space-y-1.25">
@@ -151,26 +174,7 @@ export function MemberForm({ member, previewImageUrl }: Props) {
             )}
           </div>
 
-          {/* Location */}
-          <div className="space-y-1.25">
-            <Label className="font-bold">
-              Location <span className="text-destructive">*</span>
-            </Label>
-            <LocationPicker
-              initialLocation={member?.location}
-              onSelect={() => clearError("locationId")}
-            />
-            <p className="text-xs text-muted-foreground">
-              Type at least 2 characters to search for a city.
-            </p>
-            {fieldError("locationId") && (
-              <p className="flex items-center gap-1.5 text-sm text-destructive">
-                <WarningCircleIcon size={14} weight="fill" />
-                {fieldError("locationId")}
-              </p>
-            )}
-          </div>
-
+          
           {/* General error */}
           {state?.error && (
             <div className="flex items-center gap-2 text-sm text-destructive">

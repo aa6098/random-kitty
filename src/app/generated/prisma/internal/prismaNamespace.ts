@@ -1281,6 +1281,7 @@ export type MemberScalarFieldEnum = (typeof MemberScalarFieldEnum)[keyof typeof 
 export const PhotoScalarFieldEnum = {
   id: 'id',
   url: 'url',
+  thumburl: 'thumburl',
   publicId: 'publicId',
   memberId: 'memberId',
   delete: 'delete'

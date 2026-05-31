@@ -82,6 +82,26 @@ export async function saveMemberAction(
   return { success: true, name: displayName, image: savedImage ?? null }
 }
 
+export async function deletePhotoAction(
+  photoId: string
+): Promise<{ error?: string }> {
+  const session = await auth.api.getSession({ headers: await headers() })
+  if (!session) return { error: "Not authenticated." }
+
+  try {
+    const photo = await prisma.photo.findFirst({
+      where: { id: photoId, member: { userId: session.user.id } },
+      select: { id: true },
+    })
+    if (!photo) return { error: "Photo not found." }
+
+    await prisma.photo.update({ where: { id: photoId }, data: { delete: true } })
+    return {}
+  } catch {
+    return { error: "Failed to delete photo." }
+  }
+}
+
 export async function searchLocationsAction(
   query: string
 ): Promise<{ id: string; city: string; state: string; zip: string }[]> {

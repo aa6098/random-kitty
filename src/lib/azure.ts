@@ -11,7 +11,8 @@ export const blobServiceClient = BlobServiceClient.fromConnectionString(
 
 export const containerName = process.env.AZURE_STORAGE_CONTAINER_NAME!
 
-export function generateSasUrl(blobUrl: string, expiresInMinutes = 60): string {
+export function generateSasUrl(blobUrl: string | null | undefined, expiresInMinutes = 60): string | null {
+  if (!blobUrl) return null
   const conn = process.env.AZURE_STORAGE_CONNECTION_STRING!
   const parts = conn.split(";").reduce<Record<string, string>>((acc, part) => {
     const idx = part.indexOf("=")
@@ -20,7 +21,14 @@ export function generateSasUrl(blobUrl: string, expiresInMinutes = 60): string {
   }, {})
 
   const credential = new StorageSharedKeyCredential(parts.AccountName, parts.AccountKey)
-  const url = new URL(blobUrl)
+
+  let url: URL
+  try {
+    url = new URL(blobUrl)
+  } catch {
+    return null
+  }
+
   const [container, ...rest] = url.pathname.slice(1).split("/")
   const blobName = rest.join("/")
 
