@@ -1,6 +1,7 @@
 import { headers } from "next/headers"
 import { auth } from "@/lib/auth"
 import prisma from "@/lib/prisma"
+import { generateSasUrl } from "@/lib/azure"
 import { MemberForm } from "./MemberForm"
 
 export default async function MemberPage() {
@@ -17,9 +18,11 @@ export default async function MemberPage() {
       })
     : null
 
+  const previewImageUrl = member?.image ? generateSasUrl(member.image) : null
+
   return (
     <div className="mx-auto w-full max-w-screen-lg px-4 py-10">
-      <MemberForm member={member} />
+      <MemberForm member={member} previewImageUrl={previewImageUrl} />
     </div>
   )
 }

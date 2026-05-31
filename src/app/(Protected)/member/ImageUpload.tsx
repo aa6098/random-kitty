@@ -8,10 +8,11 @@ const DEFAULT_IMAGE = "/defaultProfile.jpg"
 
 type Props = {
   currentImage?: string | null
+  previewUrl?: string | null
 }
 
-export function ImageUpload({ currentImage }: Props) {
-  const [preview, setPreview] = useState<string | null>(currentImage ?? null)
+export function ImageUpload({ currentImage, previewUrl }: Props) {
+  const [preview, setPreview] = useState<string | null>(previewUrl ?? currentImage ?? null)
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(currentImage ?? null)
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)

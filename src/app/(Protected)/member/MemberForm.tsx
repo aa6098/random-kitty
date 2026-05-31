@@ -32,9 +32,10 @@ type MemberData = {
 
 type Props = {
   member: MemberData | null
+  previewImageUrl: string | null
 }
 
-export function MemberForm({ member }: Props) {
+export function MemberForm({ member, previewImageUrl }: Props) {
   const [state, action, pending] = useActionState<MemberActionState, FormData>(
     saveMemberAction,
     null
@@ -101,7 +102,7 @@ export function MemberForm({ member }: Props) {
           {/* Profile Image */}
           <div className="space-y-1.25">
             <Label className="font-bold">Profile Image</Label>
-            <ImageUpload currentImage={member?.image} />
+            <ImageUpload currentImage={member?.image} previewUrl={previewImageUrl} />
           </div>
 
           {/* About Us */}
