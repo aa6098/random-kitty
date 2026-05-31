@@ -54,7 +54,7 @@ export function MemberSideBar({ member, currentMemberId, isBlocked, isLiked }: P
                 currentMemberId={currentMemberId}
                 recipientId={member.id}
                 recipientName=""
-                triggerClassName="w-full px-4 py-2.5 text-sm font-medium border-1 border-destructive transition-colors hover:bg-muted text-foreground flex items-center gap-2"
+                triggerClassName="w-full px-4 py-2.5 text-sm font-medium border-1 rounded border-destructive transition-colors hover:bg-muted text-foreground flex items-center gap-2"
               />
             )}
             {showBlockButton && (

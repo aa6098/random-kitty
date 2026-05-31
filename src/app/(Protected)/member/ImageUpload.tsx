@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
-import { ArrowLineUpIcon, TrashIcon } from "@phosphor-icons/react"
+import { ArrowLineUpIcon,  CameraPlusIcon , CameraIcon, TrashIcon } from "@phosphor-icons/react"
 
 const DEFAULT_IMAGE = "/defaultProfile.jpg"
 
@@ -31,43 +31,46 @@ export function ImageUpload({ currentImage }: Props) {
   const hasCustomImage = preview !== null
 
   return (
-    <div className="flex items-start gap-4">
-      <div className="relative size-24 shrink-0 border border-border bg-muted overflow-hidden">
-        <img
-          src={displaySrc}
-          alt="Profile"
-          className="size-full object-cover"
-        />
-        {hasCustomImage && (
-          <button
+    <div className="flex flex-col items-start gap-4">
+      <div className="flex flex-col items-center">
+        <div className="relative size-24 shrink-0 border border-border bg-muted overflow-hidden">
+          <img
+            src={displaySrc}
+            alt="Profile"
+            className="size-full object-cover"
+          />
+          {hasCustomImage && (
+            <button
+              type="button"
+              onClick={handleRemove}
+              aria-label="Remove image"
+              className="absolute top-1 right-1 size-5 bg-destructive text-destructive-foreground flex items-center justify-center rounded-full"
+            >
+              <TrashIcon size={10} weight="bold" />
+            </button>
+          )}
+        </div>
+        <div className="flex flex-col gap-2 pt-1">
+          <input
+            ref={inputRef}
+            type="file"
+            name="image"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+          <Button
             type="button"
-            onClick={handleRemove}
-            aria-label="Remove image"
-            className="absolute top-1 right-1 size-5 bg-destructive text-destructive-foreground flex items-center justify-center rounded-full"
+            variant={"outline"}
+            className="w-full px-4 py-2.5  text-sm font-medium border-1 rounded border-destructive transition-colors"
+            size="sm"
+            onClick={() => inputRef.current?.click()}
           >
-            <TrashIcon size={10} weight="bold" />
-          </button>
-        )}
-      </div>
-      <div className="flex flex-col gap-2 pt-1">
-        <input
-          ref={inputRef}
-          type="file"
-          name="image"
-          accept="image/*"
-          className="hidden"
-          onChange={handleFileChange}
-        />
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={() => inputRef.current?.click()}
-        >
-          <ArrowLineUpIcon />
-          {hasCustomImage ? "Change image" : "Upload image"}
-        </Button>
-        <p className="text-xs text-muted-foreground">JPG, PNG or WebP. Max 2 MB.</p>
+            <CameraPlusIcon size={32} />
+            {hasCustomImage ? "Change image" : "Upload image"}
+          </Button>
+          <p className="text-xs text-muted-foreground">JPG, PNG or WebP. Max 2 MB.</p>
+        </div>
       </div>
     </div>
   )

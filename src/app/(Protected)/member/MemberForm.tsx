@@ -75,10 +75,10 @@ export function MemberForm({ member }: Props) {
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-2">
           {/* Display Name */}
-          <div className="space-y-1.5">
-            <Label htmlFor="displayName">
+          <div className="space-y-1.25">
+            <Label className="font-bold" htmlFor="displayName">
               Display Name <span className="text-destructive">*</span>
             </Label>
             <Input
@@ -99,14 +99,14 @@ export function MemberForm({ member }: Props) {
           </div>
 
           {/* Profile Image */}
-          <div className="space-y-1.5">
-            <Label>Profile Image</Label>
+          <div className="space-y-1.25">
+            <Label className="font-bold">Profile Image</Label>
             <ImageUpload currentImage={member?.image} />
           </div>
 
           {/* About Us */}
-          <div className="space-y-1.5">
-            <Label htmlFor="description">
+          <div className="space-y-1.25">
+            <Label className="font-bold" htmlFor="description">
               About Us <span className="text-destructive">*</span>
             </Label>
             <Textarea
@@ -128,8 +128,8 @@ export function MemberForm({ member }: Props) {
           </div>
 
           {/* What Are We Looking For */}
-          <div className="space-y-1.5">
-            <Label htmlFor="whatareWelookingFor">
+          <div className="space-y-1.25">
+            <Label className="font-bold" htmlFor="whatareWelookingFor">
               What Are We Looking For <span className="text-destructive">*</span>
             </Label>
             <Textarea
@@ -151,8 +151,8 @@ export function MemberForm({ member }: Props) {
           </div>
 
           {/* Location */}
-          <div className="space-y-1.5">
-            <Label>
+          <div className="space-y-1.25">
+            <Label className="font-bold">
               Location <span className="text-destructive">*</span>
             </Label>
             <LocationPicker
