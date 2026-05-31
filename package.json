@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@azure/storage-blob": "^12.31.0",
     "@base-ui/react": "^1.5.0",
     "@google-cloud/storage": "^7.19.0",
     "@phosphor-icons/react": "^2.1.10",

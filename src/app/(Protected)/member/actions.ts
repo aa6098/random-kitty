@@ -4,8 +4,6 @@ import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { revalidatePath } from "next/cache"
 import prisma from "@/lib/prisma"
-import { writeFile, mkdir } from "fs/promises"
-import path from "path"
 
 export type FieldErrors = {
   displayName?: string
@@ -33,7 +31,7 @@ export async function saveMemberAction(
   const description = (formData.get("description") as string)?.trim()
   const whatareWelookingFor = (formData.get("whatareWelookingFor") as string)?.trim()
   const locationId = (formData.get("locationId") as string)?.trim()
-  const imageFile = formData.get("image") as File | null
+  const imageUrl = (formData.get("imageUrl") as string | null)?.trim() || undefined
 
   const fieldErrors: FieldErrors = {}
   if (!displayName) fieldErrors.displayName = "Display name is required."
@@ -52,22 +50,6 @@ export async function saveMemberAction(
       select: { id: true },
     })
     if (taken) return { fieldErrors: { displayName: "Display name is already taken." } }
-  }
-
-  let imageUrl: string | undefined
-  if (imageFile && imageFile.size > 0) {
-    try {
-      const bytes = await imageFile.arrayBuffer()
-      const buffer = Buffer.from(bytes)
-      const uploadsDir = path.join(process.cwd(), "public", "uploads")
-      await mkdir(uploadsDir, { recursive: true })
-      const ext = path.extname(imageFile.name) || ".jpg"
-      const filename = `${session.user.id}${ext}`
-      await writeFile(path.join(uploadsDir, filename), buffer)
-      imageUrl = `/uploads/${filename}`
-    } catch {
-      return { error: "Failed to upload image. Please try again." }
-    }
   }
 
   let savedImage: string | null | undefined
