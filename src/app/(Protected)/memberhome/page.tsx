@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { haversineDistance } from "@/lib/distance"
 import { getAllLocations } from "@/lib/locationCache"
+import { generateSasUrl } from "@/lib/azure"
 import { MemberListClient } from "./MemberListClient"
 import { NavButton } from "./NavButton"
 import { SearchBar } from "./SearchBar"
@@ -87,6 +88,7 @@ export default async function MemberHomePage({ searchParams }: Props) {
         location: { select: { city: true, state: true } },
       },
       where: {
+        deactivated: false,
         ...(notClauses.length > 0 ? { NOT: notClauses } : {}),
         ...(nearbyLocationIds ? { locationId: { in: nearbyLocationIds } } : {}),
       },
@@ -115,7 +117,7 @@ export default async function MemberHomePage({ searchParams }: Props) {
       : withDistance
 
   const total = sorted.length
-  const members = sorted.slice(skip, skip + PAGE_SIZE)
+  const members = sorted.slice(skip, skip + PAGE_SIZE).map((m) => ({ ...m, image: generateSasUrl(m.image) }))
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
   const hasPrev = page > 1

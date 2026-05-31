@@ -4,6 +4,7 @@ import { headers } from "next/headers"
 import { auth } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { Card, CardContent } from "@/components/ui/card"
+import { generateSasUrl } from "@/lib/azure"
 import { NavButton } from "@/app/(Protected)/memberhome/NavButton"
 import { CommunityFilter } from "./CommunityFilter"
 import { CommunitySearch } from "./CommunitySearch"
@@ -46,13 +47,15 @@ export default async function CommunityPage({ searchParams }: Props) {
     ? filter === "blocked"
       ? {
           ...searchFilter,
+          deactivated: false,
           BlockedMembers: { some: { active: true, sourceMemberId: currentMemberId } },
         }
       : {
           ...searchFilter,
+          deactivated: false,
           NOT: { id: currentMemberId },
         }
-    : searchFilter
+    : { ...searchFilter, deactivated: false }
 
   const [total, members] = await Promise.all([
     prisma.member.count({ where: whereClause }),
@@ -110,7 +113,7 @@ export default async function CommunityPage({ searchParams }: Props) {
                     <div className={`relative w-full aspect-square  overflow-hidden bg-muted ${isBlocked ? "ring-2 ring-red-500" : "ring-2 ring-green-500"}`}>
                       {member.image ? (
                         <Image
-                          src={member.image}
+                          src={generateSasUrl(member.image) ?? member.image}
                           alt={member.displayName}
                           fill
                           className="object-cover"

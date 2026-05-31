@@ -2,6 +2,7 @@ import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { auth } from "@/lib/auth"
 import prisma from "@/lib/prisma"
+import { generateSasUrl } from "@/lib/azure"
 import { UserStoreInitializer } from "@/components/UserStoreInitializer"
 import { Header } from "./Header"
 import { IncomingCallListener } from "./IncomingCallListener"
@@ -20,11 +21,11 @@ export default async function ProtectedLayout({
 
   const member = await prisma.member.findUnique({
     where: { userId: session.user.id },
-    select: { id: true, displayName: true, image: true },
+    select: { id: true, displayName: true, image: true, deactivated: true },
   })
 
   const name = member ? member.displayName : (session.user.name ?? null)
-  const image = member ? member.image : (session.user.image ?? null)
+  const image = generateSasUrl(member ? member.image : (session.user.image ?? null))
 
   const [unreadMessages, unreadLikes] = member
     ? await Promise.all([
@@ -40,7 +41,7 @@ export default async function ProtectedLayout({
 
   return (
     <div className="min-h-screen flex flex-col">
-      <UserStoreInitializer name={name} image={image} unreadCount={unreadCount} />
+      <UserStoreInitializer name={name} image={image} unreadCount={unreadCount} deactivated={member?.deactivated ?? false} />
       <PresenceProvider />
       <Header />
       {member && <IncomingCallListener currentMemberId={member.id} />}

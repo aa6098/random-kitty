@@ -11,7 +11,7 @@ export const blobServiceClient = BlobServiceClient.fromConnectionString(
 
 export const containerName = process.env.AZURE_STORAGE_CONTAINER_NAME!
 
-export function generateSasUrl(blobUrl: string | null | undefined, expiresInMinutes = 60): string | null {
+export function generateSasUrl(blobUrl: string | null | undefined, expiresInMinutes = 15): string | null {
   if (!blobUrl) return null
   const conn = process.env.AZURE_STORAGE_CONNECTION_STRING!
   const parts = conn.split(";").reduce<Record<string, string>>((acc, part) => {

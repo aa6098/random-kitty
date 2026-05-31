@@ -1,8 +1,8 @@
 "use client"
 
 import { useActionState, useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { saveMemberAction, type MemberActionState, type FieldErrors } from "./actions"
-import { useUserStore } from "@/lib/stores/userStore"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -28,6 +28,7 @@ type MemberData = {
   description: string
   whatareWelookingFor: string | null
   location: LocationOption
+  deactivated: boolean
 }
 
 type Props = {
@@ -40,14 +41,14 @@ export function MemberForm({ member, previewImageUrl }: Props) {
     saveMemberAction,
     null
   )
-  const setUser = useUserStore((s) => s.setUser)
+  const router = useRouter()
   const [clearedErrors, setClearedErrors] = useState<Set<keyof FieldErrors>>(new Set())
 
   useEffect(() => {
-    if (state?.success && state.name !== undefined) {
-      setUser(state.name, state.image ?? null)
+    if (state?.success) {
+      router.refresh()
     }
-  }, [state, setUser])
+  }, [state, router])
 
   useEffect(() => {
     setClearedErrors(new Set())
@@ -67,13 +68,26 @@ export function MemberForm({ member, previewImageUrl }: Props) {
   return (
     <form action={action} encType="multipart/form-data">
       <Card>
-        <CardHeader>
-          <CardTitle>{isEdit ? "Edit Profile" : "Create Profile"}</CardTitle>
-          <CardDescription>
-            {isEdit
-              ? "Update your member profile information."
-              : "Set up your member profile to get started."}
-          </CardDescription>
+        <CardHeader className="flex-row items-start justify-between">
+          <div className="flex flex-col space-y-1.5">
+            <CardTitle>{isEdit ? "Edit Profile" : "Create Profile"}</CardTitle>
+            <CardDescription>
+              {isEdit
+                ? "Update your member profile information."
+                : "Set up your member profile to get started."}
+            </CardDescription>
+          </div>
+          {isEdit && (
+            <label className="flex items-center gap-2 text-sm font-medium cursor-pointer select-none shrink-0">
+              <input
+                type="checkbox"
+                name="deactivated"
+                defaultChecked={member?.deactivated ?? false}
+                className="size-4 rounded border-border accent-destructive cursor-pointer"
+              />
+              Temporarily Deactivate Account
+            </label>
+          )}
         </CardHeader>
 
         <CardContent className="space-y-2">

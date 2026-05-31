@@ -40,6 +40,7 @@ export default async function MemberPage() {
                 description: member.description,
                 whatareWelookingFor: member.whatareWelookingFor,
                 location: member.location,
+                deactivated: member.deactivated,
               }
             : null
         }

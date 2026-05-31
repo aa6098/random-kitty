@@ -7,11 +7,13 @@ type Props = {
   name: string | null
   image: string | null
   unreadCount: number
+  deactivated: boolean
 }
 
-export function UserStoreInitializer({ name, image, unreadCount }: Props) {
+export function UserStoreInitializer({ name, image, unreadCount, deactivated }: Props) {
   const setUser = useUserStore((s) => s.setUser)
   const setUnreadCount = useUserStore((s) => s.setUnreadCount)
+  const setDeactivated = useUserStore((s) => s.setDeactivated)
   const initialized = useRef(false)
 
   // Set user info once on first render (synchronous so Header has it on first paint)
@@ -19,12 +21,21 @@ export function UserStoreInitializer({ name, image, unreadCount }: Props) {
     initialized.current = true
     setUser(name, image)
     setUnreadCount(unreadCount)
+    setDeactivated(deactivated)
   }
 
-  // Re-sync unreadCount whenever the server sends a new value (e.g. after router.refresh())
+  // Re-sync all fields whenever the server sends new values (e.g. after router.refresh())
+  useEffect(() => {
+    setUser(name, image)
+  }, [name, image, setUser])
+
   useEffect(() => {
     setUnreadCount(unreadCount)
   }, [unreadCount, setUnreadCount])
+
+  useEffect(() => {
+    setDeactivated(deactivated)
+  }, [deactivated, setDeactivated])
 
   return null
 }

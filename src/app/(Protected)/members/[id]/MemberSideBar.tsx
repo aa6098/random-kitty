@@ -3,6 +3,7 @@ import { MemberSideBarTabs } from "./MemberSideBarTabs"
 import { VideoCall } from "./messages/VideoCall"
 import { BlockMemberButton } from "./BlockMemberButton"
 import { LikeButton } from "./LikeButton"
+import { MemberAvatar } from "./MemberAvatar"
 
 type Props = {
   member: {
@@ -31,13 +32,7 @@ export function MemberSideBar({ member, currentMemberId, isBlocked, isLiked }: P
         </div>
       )}
       <div className="flex flex-col items-center gap-3 p-2">
-        <div className="size-45 rounded-full overflow-hidden bg-muted ring-2 ring-border">
-          <img
-            src={member.image ?? "/defaultProfile.jpg"}
-            alt={member.displayName}
-            className="size-full object-cover"
-          />
-        </div>
+        <MemberAvatar src={member.image} alt={member.displayName} />
         <div className="flex flex-col items-center gap-1 text-center">
           <p className="text-lg font-semibold leading-tight">{member.displayName}</p>
           <p className="flex items-center gap-1 text-sm text-muted-foreground">

@@ -2,6 +2,7 @@ import { headers } from "next/headers"
 import { notFound } from "next/navigation"
 import { auth } from "@/lib/auth"
 import prisma from "@/lib/prisma"
+import { generateSasUrl } from "@/lib/azure"
 import { MemberSideBar } from "./MemberSideBar"
 
 type Props = {
@@ -54,7 +55,7 @@ export default async function MemberLayout({ children, params }: Props) {
 
   return (
     <div className="mx-auto w-full max-w-[1130px] flex flex-1 flex-col md:flex-row gap-6 px-4 py-6">
-      <MemberSideBar member={member} currentMemberId={currentMember?.id ?? null} isBlocked={isBlocked} isLiked={isLiked} />
+      <MemberSideBar member={{ ...member, image: generateSasUrl(member.image) }} currentMemberId={currentMember?.id ?? null} isBlocked={isBlocked} isLiked={isLiked} />
       <div className="flex-1 min-w-0">{children}</div>
     </div>
   )

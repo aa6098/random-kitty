@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { HeartIcon } from "@phosphor-icons/react"
+import { Spinner } from "@/components/ui/spinner"
 import { toggleLike } from "@/app/(Protected)/memberhome/actions"
 
 type Props = {
@@ -33,11 +34,15 @@ export function LikeButton({ memberId, isLiked: initialLiked }: Props) {
       aria-label={liked ? "Unlike" : "Like"}
       className="p-1.5 rounded-full transition-transform hover:scale-110 disabled:opacity-50 hover:bg-muted"
     >
-      <HeartIcon
-        size={22}
-        weight={liked ? "fill" : "regular"}
-        className={liked ? "text-rose-500" : "text-muted-foreground"}
-      />
+      {pending ? (
+        <Spinner size="default" className="text-muted-foreground" />
+      ) : (
+        <HeartIcon
+          size={22}
+          weight={liked ? "fill" : "regular"}
+          className={liked ? "text-rose-500" : "text-muted-foreground"}
+        />
+      )}
     </button>
   )
 }

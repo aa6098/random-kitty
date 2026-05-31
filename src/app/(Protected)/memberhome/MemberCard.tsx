@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { MapPinIcon, HeartIcon } from "@phosphor-icons/react"
+import { Spinner } from "@/components/ui/spinner"
 import { toggleLike } from "./actions"
 
 type Props = {
@@ -46,7 +47,7 @@ export function MemberCard({ id, displayName, image, location, distanceMiles, is
           />
 
           {/* Online indicator */}
-          <div className="absolute top-2 right-2 z-10">
+          <div className="absolute top-2 right-2">
             <div className="relative flex items-center justify-center group/dot">
               <span
                 className={[
@@ -62,7 +63,7 @@ export function MemberCard({ id, displayName, image, location, distanceMiles, is
             </div>
           </div>
 
-          <CardContent className="absolute bottom-0 left-0 right-0 p-3 space-y-0.5 bg-white/5 backdrop-blur-[2px]">
+          <CardContent className="absolute bottom-0 left-0 right-0 p-3 space-y-0.5 bg-white/5 backdrop-blur-[1px]">
             <p className="text-base font-bold leading-snug truncate text-white">{displayName}</p>
             <p className="flex items-center gap-1 text-xs truncate text-white">
               <MapPinIcon size={12} />
@@ -84,11 +85,15 @@ export function MemberCard({ id, displayName, image, location, distanceMiles, is
             aria-label={liked ? "Unlike" : "Like"}
             className="absolute bottom-2 right-2 z-10 p-1 rounded-full transition-transform hover:scale-110 disabled:opacity-50"
           >
-            <HeartIcon
-              size={22}
-              weight={liked ? "fill" : "regular"}
-              className={liked ? "text-rose-500" : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"}
-            />
+            {pending ? (
+              <Spinner size="default" className="text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
+            ) : (
+              <HeartIcon
+                size={22}
+                weight={liked ? "fill" : "regular"}
+                className={liked ? "text-rose-500" : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"}
+              />
+            )}
           </button>
         </div>
       </Card>

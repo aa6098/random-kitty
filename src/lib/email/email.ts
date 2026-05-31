@@ -16,6 +16,32 @@ function fromAddress() {
   return name ? `"${name}" <${email}>` : email;
 }
 
+export async function sendResetPasswordEmail(to: string, url: string) {
+  if (!process.env.SMTP_HOST) {
+    console.log(`[DEV] Password reset email for ${to}: ${url}`);
+    return;
+  }
+
+  await transporter.sendMail({
+    from: fromAddress(),
+    to,
+    subject: "Reset your password",
+    html: `
+      <div style="font-family:sans-serif;max-width:480px;margin:0 auto">
+        <h2>Reset your password</h2>
+        <p>We received a request to reset the password for your account.</p>
+        <p>Click the button below to choose a new password. This link expires in 1 hour.</p>
+        <a href="${url}" style="display:inline-block;padding:10px 20px;background:#000;color:#fff;text-decoration:none;border-radius:4px">
+          Reset Password
+        </a>
+        <p style="margin-top:16px;color:#666;font-size:13px">
+          If you did not request a password reset, you can safely ignore this email.
+        </p>
+      </div>
+    `,
+  });
+}
+
 export async function sendVerificationEmail(to: string, url: string) {
   if (!process.env.SMTP_HOST) {
     console.log(`[DEV] Verification email for ${to}: ${url}`);

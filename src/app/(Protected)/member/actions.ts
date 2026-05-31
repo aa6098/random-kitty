@@ -32,6 +32,7 @@ export async function saveMemberAction(
   const whatareWelookingFor = (formData.get("whatareWelookingFor") as string)?.trim()
   const locationId = (formData.get("locationId") as string)?.trim()
   const imageUrl = (formData.get("imageUrl") as string | null)?.trim() || undefined
+  const deactivated = formData.get("deactivated") === "on"
 
   const fieldErrors: FieldErrors = {}
   if (!displayName) fieldErrors.displayName = "Display name is required."
@@ -61,6 +62,7 @@ export async function saveMemberAction(
         description,
         whatareWelookingFor,
         locationId,
+        deactivated,
         ...(imageUrl !== undefined && { image: imageUrl }),
       },
       create: {
@@ -99,6 +101,40 @@ export async function deletePhotoAction(
     return {}
   } catch {
     return { error: "Failed to delete photo." }
+  }
+}
+
+export async function cancelAccountAction(
+  option: "deactivate" | "cancel"
+): Promise<{ error?: string }> {
+  const session = await auth.api.getSession({ headers: await headers() })
+  if (!session) return { error: "Not authenticated." }
+
+  try {
+    if (option === "deactivate") {
+      await prisma.member.update({
+        where: { userId: session.user.id },
+        data: { deactivated: true },
+      })
+      revalidatePath("/member")
+    } else {
+      await prisma.$transaction([
+        prisma.user.update({
+          where: { id: session.user.id },
+          data: {
+            email: `deleted${session.user.email}`,
+            emailVerified: false,
+          },
+        }),
+        prisma.member.update({
+          where: { userId: session.user.id },
+          data: { deactivated: true },
+        }),
+      ])
+    }
+    return {}
+  } catch {
+    return { error: "Failed to update account. Please try again." }
   }
 }
 
