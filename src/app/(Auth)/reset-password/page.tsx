@@ -6,10 +6,11 @@ import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { authClient } from "@/lib/auth-client"
+import { string } from "better-auth"
 
 function ResetPasswordContent() {
   const searchParams = useSearchParams()
-  const token = searchParams.get("token")
+  const token = searchParams.get("token")?? undefined
 
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
@@ -75,7 +76,7 @@ function ResetPasswordContent() {
 
     const { error: resetError } = await authClient.resetPassword({
       newPassword: password,
-      token,
+      token
     })
 
     if (resetError) {
