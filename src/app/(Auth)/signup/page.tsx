@@ -306,6 +306,7 @@ export default function SignUpPage() {
         alt=""
         className="hidden md:block md:w-1/2 h-screen object-contain"
       />
+      
     </div>
   );
 }
