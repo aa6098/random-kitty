@@ -10,7 +10,7 @@ export const auth = betterAuth({
     }),
   trustedOrigins: [
     'https://random-kitty.vercel.app',
-    'https://random-kitty.com/',
+    'https://www.random-kitty.com/',
     `https://${process.env.VERCEL_URL}` // Dynamically trusts Vercel preview domains
   ],
 
