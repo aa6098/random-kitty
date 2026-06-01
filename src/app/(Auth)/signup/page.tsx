@@ -141,7 +141,7 @@ export default function SignUpPage() {
           </div>
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        
+
         <img
           src="/registerPage2.jpg"
           alt=""
@@ -157,7 +157,7 @@ export default function SignUpPage() {
       <div className="flex flex-1 items-center justify-center bg-zinc-50 dark:bg-black px-4 overflow-y-auto">
         <div className="w-full max-w-sm py-16">
           <h1 className="mb-8 text-2xl font-semibold tracking-tight text-black dark:text-zinc-50">
-            Create account
+            Create Account
           </h1>
 
           <form onSubmit={handleSubmit} noValidate className="space-y-5">
