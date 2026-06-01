@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import EmailCaptureForm from "@/app/EmailCaptureForm";
 import logo from "@/app/logo.png";
 import {
   ChatIcon,
@@ -120,8 +121,8 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/92 via-black/65 to-black/20" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#100909] via-transparent to-black/30" />
 
-        <div className="relative z-10 mx-auto max-w-6xl w-full px-6 pt-20 pb-24 grid lg:grid-cols-2 gap-16 items-center">
-
+        <div className="relative z-10 mx-auto max-w-6xl w-full px-6 pt-20 pb-24 grid lg:grid-cols-1 gap-16 items-center">
+{/* <div></div> */}
           {/* Left — copy */}
           <div>
             <span className="inline-flex items-center gap-1.5 mb-6 px-3 py-1 rounded-full bg-rose-600/20 border border-rose-500/25 text-rose-300 text-[11px] font-semibold tracking-widest uppercase">
@@ -171,13 +172,13 @@ export default function HomePage() {
             </ul>
           </div>
 
-          {/* Right — decorative member grid */}
+          {/* Right — decorative member grid
           <div className="hidden lg:grid grid-cols-2 gap-3 opacity-90">
             <MockCard name="Alex & Jamie" city="Austin, TX" dist="3 mi" liked online />
             <MockCard name="Sam & Riley" city="Denver, CO" dist="8 mi" liked={false} online={false} />
             <MockCard name="Casey & Morgan" city="Austin, TX" dist="12 mi" liked={false} online />
             <MockCard name="Jordan & Taylor" city="Austin, TX" dist="5 mi" liked online={false} />
-          </div>
+          </div> */}
         </div>
 
         {/* Scroll hint */}
@@ -355,6 +356,18 @@ export default function HomePage() {
           <p className="mt-5 text-white/20 text-xs">
             18+ only · Free to join · No credit card required
           </p>
+        </div>
+      </section>
+
+      {/* ── Email capture ── */}
+      <section className="py-20 bg-black/50 border-t border-white/5">
+        <div className="mx-auto max-w-xl px-6 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-2 tracking-tight">Stay in the loop</h2>
+          <p className="text-white/40 text-sm mb-8">
+            Get updates on new features, community events, and couples near you.
+          </p>
+          <EmailCaptureForm />
+          <p className="mt-4 text-white/20 text-xs">No spam. Unsubscribe any time.</p>
         </div>
       </section>
 

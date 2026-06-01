@@ -35,11 +35,11 @@ export function MemberTabs({ member, previewImageUrl, initialPhotos }: Props) {
   return (
     <div className="space-y-4">
       {!member && (
-        <div className="flex items-start gap-3 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3.5 text-sm">
+        <div className="flex items-start gap-3 rounded-lg border border-amber-600/30 bg-amber-100/10 px-4 py-3.5 text-sm">
           <WarningIcon weight="fill" size={18} className="text-amber-400 shrink-0 mt-0.5" />
           <div className="flex-1 min-w-0">
-            <p className="font-semibold text-amber-200">Complete your profile to unlock the platform</p>
-            <p className="text-amber-300/70 mt-0.5 leading-relaxed">
+            <p className="font-semibold text-amber-600">Complete your profile to unlock the platform</p>
+            <p className="text-amber-600/70 mt-0.5 leading-relaxed">
               Fill in your display name, description, and location below, then save. Once your profile is created, you&apos;ll have full access to Home, Notifications, and Community.
             </p>
           </div>
