@@ -27,11 +27,11 @@ function FeatureCard({
   body: string;
 }) {
   return (
-    <div className="group flex gap-4 p-6 rounded-2xl border border-white/8 bg-white/[0.03] hover:bg-white/[0.06] hover:border-rose-500/25 transition-all duration-200">
+    <div className="group flex gap-4 p-6 rounded-2xl border border-border/20 bg-foreground/[0.03] hover:bg-foreground/[0.06] hover:border-rose-500/25 transition-all duration-200">
       <span className="shrink-0 mt-0.5 text-rose-400">{icon}</span>
       <div>
-        <h3 className="font-semibold text-white mb-1.5">{title}</h3>
-        <p className="text-white/50 text-sm leading-relaxed">{body}</p>
+        <h3 className="font-semibold text-foreground mb-1.5">{title}</h3>
+        <p className="text-muted-foreground text-sm leading-relaxed">{body}</p>
       </div>
     </div>
   );
@@ -52,7 +52,7 @@ function MockCard({
   online: boolean;
 }) {
   return (
-    <div className="relative rounded-2xl overflow-hidden bg-white/5 border border-white/8 select-none">
+    <div className="relative rounded-2xl overflow-hidden bg-foreground/5 border border-border/20 select-none">
       <div className="aspect-[3/4] bg-gradient-to-br from-rose-900/30 via-zinc-800 to-zinc-900" />
       {/* online dot */}
       <span
@@ -66,13 +66,13 @@ function MockCard({
         <HeartIcon
           weight={liked ? "fill" : "regular"}
           size={20}
-          className={liked ? "text-rose-500" : "text-white/60"}
+          className={liked ? "text-rose-500" : "text-foreground/60"}
         />
       </span>
       {/* caption */}
       <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
-        <p className="font-bold text-white text-sm leading-tight">{name}</p>
-        <p className="text-white/60 text-xs flex items-center gap-1 mt-0.5">
+        <p className="font-bold text-foreground text-sm leading-tight">{name}</p>
+        <p className="text-foreground/60 text-xs flex items-center gap-1 mt-0.5">
           <MapPinIcon size={10} /> {city} · {dist}
         </p>
       </div>
@@ -83,24 +83,24 @@ function MockCard({
 // ── Page ─────────────────────────────────────────────────────────────────────
 export default function HomePage() {
   return (
-    <div className="flex flex-col min-h-screen bg-[#100909] text-white">
+    <div className="flex flex-col min-h-screen bg-background text-foreground">
 
       {/* ── Fixed nav ── */}
-      <header className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 h-14 bg-black/70 backdrop-blur-md border-b border-white/5">
+      <header className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 h-14 bg-background/70 backdrop-blur-md border-b border-border/10">
         <Link href="/" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
           <Image src={logo} alt="Random Kitty" width={36} height={36} />
-          <span className="font-semibold text-white hidden sm:block tracking-tight">Random Kitty</span>
+          <span className="font-semibold text-foreground hidden sm:block tracking-tight">Random Kitty</span>
         </Link>
         <nav className="flex items-center gap-2">
           <Link
             href="/signin"
-            className="text-sm text-white/60 hover:text-white px-4 py-2 rounded-lg hover:bg-white/5 transition-all"
+            className="text-sm text-foreground/60 hover:text-foreground px-4 py-2 rounded-lg hover:bg-foreground/5 transition-all"
           >
             Sign In
           </Link>
           <Link
             href="/signup"
-            className="text-sm font-semibold px-5 py-2 rounded-full bg-rose-600 hover:bg-rose-500 text-white transition-colors shadow-lg shadow-rose-900/30"
+            className="text-sm font-semibold px-5 py-2 rounded-full bg-rose-600 hover:bg-rose-500 text-foreground transition-colors shadow-lg shadow-rose-900/30"
           >
             Join Free
           </Link>
@@ -119,7 +119,7 @@ export default function HomePage() {
         />
         {/* Gradient overlays */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/92 via-black/65 to-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#100909] via-transparent to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-black/30" />
 
         <div className="relative z-10 mx-auto max-w-6xl w-full px-6 pt-20 pb-24 grid lg:grid-cols-1 gap-16 items-center">
 {/* <div></div> */}
@@ -130,7 +130,7 @@ export default function HomePage() {
               Private · Discreet · 18+
             </span>
 
-            <h1 className="text-5xl sm:text-6xl font-bold leading-[1.08] tracking-tight mb-5">
+            <h1 className="text-5xl sm:text-6xl font-bold  leading-[1.08] tracking-tight mb-5">
               The social club
               <br />
               for adventurous
@@ -138,27 +138,27 @@ export default function HomePage() {
               <span className="text-rose-400">couples.</span>
             </h1>
 
-            <p className="text-lg text-white/65 leading-relaxed mb-8 max-w-md">
+            <p className="text-lg text-foreground/65 leading-relaxed mb-8 max-w-md">
               Chat, video call, and connect with like-minded married and partnered couples near you — privately and on your own terms.
             </p>
 
             <div className="flex flex-wrap gap-3 mb-10">
               <Link
                 href="/signup"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-rose-600 hover:bg-rose-500 font-semibold text-white transition-colors shadow-xl shadow-rose-900/40"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-rose-600 hover:bg-rose-500 font-semibold text-foreground transition-colors shadow-xl shadow-rose-900/40"
               >
                 <UsersThreeIcon weight="fill" size={18} />
                 Create a Couple Profile
               </Link>
               <Link
                 href="/signin"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-white/15 text-white/75 hover:text-white hover:bg-white/5 font-semibold transition-all"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/30 text-foreground/75 hover:text-foreground hover:bg-foreground/5 font-semibold transition-all"
               >
                 Sign In
               </Link>
             </div>
 
-            <ul className="flex flex-col gap-2 text-sm text-white/45">
+            <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
               {[
                 "Free to join — no credit card needed",
                 "Couples-only community, verified profiles",
@@ -182,14 +182,14 @@ export default function HomePage() {
         </div>
 
         {/* Scroll hint */}
-        <div className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/25 text-xs pointer-events-none">
+        <div className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-foreground/25 text-xs pointer-events-none">
           <span>Scroll</span>
           <span className="animate-bounce text-rose-400/60">↓</span>
         </div>
       </section>
 
       {/* ── Stats bar ── */}
-      <section className="bg-black/60 border-y border-white/5 py-7">
+      {/* <section className="bg-background/60 border-y border-border/10 py-7">
         <div className="mx-auto max-w-5xl px-6 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
           {[
             { value: "50K+", label: "Couples" },
@@ -199,11 +199,11 @@ export default function HomePage() {
           ].map(({ value, label }) => (
             <div key={label}>
               <p className="text-2xl font-bold text-rose-400 mb-0.5">{value}</p>
-              <p className="text-[11px] uppercase tracking-widest text-white/35">{label}</p>
+              <p className="text-[11px] uppercase tracking-widest text-muted-foreground">{label}</p>
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* ── Features ── */}
       <section className="py-24">
@@ -215,7 +215,7 @@ export default function HomePage() {
             <h2 className="text-3xl sm:text-4xl font-bold mb-3 tracking-tight">
               Everything built for couples
             </h2>
-            <p className="text-white/45 max-w-md mx-auto text-sm leading-relaxed">
+            <p className="text-muted-foreground max-w-md mx-auto text-sm leading-relaxed">
               Every feature on the platform is designed around you and your partner as a unit — not individuals.
             </p>
           </div>
@@ -260,7 +260,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-5xl px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-3 tracking-tight">How it works</h2>
-            <p className="text-white/45 max-w-sm mx-auto text-sm">
+            <p className="text-muted-foreground max-w-sm mx-auto text-sm">
               From sign-up to real connection in three simple steps.
             </p>
           </div>
@@ -289,12 +289,12 @@ export default function HomePage() {
               <div key={n} className="flex flex-col items-center text-center gap-4">
                 <div className="relative w-16 h-16 flex items-center justify-center rounded-2xl bg-rose-600/10 border border-rose-500/20">
                   <span className="text-rose-400">{icon}</span>
-                  <span className="absolute -top-2.5 -right-2.5 w-5 h-5 rounded-full bg-rose-600 text-white text-[10px] font-bold flex items-center justify-center">
+                  <span className="absolute -top-2.5 -right-2.5 w-5 h-5 rounded-full bg-rose-600 text-foreground text-[10px] font-bold flex items-center justify-center">
                     {n}
                   </span>
                 </div>
-                <h3 className="font-semibold text-white">{title}</h3>
-                <p className="text-white/45 text-sm leading-relaxed">{body}</p>
+                <h3 className="font-semibold text-foreground">{title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{body}</p>
               </div>
             ))}
           </div>
@@ -302,7 +302,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Privacy strip ── */}
-      <section className="py-14 border-y border-white/5 bg-black/40">
+      <section className="py-14 border-y border-border/10 bg-background/40">
         <div className="mx-auto max-w-5xl px-6">
           <div className="grid sm:grid-cols-3 gap-8 text-center">
             {[
@@ -324,8 +324,8 @@ export default function HomePage() {
             ].map(({ icon, title, body }) => (
               <div key={title} className="flex flex-col items-center gap-3">
                 <span className="text-rose-400/80">{icon}</span>
-                <h3 className="font-semibold text-white/90 text-sm">{title}</h3>
-                <p className="text-white/35 text-sm leading-relaxed">{body}</p>
+                <h3 className="font-semibold text-foreground/90 text-sm">{title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{body}</p>
               </div>
             ))}
           </div>
@@ -334,7 +334,7 @@ export default function HomePage() {
 
       {/* ── CTA ── */}
       <section className="relative py-28 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-rose-950/60 via-[#100909] to-[#100909]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-rose-950/60 via-background to-background" />
         <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-rose-600/6 blur-3xl pointer-events-none" />
 
         <div className="relative z-10 mx-auto max-w-xl px-6 text-center">
@@ -343,46 +343,46 @@ export default function HomePage() {
             <br />
             <span className="text-rose-400">together?</span>
           </h2>
-          <p className="text-white/50 mb-9 leading-relaxed">
+          <p className="text-foreground/50 mb-9 leading-relaxed">
             Join thousands of couples already discovering and connecting on Random Kitty. Free to join, always discreet.
           </p>
           <Link
             href="/signup"
-            className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-rose-600 hover:bg-rose-500 font-bold text-white text-lg transition-colors shadow-2xl shadow-rose-900/50"
+            className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-rose-600 hover:bg-rose-500 font-bold text-foreground text-lg transition-colors shadow-2xl shadow-rose-900/50"
           >
             Join as a Couple
             <ArrowRightIcon weight="bold" size={20} />
           </Link>
-          <p className="mt-5 text-white/20 text-xs">
+          <p className="mt-5 text-foreground/20 text-xs">
             18+ only · Free to join · No credit card required
           </p>
         </div>
       </section>
 
       {/* ── Email capture ── */}
-      <section className="py-20 bg-black/50 border-t border-white/5">
+      <section className="py-20 bg-background/50 border-t border-border/10">
         <div className="mx-auto max-w-xl px-6 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold mb-2 tracking-tight">Stay in the loop</h2>
-          <p className="text-white/40 text-sm mb-8">
+          <p className="text-muted-foreground text-sm mb-8">
             Get updates on new features, community events, and couples near you.
           </p>
           <EmailCaptureForm />
-          <p className="mt-4 text-white/20 text-xs">No spam. Unsubscribe any time.</p>
+          <p className="mt-4 text-foreground/20 text-xs">No spam. Unsubscribe any time.</p>
         </div>
       </section>
 
       {/* ── Footer ── */}
-      <footer className="bg-black/80 border-t border-white/5 py-8">
-        <div className="mx-auto max-w-5xl px-6 flex flex-col sm:flex-row items-center justify-between gap-5 text-white/25 text-xs">
+      <footer className="bg-background/80 border-t border-border/10 py-8">
+        <div className="mx-auto max-w-5xl px-6 flex flex-col sm:flex-row items-center justify-between gap-5 text-foreground/25 text-xs">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <Image src={logo} alt="Random Kitty" width={24} height={24} className="opacity-60" />
-            <span className="font-semibold text-white/40">Random Kitty</span>
+            <span className="font-semibold text-foreground/40">Random Kitty</span>
           </Link>
           <p>© {new Date().getFullYear()} Random Kitty — The couples lifestyle community.</p>
           <nav className="flex items-center gap-5">
-            <Link href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
-            <Link href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
+            <Link href="/privacy" className="hover:text-foreground/60 transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-foreground/60 transition-colors">Terms</Link>
+            <Link href="/contact" className="hover:text-foreground/60 transition-colors">Contact</Link>
           </nav>
         </div>
       </footer>
