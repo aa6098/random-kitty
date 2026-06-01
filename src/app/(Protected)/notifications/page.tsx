@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import { auth } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { NotificationList, type UnifiedNotification } from "./NotificationList"
+import { generateSasUrl } from "@/lib/azure"
 
 export default async function NotificationsPage() {
   const session = await auth.api.getSession({ headers: await headers() })
@@ -46,7 +47,7 @@ export default async function NotificationsPage() {
       senderMap.set(msg.sender.id, {
         senderId: msg.sender.id,
         senderName: msg.sender.displayName,
-        senderImage: msg.sender.image,
+        senderImage: generateSasUrl(msg.sender.image),
         count: 1,
         latestMessage: msg.text,
         sortAt: msg.createdAt.toISOString(),
@@ -68,7 +69,7 @@ export default async function NotificationsPage() {
       likeId: l.id,
       likerId: l.likingMember!.id,
       likerName: l.likingMember!.displayName,
-      likerImage: l.likingMember!.image,
+      likerImage: generateSasUrl( l.likingMember!.image),
       sortAt: l.createdAt.toISOString(),
     }))
 
