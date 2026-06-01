@@ -57,5 +57,5 @@ export async function signInAction(
     })
   }
 
-  redirect("/memberhome")
+  redirect("/post-signin")
 }

@@ -1,5 +1,5 @@
 import { headers } from "next/headers"
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
 import { auth } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { NotificationList, type UnifiedNotification } from "./NotificationList"
@@ -13,7 +13,7 @@ export default async function NotificationsPage() {
     where: { userId: session.user.id },
     select: { id: true },
   })
-  if (!currentMember) notFound()
+  if (!currentMember) redirect("/member")
 
   const [unreadMessages, unreadLikes] = await Promise.all([
     prisma.message.findMany({

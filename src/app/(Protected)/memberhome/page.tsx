@@ -1,4 +1,5 @@
 import { headers } from "next/headers"
+import { redirect } from "next/navigation"
 import { auth } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { haversineDistance } from "@/lib/distance"
@@ -36,6 +37,9 @@ export default async function MemberHomePage({ searchParams }: Props) {
         select: { id: true, location: { select: { id: true, lat: true, lng: true } } },
       })
     : null
+
+  if (!currentMember) redirect("/member")
+
   const myLocation = currentMember?.location ?? null
   const currentMemberId = currentMember?.id ?? null
 

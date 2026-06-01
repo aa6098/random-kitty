@@ -41,7 +41,7 @@ export default async function ProtectedLayout({
 
   return (
     <div className="min-h-screen flex flex-col">
-      <UserStoreInitializer name={name} image={image} unreadCount={unreadCount} deactivated={member?.deactivated ?? false} />
+      <UserStoreInitializer name={name} image={image} unreadCount={unreadCount} deactivated={member?.deactivated ?? false} hasMember={!!member} />
       <PresenceProvider />
       <Header />
       {member && <IncomingCallListener currentMemberId={member.id} />}

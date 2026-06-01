@@ -1,6 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { headers } from "next/headers"
+import { redirect } from "next/navigation"
 import { auth } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { Card, CardContent } from "@/components/ui/card"
@@ -39,6 +40,9 @@ export default async function CommunityPage({ searchParams }: Props) {
         select: { id: true },
       })
     : null
+
+  if (!currentMember) redirect("/member")
+
   const currentMemberId = currentMember?.id ?? null
 
   const searchFilter = search ? { displayName: { contains: search, mode: "insensitive" as const } } : {}

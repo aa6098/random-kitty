@@ -30,10 +30,8 @@ export default function SignInPage() {
     const { error: signInError } = await authClient.signIn.email({
       email,
       password,
-      callbackURL: "/memberhome",
+      callbackURL: "/post-signin",
     })
-
-    
 
     if (signInError) {
       setPending(false)
@@ -41,7 +39,7 @@ export default function SignInPage() {
       return
     }
 
-    router.push("/memberhome")
+    router.push("/post-signin")
     router.refresh()
     setPending(false)
   }

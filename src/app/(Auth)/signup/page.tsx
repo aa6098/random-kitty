@@ -143,7 +143,7 @@ export default function SignUpPage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
 
         <img
-          src="/registerPage2.jpg"
+          src="/signuppage.jpg"
           alt=""
         className="hidden md:block md:w-1/2 h-screen object-cover"
         />

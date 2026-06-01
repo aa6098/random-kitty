@@ -28,20 +28,22 @@ function DesktopNav({ onSignOut, onCancelAccount }: { onSignOut: () => void; onC
   const unreadCount = useUserStore((s) => s.unreadCount)
   const missedCallCount = useUserStore((s) => s.missedCallCount)
   const deactivated = useUserStore((s) => s.deactivated)
+  const hasMember = useUserStore((s) => s.hasMember)
+  const navDisabled = !hasMember || deactivated
   const totalCount = unreadCount + missedCallCount
   const activeCls = "flex items-center gap-1.5 px-2 py-1 rounded hover:bg-primary-foreground/10 transition-colors text-sm font-medium"
   const disabledCls = "flex items-center gap-1.5 px-2 py-1 rounded text-sm font-medium opacity-40 cursor-not-allowed pointer-events-none"
   const menuItemCls = "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none"
   return (
     <nav className="hidden md:flex items-center gap-1 letter-spacing: 0.025em;">
-      {deactivated ? (
+      {navDisabled ? (
         <span className={disabledCls}><HouseIcon size={15} /> Home</span>
       ) : (
         <Link href="/memberhome" className={activeCls}>
           <HouseIcon size={15} /> Home
         </Link>
       )}
-      {deactivated ? (
+      {navDisabled ? (
         <span className={disabledCls}><BellIcon size={15} /> Notifications</span>
       ) : (
         <Link href="/notifications" className={activeCls}>
@@ -53,7 +55,7 @@ function DesktopNav({ onSignOut, onCancelAccount }: { onSignOut: () => void; onC
           )}
         </Link>
       )}
-      {deactivated ? (
+      {navDisabled ? (
         <span className={disabledCls}><UsersFourIcon size={15} /> Community</span>
       ) : (
         <Link href="/community" className={activeCls}>
@@ -93,6 +95,8 @@ function MobileNav({ open, onClose, onSignOut, onCancelAccount }: { open: boolea
   const unreadCount = useUserStore((s) => s.unreadCount)
   const missedCallCount = useUserStore((s) => s.missedCallCount)
   const deactivated = useUserStore((s) => s.deactivated)
+  const hasMember = useUserStore((s) => s.hasMember)
+  const navDisabled = !hasMember || deactivated
   const totalCount = unreadCount + missedCallCount
   const activeCls = "flex items-center gap-2 px-4 py-1 text-sm font-medium hover:font-bold hover:bg-primary/10 transition-colors"
   const disabledCls = "flex items-center gap-2 px-4 py-1 text-sm font-medium opacity-40 cursor-not-allowed pointer-events-none"
@@ -100,14 +104,14 @@ function MobileNav({ open, onClose, onSignOut, onCancelAccount }: { open: boolea
   return (
     <div className="md:hidden absolute top-14 left-0 right-0 z-40 bg-popover text-primary border-t border-primary-foreground/10 shadow-lg">
       <nav className="flex flex-col py-2">
-        {deactivated ? (
+        {navDisabled ? (
           <span className={disabledCls}><HouseIcon size={16} /> Home</span>
         ) : (
           <Link href="/memberhome" onClick={onClose} className={activeCls}>
             <HouseIcon size={16} /> Home
           </Link>
         )}
-        {deactivated ? (
+        {navDisabled ? (
           <span className={disabledCls}><BellIcon size={16} /> Notifications</span>
         ) : (
           <Link href="/notifications" onClick={onClose} className={activeCls}>
@@ -119,7 +123,7 @@ function MobileNav({ open, onClose, onSignOut, onCancelAccount }: { open: boolea
             )}
           </Link>
         )}
-        {deactivated ? (
+        {navDisabled ? (
           <span className={disabledCls}><UsersFourIcon size={16} /> Community</span>
         ) : (
           <Link href="/community" onClick={onClose} className={activeCls}>
