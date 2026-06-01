@@ -15,6 +15,7 @@ export const auth = betterAuth({
     `https://${process.env.VERCEL_URL}` // Dynamically trusts Vercel preview domains
   ],
 
+  
     emailAndPassword: {
         enabled: true,
         requireEmailVerification: true,
