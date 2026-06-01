@@ -141,6 +141,7 @@ export default function SignUpPage() {
           </div>
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
+        
         <img
           src="/registerPage2.jpg"
           alt=""
