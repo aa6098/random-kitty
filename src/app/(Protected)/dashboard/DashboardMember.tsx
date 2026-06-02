@@ -13,19 +13,24 @@ import { ChatPanel } from "./ChatPanel"
 
 type Photo = { id: string; url: string; thumburl: string }
 
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim()
+}
+
 function ExpandableText({ label, text }: { label: string; text: string }) {
   const ref = useRef<HTMLParagraphElement>(null)
   const [clamped, setClamped] = useState(false)
   const [open, setOpen] = useState(false)
+  const plain = stripHtml(text)
 
   useEffect(() => {
     const el = ref.current
     if (el) setClamped(el.scrollHeight > el.clientHeight)
-  }, [text])
+  }, [plain])
 
   return (
     <>
-      <p ref={ref} className="text-sm text-card-foreground line-clamp-2">{text}</p>
+      <p ref={ref} className="text-sm text-card-foreground line-clamp-2">{plain}</p>
       {clamped && (
         <button
           type="button"
@@ -55,7 +60,10 @@ function ExpandableText({ label, text }: { label: string; text: string }) {
                 <XIcon size={16} />
               </button>
             </div>
-            <p className="text-sm text-foreground leading-relaxed">{text}</p>
+            <div
+              className="text-sm text-foreground leading-relaxed prose prose-sm max-w-none"
+              dangerouslySetInnerHTML={{ __html: text }}
+            />
           </div>
         </div>
       )}
@@ -70,6 +78,7 @@ type Props = {
   description: string
   whatareWelookingFor: string | null
   location: { city: string; state: string }
+  distanceMiles?: number | null
   createdAt: Date
   photos: Photo[]
   isLiked?: boolean
@@ -171,6 +180,7 @@ export function DashboardMember({
   description,
   whatareWelookingFor,
   location,
+  distanceMiles,
   createdAt,
   photos,
   isLiked = false,
@@ -331,18 +341,18 @@ export function DashboardMember({
             ].join(" ")}
           >
             <div className="space-y-1 min-h-0">
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground flex items-center gap-1">
+              <p className="text-sm font-semibold tracking-wide text-muted-foreground flex items-center gap-1">
                 <InfoIcon size={12} />
-                About Us
+                About Us:
               </p>
               <ExpandableText label="About Us" text={description} />
             </div>
 
             {whatareWelookingFor && (
-              <div className="space-y-1 min-h-0">
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground flex items-center gap-1">
+              <div className="space-y-1 mt-1 min-h-0">
+                <p className="text-sm font-semibold  tracking-wide text-muted-foreground flex items-center gap-1">
                   <MagnifyingGlassIcon size={12} />
-                  What We Are Looking For
+                  What We Are Looking For:
                 </p>
                 <ExpandableText label="What We Are Looking For" text={whatareWelookingFor} />
               </div>
@@ -353,6 +363,12 @@ export function DashboardMember({
                 <MapPinIcon size={12} />
                 {location.city}, {location.state}
               </span>
+              {distanceMiles != null && (
+                <span className="flex items-center gap-1">
+                  <MapPinIcon size={12} />
+                  {distanceMiles < 1 ? "< 1 mi away" : `${Math.round(distanceMiles).toLocaleString()} mi away`}
+                </span>
+              )}
               <span className="flex items-center gap-1">
                 <CalendarIcon size={12} />
                 Member since {memberSince}

@@ -7,6 +7,9 @@ import prisma from "@/lib/prisma"
 import { pusherServer } from "@/lib/pusher"
 import { getChatChannel, getUserChannel } from "@/lib/pusherUtils"
 import { generateSasUrl } from "@/lib/azure"
+import { haversineDistance } from "@/lib/distance"
+import { getAllLocations } from "@/lib/locationCache"
+import { PAGE_SIZE, type DashboardMemberData } from "./types"
 
 async function getCurrentMember() {
   const session = await auth.api.getSession({ headers: await headers() })
@@ -32,8 +35,6 @@ export async function toggleLike(likedMemberId: string) {
   } else {
     await prisma.likes.create({ data: { LikedMemberId: likedMemberId, LikedById: liker.id, checked: true } })
   }
-
-  revalidatePath("/dashboard")
 }
 
 export async function toggleBlock(blockedMemberId: string) {
@@ -125,4 +126,90 @@ export async function sendChatMessage(recipientId: string, text: string): Promis
   ])
 
   return payload
+}
+
+export async function fetchMoreMembers(
+  skip: number,
+  distanceFilter: number,
+): Promise<DashboardMemberData[]> {
+  const current = await getCurrentMember()
+
+  const currentMemberFull = await prisma.member.findUnique({
+    where: { id: current.id },
+    select: { location: { select: { lat: true, lng: true } } },
+  })
+
+  const myLocation = currentMemberFull?.location ?? null
+  let nearbyLocationIds: string[] | undefined
+  const locationDistanceMap = new Map<string, number>()
+
+  if (myLocation) {
+    const allLocations = await getAllLocations()
+    for (const loc of allLocations) {
+      locationDistanceMap.set(loc.id, haversineDistance(myLocation.lat, myLocation.lng, loc.lat, loc.lng))
+    }
+    if (distanceFilter > 0) {
+      nearbyLocationIds = allLocations
+        .filter((loc) => (locationDistanceMap.get(loc.id) ?? Infinity) <= distanceFilter)
+        .map((loc) => loc.id)
+    }
+  }
+
+  const [members, likedRows] = await Promise.all([
+    prisma.member.findMany({
+      skip,
+      take: PAGE_SIZE,
+      select: {
+        id: true,
+        displayName: true,
+        image: true,
+        description: true,
+        whatareWelookingFor: true,
+        createdAt: true,
+        locationId: true,
+        location: { select: { city: true, state: true } },
+        photos: {
+          where: { delete: false },
+          select: { id: true, url: true, thumburl: true },
+        },
+      },
+      where: {
+        deactivated: false,
+        NOT: [
+          { id: current.id },
+          {
+            OR: [
+              { BlockedMembers: { some: { active: true, sourceMemberId: current.id } } },
+              { SourceMembers: { some: { active: true, blockedMemberId: current.id } } },
+            ],
+          },
+        ],
+        ...(nearbyLocationIds ? { locationId: { in: nearbyLocationIds } } : {}),
+      },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.likes.findMany({
+      where: { LikedById: current.id, checked: true },
+      select: { LikedMemberId: true },
+    }),
+  ])
+
+  const likedSet = new Set(likedRows.map((r) => r.LikedMemberId).filter(Boolean) as string[])
+
+  return members.map((m) => ({
+    id: m.id,
+    displayName: m.displayName,
+    image: generateSasUrl(m.image),
+    description: m.description,
+    whatareWelookingFor: m.whatareWelookingFor,
+    location: m.location,
+    distanceMiles: locationDistanceMap.get(m.locationId) ?? null,
+    createdAt: m.createdAt.toISOString(),
+    photos: m.photos.map((p) => ({
+      id: p.id,
+      url: generateSasUrl(p.url) ?? "",
+      thumburl: generateSasUrl(p.thumburl) ?? "",
+    })),
+    isLiked: likedSet.has(m.id),
+  }))
 }

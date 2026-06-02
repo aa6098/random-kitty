@@ -9,6 +9,8 @@ import { IncomingCallListener } from "./IncomingCallListener"
 import { MessageNotificationListener } from "./MessageNotificationListener"
 import { PresenceProvider } from "./PresenceProvider"
 import { GlobalChatPanel } from "./GlobalChatPanel"
+import { NavigationLoader } from "./NavigationLoader"
+import { LoadingOverlay } from "@/components/LoadingOverlay"
 
 export default async function ProtectedLayout({
   children,
@@ -48,6 +50,8 @@ export default async function ProtectedLayout({
       {member && <IncomingCallListener currentMemberId={member.id} />}
       {member && <MessageNotificationListener currentMemberId={member.id} />}
       {member && <GlobalChatPanel currentMemberId={member.id} />}
+      <NavigationLoader />
+      <LoadingOverlay />
       <main className="flex flex-1 flex-col">{children}</main>
     </div>
   )

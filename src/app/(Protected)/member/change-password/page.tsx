@@ -5,6 +5,19 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { authClient } from "@/lib/auth-client"
+import { CheckCircleIcon, XCircleIcon } from "@phosphor-icons/react"
+
+const PASSWORD_RULES = [
+  { label: "At least 10 characters", test: (p: string) => p.length >= 10 },
+  { label: "Uppercase letter (A–Z)", test: (p: string) => /[A-Z]/.test(p) },
+  { label: "Lowercase letter (a–z)", test: (p: string) => /[a-z]/.test(p) },
+  { label: "Number (0–9)",           test: (p: string) => /[0-9]/.test(p) },
+  { label: "Special character (!@#…)", test: (p: string) => /[^A-Za-z0-9]/.test(p) },
+]
+
+function isPasswordValid(p: string) {
+  return PASSWORD_RULES.every((r) => r.test(p))
+}
 
 export default function ChangePasswordPage() {
   const router = useRouter()
@@ -13,6 +26,7 @@ export default function ChangePasswordPage() {
   const [error, setError] = useState("")
   const [fieldErrors, setFieldErrors] = useState<{ currentPassword?: string; newPassword?: string; confirmPassword?: string }>({})
   const [show, setShow] = useState({ current: false, next: false, confirm: false })
+  const [newPassword, setNewPassword] = useState("")
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -23,8 +37,11 @@ export default function ChangePasswordPage() {
 
     const errors: typeof fieldErrors = {}
     if (!currentPassword) errors.currentPassword = "Current password is required."
-    if (!newPassword) errors.newPassword = "New password is required."
-    if (newPassword && newPassword.length < 8) errors.newPassword = "Password must be at least 8 characters."
+    if (!newPassword) {
+      errors.newPassword = "New password is required."
+    } else if (!isPasswordValid(newPassword)) {
+      errors.newPassword = "Password does not meet the requirements below."
+    }
     if (!confirmPassword) errors.confirmPassword = "Please confirm your new password."
     if (newPassword && confirmPassword && newPassword !== confirmPassword) errors.confirmPassword = "Passwords do not match."
 
@@ -85,8 +102,23 @@ export default function ChangePasswordPage() {
             autoComplete="new-password"
             show={show.next}
             onToggle={() => setShow((s) => ({ ...s, next: !s.next }))}
+            onChange={setNewPassword}
             error={fieldErrors.newPassword}
           />
+          {/* Password requirements checklist */}
+          <ul className="space-y-1 -mt-2">
+            {PASSWORD_RULES.map((rule) => {
+              const met = newPassword.length > 0 && rule.test(newPassword)
+              return (
+                <li key={rule.label} className={cn("flex items-center gap-1.5 text-xs", met ? "text-green-600 dark:text-green-400" : "text-muted-foreground")}>
+                  {met
+                    ? <CheckCircleIcon size={13} weight="fill" />
+                    : <XCircleIcon size={13} weight="fill" className="opacity-40" />}
+                  {rule.label}
+                </li>
+              )
+            })}
+          </ul>
 
           <PasswordField
             id="confirmPassword"
@@ -119,6 +151,7 @@ function PasswordField({
   autoComplete,
   show,
   onToggle,
+  onChange,
   error,
 }: {
   id: string
@@ -126,6 +159,7 @@ function PasswordField({
   autoComplete: string
   show: boolean
   onToggle: () => void
+  onChange?: (value: string) => void
   error?: string
 }) {
   return (
@@ -139,6 +173,7 @@ function PasswordField({
           name={id}
           type={show ? "text" : "password"}
           autoComplete={autoComplete}
+          onChange={onChange ? (e) => onChange(e.target.value) : undefined}
           className={cn(
             "w-full border bg-white dark:bg-zinc-900 px-3 py-2 pr-16 text-sm text-black dark:text-zinc-50 outline-none",
             "focus:ring-1 focus:ring-ring",

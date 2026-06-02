@@ -5,6 +5,7 @@ import Cropper from "cropperjs"
 import "cropperjs/dist/cropper.css"
 import { Button } from "@/components/ui/button"
 import { CameraPlusIcon, TrashIcon, CheckIcon, XIcon } from "@phosphor-icons/react"
+import { useLoadingStore } from "@/lib/stores/loadingStore"
 
 const DEFAULT_IMAGE = "/defaultProfile.jpg"
 
@@ -17,6 +18,13 @@ export function ImageUpload({ currentImage, previewUrl }: Props) {
   const [preview, setPreview] = useState<string | null>(previewUrl ?? currentImage ?? null)
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(currentImage ?? null)
   const [uploading, setUploading] = useState(false)
+  const show = useLoadingStore((s) => s.show)
+  const hide = useLoadingStore((s) => s.hide)
+
+  useEffect(() => {
+    if (uploading) show("Uploading image…")
+    else hide()
+  }, [uploading])
   const [uploadError, setUploadError] = useState<string | null>(null)
   const [cropSrc, setCropSrc] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)

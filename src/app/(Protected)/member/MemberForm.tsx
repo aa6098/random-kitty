@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { saveMemberAction, type MemberActionState, type FieldErrors } from "./actions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { RichTextEditor } from "@/components/ui/rich-text-editor"
 import { Label } from "@/components/ui/label"
 import {
   Card,
@@ -18,6 +18,7 @@ import {
 import { ImageUpload } from "./ImageUpload"
 import { LocationPicker } from "./LocationPicker"
 import { CheckCircleIcon, WarningCircleIcon } from "@phosphor-icons/react"
+import { useLoadingStore } from "@/lib/stores/loadingStore"
 
 type LocationOption = { id: string; city: string; state: string; zip: string }
 
@@ -43,6 +44,13 @@ export function MemberForm({ member, previewImageUrl }: Props) {
   )
   const router = useRouter()
   const [clearedErrors, setClearedErrors] = useState<Set<keyof FieldErrors>>(new Set())
+  const show = useLoadingStore((s) => s.show)
+  const hide = useLoadingStore((s) => s.hide)
+
+  useEffect(() => {
+    if (pending) show()
+    else hide()
+  }, [pending])
 
   useEffect(() => {
     if (state?.success) {
@@ -147,13 +155,11 @@ export function MemberForm({ member, previewImageUrl }: Props) {
             <Label className="font-bold" htmlFor="description">
               About Us <span className="text-destructive">*</span>
             </Label>
-            <Textarea
-              id="description"
+            <RichTextEditor
               name="description"
               maxLength={1000}
               defaultValue={member?.description ?? ""}
               placeholder="Tell us about yourself."
-              className="min-h-[120px]"
               aria-invalid={!!fieldError("description")}
               onChange={() => clearError("description")}
             />
@@ -170,13 +176,11 @@ export function MemberForm({ member, previewImageUrl }: Props) {
             <Label className="font-bold" htmlFor="whatareWelookingFor">
               What Are We Looking For <span className="text-destructive">*</span>
             </Label>
-            <Textarea
-              id="whatareWelookingFor"
+            <RichTextEditor
               name="whatareWelookingFor"
+              maxLength={1000}
               defaultValue={member?.whatareWelookingFor ?? ""}
               placeholder="Describe what you're looking for."
-              className="min-h-[120px]"
-              maxLength={1000}
               aria-invalid={!!fieldError("whatareWelookingFor")}
               onChange={() => clearError("whatareWelookingFor")}
             />

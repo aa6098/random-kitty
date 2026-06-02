@@ -52,7 +52,10 @@ export function MemberDetailTabs({ description, whatareWelookingFor, location, c
                 <InfoIcon size={12} />
                 About Us
               </p>
-              <p className="text-sm text-card-foreground">{description}</p>
+              <div
+                className="text-sm text-card-foreground prose prose-sm max-w-none"
+                dangerouslySetInnerHTML={{ __html: description }}
+              />
             </div>
 
             {whatareWelookingFor && (
@@ -61,7 +64,10 @@ export function MemberDetailTabs({ description, whatareWelookingFor, location, c
                   <MagnifyingGlassIcon size={12} />
                   What We Are Looking For
                 </p>
-                <p className="text-sm text-card-foreground">{whatareWelookingFor}</p>
+                <div
+                  className="text-sm text-card-foreground prose prose-sm max-w-none"
+                  dangerouslySetInnerHTML={{ __html: whatareWelookingFor }}
+                />
               </div>
             )}
 

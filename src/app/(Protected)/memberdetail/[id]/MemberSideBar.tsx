@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { MapPinIcon, CalendarIcon, HeartIcon, ProhibitIcon, ChatCircleIcon, VideoCameraIcon } from "@phosphor-icons/react"
+import { MapPinIcon, CalendarIcon, HeartIcon, ProhibitIcon, ChatCircleIcon, VideoCameraIcon, XIcon } from "@phosphor-icons/react"
 import { VideoCall } from "@/components/VideoCall"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { useUserStore } from "@/lib/stores/userStore"
@@ -27,6 +27,7 @@ export function MemberSideBar({ member, currentMemberId, isLiked, isBlocked }: P
   const [likePending, setLikePending] = useState(false)
   const [blockPending, setBlockPending] = useState(false)
   const [blockConfirmOpen, setBlockConfirmOpen] = useState(false)
+  const [imageOpen, setImageOpen] = useState(false)
 
   async function handleLike() {
     if (likePending) return
@@ -57,13 +58,18 @@ export function MemberSideBar({ member, currentMemberId, isLiked, isBlocked }: P
       <aside className="flex flex-col w-full md:w-72 shrink-0 rounded-xl border border-border bg-card overflow-hidden">
         {/* Profile header — image, name, location in flex-col */}
         <div className="flex flex-col items-center gap-2 p-5 pb-3">
-          <div className="w-[200px] h-[200px] rounded-full overflow-hidden bg-muted shrink-0">
+          <button
+            type="button"
+            onClick={() => setImageOpen(true)}
+            className="w-[200px] h-[200px] rounded-full overflow-hidden bg-muted shrink-0 cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            aria-label="View full image"
+          >
             <img
               src={member.image ?? "/defaultProfile.jpg"}
               alt={member.displayName}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover hover:opacity-90 transition-opacity"
             />
-          </div>
+          </button>
           <p className="text-base font-semibold leading-tight text-card-foreground text-center">
             {member.displayName}
           </p>
@@ -86,7 +92,7 @@ export function MemberSideBar({ member, currentMemberId, isLiked, isBlocked }: P
             disabled={likePending}
             className="w-full justify-center rounded-md hover:bg-muted hover:text-foreground"
           >
-            <HeartIcon size={15} weight={liked ? "fill" : "regular"} />
+            <HeartIcon size={15} weight={liked ? "fill" : "regular"} className={liked ? "text-red-500" : "text-white"} />
             {liked ? "Unlike" : "Like"}
           </Button>
 
@@ -125,6 +131,29 @@ export function MemberSideBar({ member, currentMemberId, isLiked, isBlocked }: P
           />
         </div>
       </aside>
+
+      {/* Full-image lightbox */}
+      {imageOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
+          onClick={() => setImageOpen(false)}
+        >
+          <button
+            type="button"
+            onClick={() => setImageOpen(false)}
+            className="absolute top-4 right-4 text-white/80 hover:text-white"
+            aria-label="Close"
+          >
+            <XIcon size={28} />
+          </button>
+          <img
+            src={member.image ?? "/defaultProfile.jpg"}
+            alt={member.displayName}
+            className="max-h-[90vh] max-w-[90vw] object-contain rounded-lg"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
 
       {/* Block confirmation modal */}
       {blockConfirmOpen && (
