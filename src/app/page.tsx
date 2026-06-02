@@ -118,12 +118,14 @@ export default function HomePage() {
           className="object-cover object-center"
         />
         {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/92 via-black/65 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-black/5 to-black/2" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-black/30" />
 
-        <div className="relative z-10 mx-auto max-w-6xl w-full px-6 pt-20 pb-24 grid lg:grid-cols-1 gap-16 items-center">
-{/* <div></div> */}
-          {/* Left — copy */}
+        <div className="relative z-10 mx-auto max-w-6xl w-full px-6 pt-20 pb-24 grid lg:grid-cols-2 gap-16 items-center">
+          {/* Left — empty, background image shows through */}
+          <div />
+
+          {/* Right — copy */}
           <div>
             <span className="inline-flex items-center gap-1.5 mb-6 px-3 py-1 rounded-full bg-rose-600/20 border border-rose-500/25 text-rose-300 text-[11px] font-semibold tracking-widest uppercase">
               <LockSimpleIcon weight="fill" size={10} />
