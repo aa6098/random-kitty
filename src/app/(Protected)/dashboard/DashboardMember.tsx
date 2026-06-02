@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import {
   MapPinIcon, CalendarIcon, InfoIcon, MagnifyingGlassIcon,
@@ -12,6 +12,56 @@ import { VideoCall } from "@/components/VideoCall"
 import { ChatPanel } from "./ChatPanel"
 
 type Photo = { id: string; url: string; thumburl: string }
+
+function ExpandableText({ label, text }: { label: string; text: string }) {
+  const ref = useRef<HTMLParagraphElement>(null)
+  const [clamped, setClamped] = useState(false)
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (el) setClamped(el.scrollHeight > el.clientHeight)
+  }, [text])
+
+  return (
+    <>
+      <p ref={ref} className="text-sm text-card-foreground line-clamp-2">{text}</p>
+      {clamped && (
+        <button
+          type="button"
+          onClick={(e) => { e.stopPropagation(); setOpen(true) }}
+          className="text-xs text-primary hover:underline mt-0.5 text-left"
+        >
+          Show more
+        </button>
+      )}
+      {open && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          onClick={() => setOpen(false)}
+        >
+          <div
+            className="w-full max-w-sm rounded-xl border border-border bg-background p-5 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-3 mb-3">
+              <p className="text-sm font-semibold">{label}</p>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="text-muted-foreground hover:text-foreground shrink-0"
+                aria-label="Close"
+              >
+                <XIcon size={16} />
+              </button>
+            </div>
+            <p className="text-sm text-foreground leading-relaxed">{text}</p>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
 
 type Props = {
   id: string
@@ -285,9 +335,7 @@ export function DashboardMember({
                 <InfoIcon size={12} />
                 About Us
               </p>
-              <div className="h-[60px] overflow-y-auto">
-                <p className="text-sm text-card-foreground">{description}</p>
-              </div>
+              <ExpandableText label="About Us" text={description} />
             </div>
 
             {whatareWelookingFor && (
@@ -296,9 +344,7 @@ export function DashboardMember({
                   <MagnifyingGlassIcon size={12} />
                   What We Are Looking For
                 </p>
-                <div className="h-[60px] overflow-y-auto">
-                  <p className="text-sm text-card-foreground">{whatareWelookingFor}</p>
-                </div>
+                <ExpandableText label="What We Are Looking For" text={whatareWelookingFor} />
               </div>
             )}
 
