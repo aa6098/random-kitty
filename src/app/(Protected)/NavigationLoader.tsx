@@ -18,6 +18,8 @@ export function NavigationLoader() {
       try {
         const url = new URL(anchor.href, window.location.href)
         if (url.origin !== window.location.origin) return
+        // Same page (pathname + search identical) — no navigation will happen
+        if (url.pathname === window.location.pathname && url.search === window.location.search) return
         if (url.hash && url.pathname === window.location.pathname) return
         show()
       } catch {
