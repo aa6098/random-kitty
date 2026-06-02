@@ -1,11 +1,12 @@
 "use client"
 
 import { useEffect } from "react"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 import { useLoadingStore } from "@/lib/stores/loadingStore"
 
 export function NavigationLoader() {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const show = useLoadingStore((s) => s.show)
   const hide = useLoadingStore((s) => s.hide)
 
@@ -30,10 +31,10 @@ export function NavigationLoader() {
     return () => document.removeEventListener("click", handleClick)
   }, [show])
 
-  // Hide overlay when navigation completes (pathname changes)
+  // Hide overlay when navigation completes (pathname or search params change)
   useEffect(() => {
     hide()
-  }, [pathname, hide])
+  }, [pathname, searchParams, hide])
 
   return null
 }
