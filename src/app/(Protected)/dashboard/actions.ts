@@ -155,48 +155,51 @@ export async function fetchMoreMembers(
     }
   }
 
-  const [members, likedRows] = await Promise.all([
-    prisma.member.findMany({
-      skip,
-      take: PAGE_SIZE,
-      select: {
-        id: true,
-        displayName: true,
-        image: true,
-        description: true,
-        whatareWelookingFor: true,
-        createdAt: true,
-        locationId: true,
-        location: { select: { city: true, state: true } },
-        photos: {
-          where: { delete: false },
-          select: { id: true, url: true, thumburl: true },
-        },
-      },
-      where: {
-        deactivated: false,
-        NOT: [
-          { id: current.id },
-          {
-            OR: [
-              { BlockedMembers: { some: { active: true, sourceMemberId: current.id } } },
-              { SourceMembers: { some: { active: true, blockedMemberId: current.id } } },
-            ],
-          },
+  const memberWhere = {
+    deactivated: false,
+    NOT: [
+      { id: current.id },
+      {
+        OR: [
+          { BlockedMembers: { some: { active: true, sourceMemberId: current.id } } },
+          { SourceMembers: { some: { active: true, blockedMemberId: current.id } } },
         ],
-        ...(nearbyLocationIds ? { locationId: { in: nearbyLocationIds } } : {}),
       },
-      orderBy: { createdAt: "desc" },
-    }),
+    ],
+    ...(nearbyLocationIds ? { locationId: { in: nearbyLocationIds } } : {}),
+  }
+
+  const [stubs, likedRows] = await Promise.all([
+    prisma.member.findMany({ select: { id: true, locationId: true }, where: memberWhere }),
     prisma.likes.findMany({
       where: { LikedById: current.id, checked: true },
       select: { LikedMemberId: true },
     }),
   ])
 
+  const sortedIds = stubs
+    .sort((a, b) => (locationDistanceMap.get(a.locationId) ?? Infinity) - (locationDistanceMap.get(b.locationId) ?? Infinity))
+    .slice(skip, skip + PAGE_SIZE)
+    .map((s) => s.id)
+
+  const members = sortedIds.length
+    ? await prisma.member.findMany({
+        where: { id: { in: sortedIds } },
+        select: {
+          id: true, displayName: true, image: true, description: true,
+          whatareWelookingFor: true, createdAt: true, locationId: true,
+          location: { select: { city: true, state: true } },
+          photos: { where: { delete: false }, select: { id: true, url: true, thumburl: true } },
+        },
+      })
+    : []
+
+  const memberMap = new Map(members.map((m) => [m.id, m]))
+  const orderedMembers = sortedIds.map((id) => memberMap.get(id)!).filter(Boolean)
+
   const likedSet = new Set(likedRows.map((r) => r.LikedMemberId).filter(Boolean) as string[])
 
-  return members.map((m) => ({
+  return orderedMembers.map((m) => ({
     id: m.id,
     displayName: m.displayName,
     image: generateSasUrl(m.image),
