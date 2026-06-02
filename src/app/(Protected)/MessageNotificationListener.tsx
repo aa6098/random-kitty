@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { useRouter, usePathname } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { toast } from "sonner"
 import Image from "next/image"
 import { ChatCircleTextIcon } from "@phosphor-icons/react"
@@ -22,11 +22,9 @@ type Props = {
 }
 
 export function MessageNotificationListener({ currentMemberId }: Props) {
-  const router = useRouter()
   const pathname = usePathname()
   const incrementUnread = useUserStore((s) => s.incrementUnread)
-  // Keep a ref so the Pusher handler always sees the latest pathname
-  // without needing to re-subscribe on every navigation
+  const openChat = useUserStore((s) => s.openChat)
   const pathnameRef = useRef(pathname)
   useEffect(() => { pathnameRef.current = pathname }, [pathname])
 
@@ -34,10 +32,6 @@ export function MessageNotificationListener({ currentMemberId }: Props) {
     const channel = getPusherClient().subscribe(getUserChannel(currentMemberId))
 
     channel.bind("new-message-notification", (notification: MessageNotification) => {
-      // Suppress toast if the user is already viewing this conversation
-      const chatPath = `/members/${notification.senderId}/messages`
-      if (pathnameRef.current.startsWith(chatPath)) return
-
       incrementUnread()
 
       toast.custom(
@@ -45,7 +39,7 @@ export function MessageNotificationListener({ currentMemberId }: Props) {
           <button
             onClick={() => {
               toast.dismiss(id)
-              router.push(chatPath)
+              openChat(notification.senderId, notification.senderName)
             }}
             className="flex items-start gap-3 w-full max-w-sm rounded-xl border border-primary bg-popover text-foreground shadow-lg px-4 py-3 text-left hover:bg-accent transition-colors"
           >

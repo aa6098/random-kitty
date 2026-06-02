@@ -29,9 +29,10 @@ type Props = {
   recipientId: string
   recipientName: string
   triggerClassName?: string
+  triggerContent?: React.ReactNode
 }
 
-export function VideoCall({ currentMemberId, recipientId, recipientName, triggerClassName }: Props) {
+export function VideoCall({ currentMemberId, recipientId, recipientName, triggerClassName, triggerContent }: Props) {
   const callerName = useUserStore((s) => s.name)
   const [callState, setCallState] = useState<CallState>("idle")
   const [isMuted, setIsMuted] = useState(false)
@@ -45,7 +46,6 @@ export function VideoCall({ currentMemberId, recipientId, recipientName, trigger
 
   const channelName = getChatChannel(currentMemberId, recipientId)
 
-  // Safety-net: sync local stream → video element after every render.
   useEffect(() => {
     if (localVideoRef.current && localStreamRef.current) {
       localVideoRef.current.srcObject = localStreamRef.current
@@ -165,8 +165,12 @@ export function VideoCall({ currentMemberId, recipientId, recipientName, trigger
           className={triggerClassName ?? "inline-flex items-center gap-1.5 rounded-md border border-input bg-background px-3 py-2 text-sm font-medium hover:bg-muted transition-colors"}
           title="Start video call"
         >
-          <VideoCameraIcon size={16} weight="fill" />
-          Video Call
+          {triggerContent ?? (
+            <>
+              <VideoCameraIcon size={16} weight="fill" />
+              Video Call
+            </>
+          )}
         </button>
       )}
 
@@ -177,7 +181,6 @@ export function VideoCall({ currentMemberId, recipientId, recipientName, trigger
         )}
       >
         <div className="flex w-full max-w-[576px] flex-col overflow-hidden rounded-2xl bg-zinc-950 shadow-2xl">
-
           <div className="shrink-0 px-4 py-3 text-sm text-white/70">
             {callState === "calling"   && `Calling ${recipientName}…`}
             {callState === "connected" && recipientName}

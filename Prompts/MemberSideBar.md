@@ -1,7 +1,7 @@
 Create a member side bar component.
 This component display information for a specific Member
 Align the following components for in Flex Flex-col orientation
-Image
+Image 42px rounded
 Display name
 Location.City, Location.State
 

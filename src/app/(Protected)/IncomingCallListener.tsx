@@ -1,7 +1,6 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import {
   PhoneIcon,
@@ -38,13 +37,13 @@ type Props = {
 }
 
 export function IncomingCallListener({ currentMemberId }: Props) {
-  const router = useRouter()
   const [callState, setCallState] = useState<CallState>("idle")
   const [callerName, setCallerName] = useState("")
   const [isMuted, setIsMuted] = useState(false)
   const [isCameraOff, setIsCameraOff] = useState(false)
 
   const incrementMissedCall = useUserStore((s) => s.incrementMissedCall)
+  const openChat = useUserStore((s) => s.openChat)
 
   // Refs to capture values before stopCall() resets them
   const callerNameRef = useRef("")
@@ -189,7 +188,7 @@ export function IncomingCallListener({ currentMemberId }: Props) {
           <button
             onClick={() => {
               toast.dismiss("missed-call")
-              router.push(`/members/${missedId}/messages`)
+              openChat(missedId, missedName)
             }}
             className="flex items-center gap-3 w-full max-w-sm rounded-xl border border-primary bg-popover text-foreground shadow-lg px-4 py-3 text-left hover:bg-accent transition-colors"
           >

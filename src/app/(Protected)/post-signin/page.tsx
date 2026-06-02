@@ -12,5 +12,5 @@ export default async function PostSignInPage() {
     select: { id: true },
   })
 
-  redirect(member ? "/memberhome" : "/member")
+  redirect(member ? "/dashboard" : "/member")
 }

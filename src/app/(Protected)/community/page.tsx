@@ -111,7 +111,7 @@ export default async function CommunityPage({ searchParams }: Props) {
             {members.map((member) => {
               const isBlocked = member.BlockedMembers.length > 0
               return (
-              <Link key={member.id} href={`/members/${member.id}`}>
+              <Link key={member.id} href={`/memberdetail/${member.id}`}>
                 <Card className="hover:shadow-md transition-shadow cursor-pointer h-full rounded-lg overflow-hidden">
                   <CardContent className="p-2 flex flex-col items-center gap-1">
                     <div className={`relative w-full aspect-square  overflow-hidden bg-muted ${isBlocked ? "ring-2 ring-red-500" : "ring-2 ring-green-500"}`}>

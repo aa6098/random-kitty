@@ -8,6 +8,7 @@ import { Header } from "./Header"
 import { IncomingCallListener } from "./IncomingCallListener"
 import { MessageNotificationListener } from "./MessageNotificationListener"
 import { PresenceProvider } from "./PresenceProvider"
+import { GlobalChatPanel } from "./GlobalChatPanel"
 
 export default async function ProtectedLayout({
   children,
@@ -46,6 +47,7 @@ export default async function ProtectedLayout({
       <Header />
       {member && <IncomingCallListener currentMemberId={member.id} />}
       {member && <MessageNotificationListener currentMemberId={member.id} />}
+      {member && <GlobalChatPanel currentMemberId={member.id} />}
       <main className="flex flex-1 flex-col">{children}</main>
     </div>
   )

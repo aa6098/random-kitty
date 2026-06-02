@@ -1,5 +1,7 @@
 import { create } from "zustand"
 
+type ChatRecipient = { id: string; name: string }
+
 type UserStore = {
   name: string | null
   image: string | null
@@ -7,6 +9,7 @@ type UserStore = {
   missedCallCount: number
   deactivated: boolean
   hasMember: boolean
+  chatRecipient: ChatRecipient | null
   setUser: (name: string | null, image: string | null) => void
   setUnreadCount: (count: number) => void
   setDeactivated: (deactivated: boolean) => void
@@ -14,6 +17,8 @@ type UserStore = {
   incrementUnread: () => void
   incrementMissedCall: () => void
   clearMissedCalls: () => void
+  openChat: (id: string, name: string) => void
+  closeChat: () => void
 }
 
 export const useUserStore = create<UserStore>((set) => ({
@@ -23,6 +28,7 @@ export const useUserStore = create<UserStore>((set) => ({
   missedCallCount: 0,
   deactivated: false,
   hasMember: true,
+  chatRecipient: null,
   setUser: (name, image) => set({ name, image }),
   setUnreadCount: (count) => set({ unreadCount: count }),
   setDeactivated: (deactivated) => set({ deactivated }),
@@ -30,4 +36,6 @@ export const useUserStore = create<UserStore>((set) => ({
   incrementUnread: () => set((s) => ({ unreadCount: s.unreadCount + 1 })),
   incrementMissedCall: () => set((s) => ({ missedCallCount: s.missedCallCount + 1 })),
   clearMissedCalls: () => set({ missedCallCount: 0 }),
+  openChat: (id, name) => set({ chatRecipient: { id, name } }),
+  closeChat: () => set({ chatRecipient: null }),
 }))

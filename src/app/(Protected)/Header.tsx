@@ -8,7 +8,7 @@ import { Menu } from "@base-ui/react/menu"
 import {
   ListIcon,
   XIcon,
-  HouseIcon,
+  SquaresFourIcon,
   BellIcon,
   UsersIcon,
   UsersFourIcon,
@@ -37,10 +37,10 @@ function DesktopNav({ onSignOut, onCancelAccount }: { onSignOut: () => void; onC
   return (
     <nav className="hidden md:flex items-center gap-1 letter-spacing: 0.025em;">
       {navDisabled ? (
-        <span className={disabledCls}><HouseIcon size={15} /> Home</span>
+        <span className={disabledCls}><SquaresFourIcon size={15} /> Home</span>
       ) : (
-        <Link href="/memberhome" className={activeCls}>
-          <HouseIcon size={15} /> Home
+        <Link href="/dashboard" className={activeCls}>
+          <SquaresFourIcon size={15} /> Home
         </Link>
       )}
       {navDisabled ? (
@@ -105,10 +105,10 @@ function MobileNav({ open, onClose, onSignOut, onCancelAccount }: { open: boolea
     <div className="md:hidden absolute top-14 left-0 right-0 z-40 bg-popover text-primary border-t border-primary-foreground/10 shadow-lg">
       <nav className="flex flex-col py-2">
         {navDisabled ? (
-          <span className={disabledCls}><HouseIcon size={16} /> Home</span>
+          <span className={disabledCls}><SquaresFourIcon size={16} /> Home</span>
         ) : (
-          <Link href="/memberhome" onClick={onClose} className={activeCls}>
-            <HouseIcon size={16} /> Home
+          <Link href="/dashboard" onClick={onClose} className={activeCls}>
+            <SquaresFourIcon size={16} /> Home
           </Link>
         )}
         {navDisabled ? (
@@ -192,7 +192,7 @@ export function Header() {
 
           {/* Branding */}
           <Link
-            href="/memberhome"
+            href="/dashboard"
             className="flex items-center gap-2.5 hover:opacity-85 transition-opacity"
           >
             <Image src={logo} alt="Random Kitty" width={75} height={75} />
