@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function ExpandableText({ text, limit = 100 }) {
+export default function ExpandableText({ text, limit = 100 }:{ text:String , limit:number}) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   if (text.length <= limit) return <p>{text}</p>;
