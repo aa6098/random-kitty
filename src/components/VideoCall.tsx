@@ -47,8 +47,11 @@ export function VideoCall({ currentMemberId, recipientId, recipientName, trigger
   const channelName = getChatChannel(currentMemberId, recipientId)
 
   useEffect(() => {
-    if (localVideoRef.current && localStreamRef.current) {
-      localVideoRef.current.srcObject = localStreamRef.current
+    const el = localVideoRef.current
+    const stream = localStreamRef.current
+    if (el && stream && el.srcObject !== stream) {
+      el.srcObject = stream
+      el.play().catch(() => {})
     }
   })
 
@@ -92,14 +95,20 @@ export function VideoCall({ currentMemberId, recipientId, recipientName, trigger
 
   async function startCall() {
     setCallState("calling")
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-    localStreamRef.current = stream
-    if (localVideoRef.current) localVideoRef.current.srcObject = stream
-
-    const pc = buildPeerConnection(stream)
-    const offer = await pc.createOffer()
-    await pc.setLocalDescription(offer)
-    await sendCallOffer(recipientId, offer, callerName ?? "")
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      localStreamRef.current = stream
+      if (localVideoRef.current) {
+        localVideoRef.current.srcObject = stream
+        localVideoRef.current.play().catch(() => {})
+      }
+      const pc = buildPeerConnection(stream)
+      const offer = await pc.createOffer()
+      await pc.setLocalDescription(offer)
+      await sendCallOffer(recipientId, offer, callerName ?? "")
+    } catch {
+      stopCall()
+    }
   }
 
   async function endCall() {

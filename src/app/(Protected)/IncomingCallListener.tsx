@@ -59,10 +59,13 @@ export function IncomingCallListener({ currentMemberId }: Props) {
   // True when the user actively declines so we don't count it as a missed call
   const declinedByUserRef = useRef(false)
 
-  // Safety-net: sync local stream → video element after every render.
+  // Safety-net: sync local stream → video element after every render and trigger play.
   useEffect(() => {
-    if (localVideoRef.current && localStreamRef.current) {
-      localVideoRef.current.srcObject = localStreamRef.current
+    const el = localVideoRef.current
+    const stream = localStreamRef.current
+    if (el && stream && el.srcObject !== stream) {
+      el.srcObject = stream
+      el.play().catch(() => {})
     }
   })
 
@@ -92,9 +95,13 @@ export function IncomingCallListener({ currentMemberId }: Props) {
 
   async function acceptCall() {
     if (!incomingOfferRef.current) return
+    try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
     localStreamRef.current = stream
-    if (localVideoRef.current) localVideoRef.current.srcObject = stream
+    if (localVideoRef.current) {
+      localVideoRef.current.srcObject = stream
+      localVideoRef.current.play().catch(() => {})
+    }
 
     const pc = new RTCPeerConnection(ICE_SERVERS)
     stream.getTracks().forEach(track => pc.addTrack(track, stream))
@@ -116,6 +123,9 @@ export function IncomingCallListener({ currentMemberId }: Props) {
     await pc.setLocalDescription(answer)
     await sendCallAnswer(callerIdRef.current, answer)
     setCallState("connected")
+    } catch {
+      stopCall()
+    }
   }
 
   async function declineCall() {
