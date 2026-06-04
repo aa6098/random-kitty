@@ -9,14 +9,13 @@ import {
   UsersThreeIcon,
   ArrowRightIcon,
   LockSimpleIcon,
-  FireIcon,
-  ProhibitIcon,
+  SparkleIcon,
   ShieldCheckIcon,
   HeartIcon,
   CheckCircleIcon,
+  EnvelopeSimpleIcon,
 } from "@phosphor-icons/react/dist/ssr";
 
-// ── Reusable feature card ────────────────────────────────────────────────────
 function FeatureCard({
   icon,
   title,
@@ -37,50 +36,6 @@ function FeatureCard({
   );
 }
 
-// ── Fake member card (purely decorative) ────────────────────────────────────
-function MockCard({
-  name,
-  city,
-  dist,
-  liked,
-  online,
-}: {
-  name: string;
-  city: string;
-  dist: string;
-  liked: boolean;
-  online: boolean;
-}) {
-  return (
-    <div className="relative rounded-2xl overflow-hidden bg-foreground/5 border border-border/20 select-none">
-      <div className="aspect-[3/4] bg-gradient-to-br from-rose-900/30 via-zinc-800 to-zinc-900" />
-      {/* online dot */}
-      <span
-        className={[
-          "absolute top-3 right-3 w-3 h-3 rounded-full border-2 border-zinc-900",
-          online ? "bg-green-400" : "bg-zinc-500",
-        ].join(" ")}
-      />
-      {/* heart */}
-      <span className="absolute bottom-14 right-3">
-        <HeartIcon
-          weight={liked ? "fill" : "regular"}
-          size={20}
-          className={liked ? "text-rose-500" : "text-foreground/60"}
-        />
-      </span>
-      {/* caption */}
-      <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
-        <p className="font-bold text-foreground text-sm leading-tight">{name}</p>
-        <p className="text-foreground/60 text-xs flex items-center gap-1 mt-0.5">
-          <MapPinIcon size={10} /> {city} · {dist}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// ── Page ─────────────────────────────────────────────────────────────────────
 export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
@@ -100,7 +55,7 @@ export default function HomePage() {
           </Link>
           <Link
             href="/signup"
-            className="text-sm font-semibold px-5 py-2 rounded-full bg-rose-600 hover:bg-rose-500 text-foreground transition-colors shadow-lg shadow-rose-900/30"
+            className="text-sm font-semibold px-5 py-2 rounded-full bg-rose-600 hover:bg-rose-500 text-white transition-colors shadow-lg shadow-rose-900/30"
           >
             Join Free
           </Link>
@@ -111,101 +66,75 @@ export default function HomePage() {
       <section className="relative min-h-screen flex items-center">
         {/* Background photo */}
         <Image
-          src="/SHomepage.jpg"
-          alt="Couples connecting"
+          src="/LoginPage2.jpg"
+          alt="People connecting"
           fill
           priority
           className="object-cover object-center"
         />
-        {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-black/5 to-black/2" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-black/30" />
+        {/* Gradient — strong on left so text is readable, fades on right to show photo */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 md:via-black/50 lg:to-black/10 to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30" />
 
-        <div className="relative z-10 mx-auto max-w-6xl w-full px-6 pt-20 pb-24 grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left — empty, background image shows through */}
-          <div />
+        <div className="relative z-10 mx-auto max-w-6xl w-full px-6 pt-24 pb-20">
+          {/* Content sits on the left half on md+ screens */}
+          <div className="w-full md:w-1/2 lg:w-5/12">
 
-          {/* Right — copy */}
-          <div>
-            <span className="inline-flex items-center gap-1.5 mb-6 px-3 py-1 rounded-full bg-rose-600/20 border border-rose-500/25 text-rose-300 text-[11px] font-semibold tracking-widest uppercase">
-              <LockSimpleIcon weight="fill" size={10} />
-              Private · Discreet · 18+
+            <span className="inline-flex items-center gap-1.5 mb-6 px-3 py-1 rounded-full bg-rose-600/25 border border-rose-500/30 text-rose-300 text-[11px] font-semibold tracking-widest uppercase">
+              <SparkleIcon weight="fill" size={10} />
+              Free · AI-Powered · No Credit Card
             </span>
 
-            <h1 className="text-5xl sm:text-6xl font-bold  leading-[1.08] tracking-tight mb-5">
-              The social club
+            <h1 className="text-4xl sm:text-5xl xl:text-6xl font-bold leading-[1.1] tracking-tight mb-5 text-white">
+              Meet someone
               <br />
-              for adventurous
+              who truly
               <br />
-              <span className="text-rose-400">couples.</span>
+              <span className="text-rose-400">gets you.</span>
             </h1>
 
-            <p className="text-lg text-foreground/65 leading-relaxed mb-8 max-w-md">
-              Chat, video call, and connect with like-minded married and partnered couples near you — privately and on your own terms.
+            <p className="text-base sm:text-lg text-white/70 leading-relaxed mb-8 max-w-sm">
+              Vashikar uses AI to match you with compatible people nearby. Chat, message, or jump into a video call — all in one free platform.
             </p>
 
             <div className="flex flex-wrap gap-3 mb-10">
               <Link
                 href="/signup"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-rose-600 hover:bg-rose-500 font-semibold text-foreground transition-colors shadow-xl shadow-rose-900/40"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-rose-600 hover:bg-rose-500 font-semibold text-white transition-colors shadow-xl shadow-rose-900/40 text-sm sm:text-base"
               >
-                <UsersThreeIcon weight="fill" size={18} />
-                Create a Couple Profile
+                <HeartIcon weight="fill" size={16} />
+                Join for Free
               </Link>
               <Link
                 href="/signin"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/30 text-foreground/75 hover:text-foreground hover:bg-foreground/5 font-semibold transition-all"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-white/25 text-white/80 hover:text-white hover:bg-white/10 font-semibold transition-all text-sm sm:text-base"
               >
                 Sign In
               </Link>
             </div>
 
-            <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+            <ul className="flex flex-col gap-2.5">
               {[
-                "Free to join — no credit card needed",
-                "Couples-only community, verified profiles",
-                "Your activity is never indexed publicly",
-              ].map((item) => (
-                <li key={item} className="flex items-center gap-2">
-                  <CheckCircleIcon weight="fill" size={14} className="text-rose-500/70 shrink-0" />
-                  {item}
+                { icon: <SparkleIcon weight="fill" size={13} />, text: "AI-based compatibility matching" },
+                { icon: <MapPinIcon weight="fill" size={13} />, text: "Location-based member search" },
+                { icon: <EnvelopeSimpleIcon weight="fill" size={13} />, text: "Messages, live chat & video calls" },
+                { icon: <CheckCircleIcon weight="fill" size={13} />, text: "Always free — no hidden fees" },
+              ].map(({ icon, text }) => (
+                <li key={text} className="flex items-center gap-2 text-sm text-white/65">
+                  <span className="text-rose-400 shrink-0">{icon}</span>
+                  {text}
                 </li>
               ))}
             </ul>
           </div>
-
-          {/* Right — decorative member grid
-          <div className="hidden lg:grid grid-cols-2 gap-3 opacity-90">
-            <MockCard name="Alex & Jamie" city="Austin, TX" dist="3 mi" liked online />
-            <MockCard name="Sam & Riley" city="Denver, CO" dist="8 mi" liked={false} online={false} />
-            <MockCard name="Casey & Morgan" city="Austin, TX" dist="12 mi" liked={false} online />
-            <MockCard name="Jordan & Taylor" city="Austin, TX" dist="5 mi" liked online={false} />
-          </div> */}
         </div>
 
         {/* Scroll hint */}
-        <div className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-foreground/25 text-xs pointer-events-none">
+        <div className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/25 text-xs pointer-events-none">
           <span>Scroll</span>
           <span className="animate-bounce text-rose-400/60">↓</span>
         </div>
       </section>
-
-      {/* ── Stats bar ── */}
-      {/* <section className="bg-background/60 border-y border-border/10 py-7">
-        <div className="mx-auto max-w-5xl px-6 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
-          {[
-            { value: "50K+", label: "Couples" },
-            { value: "120+", label: "Cities" },
-            { value: "100%", label: "Discreet" },
-            { value: "24/7", label: "Moderated" },
-          ].map(({ value, label }) => (
-            <div key={label}>
-              <p className="text-2xl font-bold text-rose-400 mb-0.5">{value}</p>
-              <p className="text-[11px] uppercase tracking-widest text-muted-foreground">{label}</p>
-            </div>
-          ))}
-        </div>
-      </section> */}
 
       {/* ── Features ── */}
       <section className="py-24">
@@ -215,43 +144,43 @@ export default function HomePage() {
               Platform Features
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold mb-3 tracking-tight">
-              Everything built for couples
+              Everything you need to connect
             </h2>
             <p className="text-muted-foreground max-w-md mx-auto text-sm leading-relaxed">
-              Every feature on the platform is designed around you and your partner as a unit — not individuals.
+              From smart AI matching to real-time video calls, every feature is built to help you build meaningful connections.
             </p>
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4">
             <FeatureCard
-              icon={<VideoCameraIcon weight="duotone" size={30} />}
-              title="Encrypted Video Calls"
-              body="Private face-to-face video calls. Host a virtual double-date night or screen another couple before meeting in person."
+              icon={<SparkleIcon weight="duotone" size={28} />}
+              title="AI-Based Matching"
+              body="Our smart algorithm learns your preferences and surfaces the most compatible profiles — so you spend less time searching and more time connecting."
             />
             <FeatureCard
-              icon={<ChatIcon weight="duotone" size={30} />}
-              title="Private Live Chat"
-              body="Real-time messaging with full privacy controls. Chat one-on-one or in group threads with couples you connect with."
-            />
-            <FeatureCard
-              icon={<MapPinIcon weight="duotone" size={30} />}
+              icon={<MapPinIcon weight="duotone" size={28} />}
               title="Location-Based Search"
-              body="Browse open-minded couples near you filtered by distance and interests. See who's active in your city right now."
+              body="Browse members near you filtered by distance. See who's active in your city right now and discover people you might actually run into."
             />
             <FeatureCard
-              icon={<HeartIcon weight="duotone" size={30} />}
+              icon={<ChatIcon weight="duotone" size={28} />}
+              title="Live Chat & Messaging"
+              body="Real-time chat for instant conversation and private messages for thoughtful exchanges — both available the moment you match."
+            />
+            <FeatureCard
+              icon={<VideoCameraIcon weight="duotone" size={28} />}
+              title="Video Calls"
+              body="Face-to-face video calls built right into the platform. Get to know someone for real before you ever meet in person."
+            />
+            <FeatureCard
+              icon={<HeartIcon weight="duotone" size={28} />}
               title="Likes & Mutual Matches"
-              body="Express interest by liking a profile. When they like you back a private chat unlocks — mutual interest, always."
+              body="Like a profile and when they like you back a private chat unlocks automatically — mutual interest, always."
             />
             <FeatureCard
-              icon={<ProhibitIcon weight="duotone" size={30} />}
-              title="Block & Report"
-              body="Instant blocking with a single tap. Report profiles that violate our community guidelines — our team reviews every report."
-            />
-            <FeatureCard
-              icon={<ShieldCheckIcon weight="duotone" size={30} />}
-              title="Verified Couples Only"
-              body="Both partners verify before a profile goes live. No fakes, no singles pretending — every account is a real couple."
+              icon={<ShieldCheckIcon weight="duotone" size={28} />}
+              title="Safe & Moderated"
+              body="Block, report, and move on instantly. Our moderation team reviews every report and keeps the community respectful and real."
             />
           </div>
         </div>
@@ -263,7 +192,7 @@ export default function HomePage() {
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-3 tracking-tight">How it works</h2>
             <p className="text-muted-foreground max-w-sm mx-auto text-sm">
-              From sign-up to real connection in three simple steps.
+              From sign-up to first conversation in three simple steps.
             </p>
           </div>
 
@@ -272,26 +201,26 @@ export default function HomePage() {
               {
                 n: "1",
                 icon: <UsersThreeIcon weight="duotone" size={26} />,
-                title: "Create your couple profile",
-                body: "Both partners sign up together and build one shared profile — your interests, your photo, and your location.",
+                title: "Create your free profile",
+                body: "Sign up in minutes — no credit card, no subscription. Add your photos, interests, and location to get started.",
               },
               {
                 n: "2",
-                icon: <MapPinIcon weight="duotone" size={26} />,
-                title: "Browse couples near you",
-                body: "Explore the location map to find couples nearby. Filter by distance and see who's online right now.",
+                icon: <SparkleIcon weight="duotone" size={26} />,
+                title: "Get AI-matched nearby",
+                body: "Our AI ranks compatible members by distance and preferences. See your best matches first, not just the newest profiles.",
               },
               {
                 n: "3",
-                icon: <FireIcon weight="duotone" size={26} />,
-                title: "Connect & explore together",
-                body: "Send a like, open a chat, or jump into a video call. Move at your own pace — you're always in control.",
+                icon: <ChatIcon weight="duotone" size={26} />,
+                title: "Chat, message or video call",
+                body: "Break the ice in live chat, send a thoughtful message, or jump on a video call — you choose how to connect.",
               },
             ].map(({ n, icon, title, body }) => (
               <div key={n} className="flex flex-col items-center text-center gap-4">
                 <div className="relative w-16 h-16 flex items-center justify-center rounded-2xl bg-rose-600/10 border border-rose-500/20">
                   <span className="text-rose-400">{icon}</span>
-                  <span className="absolute -top-2.5 -right-2.5 w-5 h-5 rounded-full bg-rose-600 text-foreground text-[10px] font-bold flex items-center justify-center">
+                  <span className="absolute -top-2.5 -right-2.5 w-5 h-5 rounded-full bg-rose-600 text-white text-[10px] font-bold flex items-center justify-center">
                     {n}
                   </span>
                 </div>
@@ -303,25 +232,25 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Privacy strip ── */}
+      {/* ── Trust strip ── */}
       <section className="py-14 border-y border-border/10 bg-background/40">
         <div className="mx-auto max-w-5xl px-6">
           <div className="grid sm:grid-cols-3 gap-8 text-center">
             {[
               {
                 icon: <LockSimpleIcon weight="duotone" size={26} />,
-                title: "Never indexed publicly",
-                body: "Your profile and activity are invisible to search engines and non-members.",
+                title: "Private by default",
+                body: "Your profile is never indexed by search engines. Only registered members can see your details.",
               },
               {
                 icon: <ShieldCheckIcon weight="duotone" size={26} />,
                 title: "Active moderation",
-                body: "A dedicated team reviews reports and removes violating accounts — usually within the hour.",
+                body: "A dedicated team reviews every report and removes fake or abusive accounts — usually within the hour.",
               },
               {
-                icon: <UsersThreeIcon weight="duotone" size={26} />,
-                title: "Couples-exclusive space",
-                body: "Singles are not permitted. Every account requires both partners to verify before going live.",
+                icon: <CheckCircleIcon weight="duotone" size={26} />,
+                title: "100% free platform",
+                body: "All core features — matching, chat, messages, and video calls — are completely free. No paywalls.",
               },
             ].map(({ icon, title, body }) => (
               <div key={title} className="flex flex-col items-center gap-3">
@@ -341,22 +270,22 @@ export default function HomePage() {
 
         <div className="relative z-10 mx-auto max-w-xl px-6 text-center">
           <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 leading-tight">
-            Ready to explore
+            Ready to find
             <br />
-            <span className="text-rose-400">together?</span>
+            <span className="text-rose-400">your match?</span>
           </h2>
           <p className="text-foreground/50 mb-9 leading-relaxed">
-            Join thousands of couples already discovering and connecting on Random Kitty. Free to join, always discreet.
+            Join thousands of members already connecting on Random Kitty. Free to join, always real.
           </p>
           <Link
             href="/signup"
-            className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-rose-600 hover:bg-rose-500 font-bold text-foreground text-lg transition-colors shadow-2xl shadow-rose-900/50"
+            className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-rose-600 hover:bg-rose-500 font-bold text-white text-lg transition-colors shadow-2xl shadow-rose-900/50"
           >
-            Join as a Couple
+            Get Started Free
             <ArrowRightIcon weight="bold" size={20} />
           </Link>
           <p className="mt-5 text-foreground/20 text-xs">
-            18+ only · Free to join · No credit card required
+            Free forever · No credit card required
           </p>
         </div>
       </section>
@@ -366,7 +295,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-xl px-6 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold mb-2 tracking-tight">Stay in the loop</h2>
           <p className="text-muted-foreground text-sm mb-8">
-            Get updates on new features, community events, and couples near you.
+            Get updates on new features, AI improvements, and matches near you.
           </p>
           <EmailCaptureForm />
           <p className="mt-4 text-foreground/20 text-xs">No spam. Unsubscribe any time.</p>
@@ -380,7 +309,7 @@ export default function HomePage() {
             <Image src={logo} alt="Random Kitty" width={24} height={24} className="opacity-60" />
             <span className="font-semibold text-foreground/40">Random Kitty</span>
           </Link>
-          <p>© {new Date().getFullYear()} Random Kitty — The couples lifestyle community.</p>
+          <p>© {new Date().getFullYear()} Random Kitty — AI-powered dating, free forever.</p>
           <nav className="flex items-center gap-5">
             <Link href="/privacy" className="hover:text-foreground/60 transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-foreground/60 transition-colors">Terms</Link>
