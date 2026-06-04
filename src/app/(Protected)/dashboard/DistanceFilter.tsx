@@ -19,7 +19,7 @@ export function DistanceFilter() {
 
   return (
     <div className="flex items-center gap-2">
-      <label htmlFor="distance" className="text-sm font-medium text-muted-foreground whitespace-nowrap">
+      <label htmlFor="distance" className="text-sm hidden md:block font-medium text-muted-foreground whitespace-nowrap">
         Distance
       </label>
       <select
