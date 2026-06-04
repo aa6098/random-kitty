@@ -89,7 +89,7 @@ export function DashboardLocationPicker({ initialLocation, memberLocation }: Pro
             onChange={handleChange}
             placeholder="Search city…"
             autoComplete="off"
-            className="w-45 pl-7 pr-7"
+            className="w-35 md:w-45 pl-7 pr-7"
           />
           {isPending && (
             <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">…</span>
