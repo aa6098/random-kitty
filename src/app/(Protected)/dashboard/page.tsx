@@ -135,9 +135,9 @@ export default async function DashboardPage({ searchParams }: Props) {
 
   return (
     <div className="mx-auto w-full max-w-[1130px] px-4 py-6">
-      <div className="mb-6 ml-1 flex flex-wrap items-center justify-end gap-3">
+      <div className="mb-6 flex flex-wrap items-center justify-end gap-3">
         {/* <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1> */}
-        <div className="flex flex-row items-center justify-end gap-3">
+        <div className="flex flex-row items-center justify-center md:justify-end gap-3">
           <Suspense>
             <DashboardLocationPicker
               initialLocation={pickerLocation}
