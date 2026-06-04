@@ -1,22 +1,27 @@
 "use client"
 
 import { useState } from "react"
-import { MapPinIcon, CalendarIcon, InfoIcon, MagnifyingGlassIcon } from "@phosphor-icons/react"
+import { useSearchParams } from "next/navigation"
+import { InfoIcon, MagnifyingGlassIcon, EnvelopeSimpleIcon } from "@phosphor-icons/react"
 import { MemberPhotoGallery } from "./MemberPhotoGallery"
+import { MemberEmailTab } from "./MemberEmailTab"
 
 type Photo = { id: string; url: string; thumburl: string }
 
 type Props = {
   description: string
   whatareWelookingFor: string | null
-  location: { city: string; state: string }
-  createdAt: Date
   photos: Photo[]
+  currentMemberId: string
+  otherMember: { id: string; displayName: string }
 }
 
-export function MemberDetailTabs({ description, whatareWelookingFor, location, createdAt, photos }: Props) {
-  const [tab, setTab] = useState<"profile" | "photos">("profile")
-
+export function MemberDetailTabs({ description, whatareWelookingFor, photos, currentMemberId, otherMember }: Props) {
+  const searchParams = useSearchParams()
+  const initialTab = searchParams.get("tab")
+  const [tab, setTab] = useState<"profile" | "photos" | "email">(
+    initialTab === "email" ? "email" : initialTab === "photos" ? "photos" : "profile"
+  )
 
   const tabCls = (active: boolean) =>
     [
@@ -41,40 +46,48 @@ export function MemberDetailTabs({ description, whatareWelookingFor, location, c
             </span>
           )}
         </button>
+        <button type="button" onClick={() => setTab("email")} className={tabCls(tab === "email")}>
+          <span className="flex items-center gap-1.5">
+            <EnvelopeSimpleIcon size={14} />
+            Email
+          </span>
+        </button>
       </div>
 
       {/* Tab content */}
       <div className="p-5">
-        {tab === "profile" ? (
+        {tab === "profile" && (
           <div className="flex flex-col gap-5">
             <div className="space-y-1">
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground flex items-center gap-1">
+              <p className="text-md font-semibold tracking-wide text-muted-foreground flex items-center gap-1">
                 <InfoIcon size={12} />
                 About Us
               </p>
               <div
-                className="text-sm text-card-foreground prose prose-sm max-w-none"
+                className="text-md text-card-foreground prose prose-sm max-w-none"
                 dangerouslySetInnerHTML={{ __html: description }}
               />
             </div>
 
             {whatareWelookingFor && (
               <div className="space-y-1">
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground flex items-center gap-1">
+                <p className="text-md font-semibold tracking-wide text-muted-foreground flex items-center gap-1">
                   <MagnifyingGlassIcon size={12} />
                   What We Are Looking For
                 </p>
                 <div
-                  className="text-sm text-card-foreground prose prose-sm max-w-none"
+                  className="text-md text-card-foreground prose prose-sm max-w-none"
                   dangerouslySetInnerHTML={{ __html: whatareWelookingFor }}
                 />
               </div>
             )}
-
-            
           </div>
-        ) : (
-          <MemberPhotoGallery photos={photos} />
+        )}
+
+        {tab === "photos" && <MemberPhotoGallery photos={photos} />}
+
+        {tab === "email" && (
+          <MemberEmailTab currentMemberId={currentMemberId} otherMember={otherMember} />
         )}
       </div>
     </div>

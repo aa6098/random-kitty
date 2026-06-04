@@ -10,6 +10,7 @@ import {
 import { toggleLike, toggleBlock } from "./actions"
 import { VideoCall } from "@/components/VideoCall"
 import { ChatPanel } from "./ChatPanel"
+import { usePresenceChannel } from "@/hooks/usePresenceChannel"
 
 type Photo = { id: string; url: string; thumburl: string }
 
@@ -30,15 +31,16 @@ function ExpandableText({ label, text }: { label: string; text: string }) {
 
   return (
     <>
-      <p ref={ref} className="text-sm text-card-foreground line-clamp-2">{plain}</p>
-      {clamped && (
-        <button
-          type="button"
+      {clamped ? (
+        <p
+          ref={ref}
           onClick={(e) => { e.stopPropagation(); setOpen(true) }}
-          className="text-xs text-primary hover:underline mt-0.5 text-left"
+          className="text-sm text-card-foreground line-clamp-2 cursor-pointer hover:underline hover:text-primary"
         >
-          Show more
-        </button>
+          {plain}
+        </p>
+      ) : (
+        <p ref={ref} className="text-sm text-card-foreground line-clamp-2">{plain}</p>
       )}
       {open && (
         <div
@@ -49,7 +51,7 @@ function ExpandableText({ label, text }: { label: string; text: string }) {
             className="w-full max-w-sm rounded-xl border border-border bg-background p-5 shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-start justify-between gap-3 mb-3">
+            <div className="flex items-start justify-between gap-2 mb-3">
               <p className="text-sm font-semibold">{label}</p>
               <button
                 type="button"
@@ -186,6 +188,9 @@ export function DashboardMember({
   isLiked = false,
   currentMemberId,
 }: Props) {
+  const onlineIds = usePresenceChannel()
+  const isOnline = onlineIds.has(id)
+
   const [tab, setTab] = useState<"profile" | "photos">("profile")
   const [liked, setLiked] = useState(isLiked)
   const [likePending, setLikePending] = useState(false)
@@ -292,9 +297,19 @@ export function DashboardMember({
 
       {/* Right column — tabs */}
       <div className="flex flex-col p-4 min-h-0">
-        <Link href={`/memberdetail/${id}`} className="text-lg font-semibold leading-tight text-card-foreground hover:underline mb-3">
-          {displayName}
-        </Link>
+        <div className="flex items-center gap-2 mb-3">
+          <Link href={`/memberdetail/${id}`} className="text-lg font-semibold leading-tight text-card-foreground hover:underline">
+            {displayName}
+          </Link>
+          <span
+            title={isOnline ? "Online" : "Offline"}
+            className={`inline-block size-2.5 rounded-full shrink-0 ${
+              isOnline
+                ? "bg-green-500 shadow-[0_0_6px_2px_rgba(34,197,94,0.7)] animate-pulse"
+                : "bg-red-500 shadow-[0_0_6px_2px_rgba(239,68,68,0.5)]"
+            }`}
+          />
+        </div>
 
         {/* Tab bar */}
         <div className="flex border-b border-border mb-4">
@@ -341,7 +356,7 @@ export function DashboardMember({
             ].join(" ")}
           >
             <div className="space-y-1 min-h-0">
-              <p className="text-sm font-semibold tracking-wide text-muted-foreground flex items-center gap-1">
+              <p className="text-md font-semibold tracking-wide text-muted-foreground flex items-center gap-1">
                 <InfoIcon size={12} />
                 About Us:
               </p>
@@ -349,8 +364,8 @@ export function DashboardMember({
             </div>
 
             {whatareWelookingFor && (
-              <div className="space-y-1 mt-1 min-h-0">
-                <p className="text-sm font-semibold  tracking-wide text-muted-foreground flex items-center gap-1">
+              <div className="space-y-1 mt-1 min-h-0 gap-1">
+                <p className="text-md font-semibold  tracking-wide text-muted-foreground flex items-center gap-1">
                   <MagnifyingGlassIcon size={12} />
                   What We Are Looking For:
                 </p>
@@ -358,7 +373,7 @@ export function DashboardMember({
               </div>
             )}
 
-            <div className="mt-auto flex flex-wrap gap-4 text-xs text-muted-foreground pt-2 flex-shrink-0">
+            <div className="mt-auto flex flex-wrap gap-4 text-sm text-muted-foreground pt-2 flex-shrink-0">
               <span className="flex items-center gap-1">
                 <MapPinIcon size={12} />
                 {location.city}, {location.state}

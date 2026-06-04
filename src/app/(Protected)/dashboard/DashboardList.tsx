@@ -9,9 +9,10 @@ type Props = {
   initialMembers: DashboardMemberData[]
   currentMemberId: string
   distanceFilter: number
+  selectedLocationId: string
 }
 
-export function DashboardList({ initialMembers, currentMemberId, distanceFilter }: Props) {
+export function DashboardList({ initialMembers, currentMemberId, distanceFilter, selectedLocationId }: Props) {
   const [members, setMembers] = useState<DashboardMemberData[]>(initialMembers)
   const [skip, setSkip] = useState(initialMembers.length)
   const [hasMore, setHasMore] = useState(initialMembers.length === PAGE_SIZE)
@@ -22,23 +23,21 @@ export function DashboardList({ initialMembers, currentMemberId, distanceFilter 
     if (loading || !hasMore) return
     setLoading(true)
     try {
-      const next = await fetchMoreMembers(skip, distanceFilter)
+      const next = await fetchMoreMembers(skip, distanceFilter, selectedLocationId)
       setMembers((prev) => [...prev, ...next])
       setSkip((s) => s + next.length)
       if (next.length < PAGE_SIZE) setHasMore(false)
     } finally {
       setLoading(false)
     }
-  }, [loading, hasMore, skip, distanceFilter])
+  }, [loading, hasMore, skip, distanceFilter, selectedLocationId])
 
-  // Reset when distanceFilter changes (page re-renders with new initialMembers)
   useEffect(() => {
     setMembers(initialMembers)
     setSkip(initialMembers.length)
     setHasMore(initialMembers.length === PAGE_SIZE)
-  }, [initialMembers])
+  }, [initialMembers, selectedLocationId])
 
-  // Intersection Observer on sentinel div
   useEffect(() => {
     const el = sentinelRef.current
     if (!el) return
@@ -75,7 +74,6 @@ export function DashboardList({ initialMembers, currentMemberId, distanceFilter 
         ))}
       </div>
 
-      {/* Sentinel — triggers next page load when scrolled into view */}
       <div ref={sentinelRef} className="h-4" />
 
       {loading && (

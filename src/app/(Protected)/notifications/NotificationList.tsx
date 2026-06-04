@@ -2,13 +2,23 @@
 
 import { useTransition } from "react"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
 import Image from "next/image"
-import { BellSlashIcon, ChatCircleTextIcon, HeartIcon, ArrowRightIcon } from "@phosphor-icons/react"
+import { BellSlashIcon, ChatCircleTextIcon, EnvelopeSimpleIcon, HeartIcon, ArrowRightIcon } from "@phosphor-icons/react"
+import { useUserStore } from "@/lib/stores/userStore"
 import { markLikeRead } from "./actions"
 
-export type MessageNotification = {
-  kind: "message"
+export type ChatNotification = {
+  kind: "chat"
+  senderId: string
+  senderName: string
+  senderImage: string | null
+  count: number
+  latestMessage: string
+  sortAt: string
+}
+
+export type EmailNotification = {
+  kind: "email"
   senderId: string
   senderName: string
   senderImage: string | null
@@ -26,7 +36,10 @@ export type LikeNotification = {
   sortAt: string
 }
 
-export type UnifiedNotification = MessageNotification | LikeNotification
+export type UnifiedNotification = ChatNotification | EmailNotification | LikeNotification
+
+// kept for backwards-compat if anything still imports this name
+export type MessageNotification = ChatNotification
 
 type Props = {
   items: UnifiedNotification[]
@@ -56,6 +69,72 @@ function Avatar({ src, name }: { src: string | null; name: string }) {
         </div>
       )}
     </div>
+  )
+}
+
+function ChatItem({ item }: { item: ChatNotification }) {
+  const openChat = useUserStore((s) => s.openChat)
+
+  return (
+    <button
+      type="button"
+      onClick={() => openChat(item.senderId, item.senderName)}
+      className="w-full flex items-center gap-4 p-4 rounded-xl border border-border bg-card hover:bg-accent hover:border-primary/20 hover:shadow-sm transition-all group text-left"
+    >
+      <Avatar src={item.senderImage} name={item.senderName} />
+
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2">
+          <ChatCircleTextIcon size={13} weight="fill" className="text-primary shrink-0" />
+          <span className="text-sm font-semibold truncate">{item.senderName}</span>
+        </div>
+        <p className="text-sm text-muted-foreground truncate mt-0.5">{item.latestMessage}</p>
+        <p className="text-xs text-muted-foreground/60 mt-1">{relativeTime(item.sortAt)}</p>
+      </div>
+
+      <div className="flex items-center gap-3 shrink-0">
+        <span className="inline-flex items-center justify-center min-w-[1.5rem] h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold px-1.5">
+          {item.count}
+        </span>
+        <ArrowRightIcon
+          size={16}
+          className="text-muted-foreground/40 group-hover:text-primary group-hover:translate-x-0.5 transition-all"
+        />
+      </div>
+    </button>
+  )
+}
+
+function EmailItem({ item }: { item: EmailNotification }) {
+  const router = useRouter()
+
+  return (
+    <button
+      type="button"
+      onClick={() => router.push(`/memberdetail/${item.senderId}?tab=email`)}
+      className="w-full flex items-center gap-4 p-4 rounded-xl border border-border bg-card hover:bg-accent hover:border-primary/20 hover:shadow-sm transition-all group text-left"
+    >
+      <Avatar src={item.senderImage} name={item.senderName} />
+
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2">
+          <EnvelopeSimpleIcon size={13} weight="fill" className="text-primary shrink-0" />
+          <span className="text-sm font-semibold truncate">{item.senderName}</span>
+        </div>
+        <p className="text-sm text-muted-foreground truncate mt-0.5">{item.latestMessage}</p>
+        <p className="text-xs text-muted-foreground/60 mt-1">{relativeTime(item.sortAt)}</p>
+      </div>
+
+      <div className="flex items-center gap-3 shrink-0">
+        <span className="inline-flex items-center justify-center min-w-[1.5rem] h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold px-1.5">
+          {item.count}
+        </span>
+        <ArrowRightIcon
+          size={16}
+          className="text-muted-foreground/40 group-hover:text-primary group-hover:translate-x-0.5 transition-all"
+        />
+      </div>
+    </button>
   )
 }
 
@@ -113,36 +192,10 @@ export function NotificationList({ items }: Props) {
   return (
     <ul className="flex flex-col gap-2">
       {items.map((item) => (
-        <li key={item.kind === "message" ? `msg-${item.senderId}` : `like-${item.likeId}`}>
-          {item.kind === "message" ? (
-            <Link
-              href={`/members/${item.senderId}/messages`}
-              className="flex items-center gap-4 p-4 rounded-xl border border-border bg-card hover:bg-accent hover:border-primary/20 hover:shadow-sm transition-all group"
-            >
-              <Avatar src={item.senderImage} name={item.senderName} />
-
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <ChatCircleTextIcon size={13} weight="fill" className="text-primary shrink-0" />
-                  <span className="text-sm font-semibold truncate">{item.senderName}</span>
-                </div>
-                <p className="text-sm text-muted-foreground truncate mt-0.5">{item.latestMessage}</p>
-                <p className="text-xs text-muted-foreground/60 mt-1">{relativeTime(item.sortAt)}</p>
-              </div>
-
-              <div className="flex items-center gap-3 shrink-0">
-                <span className="inline-flex items-center justify-center min-w-[1.5rem] h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold px-1.5">
-                  {item.count}
-                </span>
-                <ArrowRightIcon
-                  size={16}
-                  className="text-muted-foreground/40 group-hover:text-primary group-hover:translate-x-0.5 transition-all"
-                />
-              </div>
-            </Link>
-          ) : (
-            <LikeItem item={item} />
-          )}
+        <li key={item.kind === "like" ? `like-${item.likeId}` : `${item.kind}-${item.senderId}`}>
+          {item.kind === "chat" && <ChatItem item={item} />}
+          {item.kind === "email" && <EmailItem item={item} />}
+          {item.kind === "like" && <LikeItem item={item} />}
         </li>
       ))}
     </ul>

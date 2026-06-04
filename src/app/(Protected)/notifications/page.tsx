@@ -22,6 +22,7 @@ export default async function NotificationsPage() {
       select: {
         text: true,
         createdAt: true,
+        type: true,
         sender: { select: { id: true, displayName: true, image: true } },
       },
     }),
@@ -36,15 +37,23 @@ export default async function NotificationsPage() {
     }),
   ])
 
-  // Group messages by sender, preserving latest-first order
-  const senderMap = new Map<
+  // Group chat messages (type C or M) by sender
+  const chatMap = new Map<
     string,
     { senderId: string; senderName: string; senderImage: string | null; count: number; latestMessage: string; sortAt: string }
   >()
+  // Group email messages (type E) by sender
+  const emailMap = new Map<
+    string,
+    { senderId: string; senderName: string; senderImage: string | null; count: number; latestMessage: string; sortAt: string }
+  >()
+
   for (const msg of unreadMessages) {
     if (!msg.sender) continue
-    if (!senderMap.has(msg.sender.id)) {
-      senderMap.set(msg.sender.id, {
+    const isEmail = msg.type?.toUpperCase() === "E"
+    const map = isEmail ? emailMap : chatMap
+    if (!map.has(msg.sender.id)) {
+      map.set(msg.sender.id, {
         senderId: msg.sender.id,
         senderName: msg.sender.displayName,
         senderImage: generateSasUrl(msg.sender.image),
@@ -53,14 +62,14 @@ export default async function NotificationsPage() {
         sortAt: msg.createdAt.toISOString(),
       })
     } else {
-      senderMap.get(msg.sender.id)!.count++
+      map.get(msg.sender.id)!.count++
     }
   }
 
-  const messageItems: UnifiedNotification[] = Array.from(senderMap.values()).map((m) => ({
-    kind: "message",
-    ...m,
-  }))
+  const messageItems: UnifiedNotification[] = [
+    ...Array.from(chatMap.values()).map((m) => ({ kind: "chat" as const, ...m })),
+    ...Array.from(emailMap.values()).map((m) => ({ kind: "email" as const, ...m })),
+  ]
 
   const likeItems: UnifiedNotification[] = unreadLikes
     .filter((l) => l.likingMember)
@@ -78,7 +87,7 @@ export default async function NotificationsPage() {
   )
 
   const totalMessages = messageItems.reduce(
-    (sum, m) => sum + (m.kind === "message" ? m.count : 0),
+    (sum, m) => sum + (m.kind === "chat" || m.kind === "email" ? m.count : 0),
     0,
   )
   const totalLikes = likeItems.length

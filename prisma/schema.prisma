@@ -130,12 +130,14 @@ model Photo {
 model Message {
   id String @id @default(cuid())
   senderId String?
+  subject String? @db.Char(50)
   text String
    createdAt     DateTime  @default(now())
    recipientId String?
    dateRead DateTime?
    senderDeleted Boolean @default(false)
    recipientDeleted Boolean @default(false)
+   type String @db.Char(1) @default("C")
   sender Member? @relation("sender", fields: [senderId], references: [id], onDelete: SetNull)
   recipient Member? @relation("recipient", fields: [recipientId], references: [id], onDelete: SetNull)
   @@map("message")

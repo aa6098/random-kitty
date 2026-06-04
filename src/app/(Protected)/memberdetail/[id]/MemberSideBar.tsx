@@ -5,6 +5,8 @@ import { MapPinIcon, CalendarIcon, HeartIcon, ProhibitIcon, ChatCircleIcon, Vide
 import { VideoCall } from "@/components/VideoCall"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { useUserStore } from "@/lib/stores/userStore"
+import { usePresenceChannel } from "@/hooks/usePresenceChannel"
+import PresenceIndicator from "@/components/custom/presenceIndicator"
 import { toggleLike, toggleBlock } from "@/app/(Protected)/dashboard/actions"
 
 type Props = {
@@ -22,6 +24,8 @@ type Props = {
 
 export function MemberSideBar({ member, currentMemberId, isLiked, isBlocked }: Props) {
   const openChat = useUserStore((s) => s.openChat)
+  const onlineIds = usePresenceChannel()
+  const isOnline = onlineIds.has(member.id)
   const [liked, setLiked] = useState(isLiked)
   const [blocked, setBlocked] = useState(isBlocked)
   const [likePending, setLikePending] = useState(false)
@@ -70,9 +74,12 @@ export function MemberSideBar({ member, currentMemberId, isLiked, isBlocked }: P
               className="h-full w-full object-cover hover:opacity-90 transition-opacity"
             />
           </button>
-          <p className="text-base font-semibold leading-tight text-card-foreground text-center">
-            {member.displayName}
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="text-base font-semibold leading-tight text-card-foreground text-center">
+              {member.displayName}
+            </p>
+            <PresenceIndicator isOnline={isOnline} />
+          </div>
           <p className="flex items-center gap-1 text-sm text-muted-foreground">
             <MapPinIcon size={13} />
             {member.location.city}, {member.location.state}
@@ -116,6 +123,7 @@ export function MemberSideBar({ member, currentMemberId, isLiked, isBlocked }: P
             <ChatCircleIcon size={15} />
             Message
           </Button>
+
 
           <VideoCall
             currentMemberId={currentMemberId}

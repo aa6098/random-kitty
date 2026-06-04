@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { auth } from "@/lib/auth"
@@ -6,29 +7,56 @@ import { haversineDistance } from "@/lib/distance"
 import { getAllLocations } from "@/lib/locationCache"
 import { generateSasUrl } from "@/lib/azure"
 import { DistanceFilter } from "./DistanceFilter"
+import { DashboardLocationPicker } from "./DashboardLocationPicker"
 import { DashboardList } from "./DashboardList"
 import { PAGE_SIZE, type DashboardMemberData } from "./types"
 
 type Props = {
-  searchParams: Promise<{ distance?: string }>
+  searchParams: Promise<{ distance?: string; location?: string }>
 }
 
 export default async function DashboardPage({ searchParams }: Props) {
   const session = await auth.api.getSession({ headers: await headers() })
   if (!session) redirect("/signin")
 
-  const { distance: distanceParam } = await searchParams
+  const { distance: distanceParam, location: locationParam } = await searchParams
   const distanceFilter = parseInt(distanceParam ?? "0", 10) || 0
+  const selectedLocationId = locationParam ?? ""
 
-  const currentMember = await prisma.member.findUnique({
-    where: { userId: session.user.id },
-    select: { id: true, location: { select: { lat: true, lng: true } } },
-  })
+  const [currentMember, selectedLocation] = await Promise.all([
+    prisma.member.findUnique({
+      where: { userId: session.user.id },
+      select: {
+        id: true,
+        locationId: true,
+        location: { select: { lat: true, lng: true, id: true, city: true, state: true, zip: true } },
+      },
+    }),
+    selectedLocationId
+      ? prisma.location.findUnique({
+          where: { id: selectedLocationId },
+          select: { lat: true, lng: true, id: true, city: true, state: true, zip: true },
+        })
+      : Promise.resolve(null),
+  ])
 
   if (!currentMember) redirect("/member")
 
-  const myLocation = currentMember.location
+  // Ensure member's own location is always available for the picker default
+  const memberLocation = currentMember.location
+    ?? (currentMember.locationId
+      ? await prisma.location.findUnique({
+          where: { id: currentMember.locationId },
+          select: { lat: true, lng: true, id: true, city: true, state: true, zip: true },
+        })
+      : null)
+
+  // myLocation is the selected location's lat/lng, or the member's own location
+  const myLocation = selectedLocation ?? memberLocation
   const currentMemberId = currentMember.id
+
+  // Picker shows the selected location; falls back to member's own location as the default
+  const pickerLocation = selectedLocation ?? memberLocation
 
   let nearbyLocationIds: string[] | undefined
   const locationDistanceMap = new Map<string, number>()
@@ -59,7 +87,6 @@ export default async function DashboardPage({ searchParams }: Props) {
     ...(nearbyLocationIds ? { locationId: { in: nearbyLocationIds } } : {}),
   }
 
-  // Fetch all matching stubs, sort by distance, then paginate
   const [stubs, likedRows] = await Promise.all([
     prisma.member.findMany({ select: { id: true, locationId: true }, where }),
     prisma.likes.findMany({
@@ -85,10 +112,8 @@ export default async function DashboardPage({ searchParams }: Props) {
       })
     : []
 
-  // Restore distance-sorted order (Prisma `in` doesn't preserve order)
   const memberMap = new Map(members.map((m) => [m.id, m]))
   const orderedMembers = sortedIds.map((id) => memberMap.get(id)!).filter(Boolean)
-
   const likedSet = new Set(likedRows.map((r) => r.LikedMemberId).filter(Boolean) as string[])
 
   const initialMembers: DashboardMemberData[] = orderedMembers.map((m) => ({
@@ -110,15 +135,24 @@ export default async function DashboardPage({ searchParams }: Props) {
 
   return (
     <div className="mx-auto w-full max-w-[1130px] px-4 py-6">
-      <div className="mb-6 flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
-        <DistanceFilter />
+      <div className="mb-6 flex flex-wrap items-center justify-end gap-3">
+        {/* <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1> */}
+        <div className="flex flex-row items-center justify-end gap-3">
+          <Suspense>
+            <DashboardLocationPicker
+              initialLocation={pickerLocation}
+              memberLocation={memberLocation}
+            />
+          </Suspense>
+          <DistanceFilter />
+        </div>
       </div>
 
       <DashboardList
         initialMembers={initialMembers}
         currentMemberId={currentMemberId}
         distanceFilter={distanceFilter}
+        selectedLocationId={selectedLocationId}
       />
     </div>
   )

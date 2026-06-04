@@ -26,7 +26,7 @@ export function DistanceFilter() {
         id="distance"
         value={distance}
         onChange={(e) => handleChange(e.target.value)}
-        className="rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-ring"
+        className="h-8 border border-input bg-background px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:border-ring"
       >
         <option value="10">10 miles</option>
         <option value="25">25 miles</option>

@@ -54,6 +54,65 @@ export async function toggleBlock(blockedMemberId: string) {
   revalidatePath("/dashboard")
 }
 
+export type EmailMessage = {
+  id: string
+  subject: string | null
+  text: string
+  createdAt: string
+  senderId: string | null
+  recipientId: string | null
+  dateRead: string | null
+}
+
+const EMAIL_PAGE_SIZE = 5
+
+export async function fetchEmailMessages(
+  otherMemberId: string,
+  page: number = 0,
+): Promise<{ messages: EmailMessage[]; total: number }> {
+  const current = await getCurrentMember()
+
+  const where = {
+    type: "E",
+    OR: [
+      { senderId: current.id, recipientId: otherMemberId, senderDeleted: false },
+      { senderId: otherMemberId, recipientId: current.id, recipientDeleted: false },
+    ],
+  }
+
+  const [total, rows] = await Promise.all([
+    prisma.message.count({ where }),
+    prisma.message.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      skip: page * EMAIL_PAGE_SIZE,
+      take: EMAIL_PAGE_SIZE,
+      select: { id: true, subject: true, text: true, createdAt: true, senderId: true, recipientId: true, dateRead: true },
+    }),
+  ])
+
+  return {
+    total,
+    messages: rows.map((m) => ({
+      id: m.id,
+      subject: m.subject ?? null,
+      text: m.text,
+      createdAt: m.createdAt.toISOString(),
+      senderId: m.senderId,
+      recipientId: m.recipientId,
+      dateRead: m.dateRead?.toISOString() ?? null,
+    })),
+  }
+}
+
+export async function markEmailRead(messageId: string): Promise<void> {
+  const current = await getCurrentMember()
+  await prisma.message.updateMany({
+    where: { id: messageId, recipientId: current.id, dateRead: null },
+    data: { dateRead: new Date() },
+  })
+}
+
 export type ChatMessage = {
   id: string
   text: string
@@ -68,6 +127,7 @@ export async function fetchMessages(recipientId: string): Promise<ChatMessage[]>
 
   const rawMessages = await prisma.message.findMany({
     where: {
+      type: { not: "E" },
       OR: [
         { senderId: current.id, recipientId, senderDeleted: false },
         { senderId: recipientId, recipientId: current.id, recipientDeleted: false },
@@ -96,12 +156,21 @@ export async function fetchMessages(recipientId: string): Promise<ChatMessage[]>
   }))
 }
 
+export async function sendEmailMessage(recipientId: string, subject: string, text: string): Promise<void> {
+  const sender = await getCurrentMember()
+  if (sender.id === recipientId) throw new Error("Cannot message yourself")
+
+  await prisma.message.create({
+    data: { senderId: sender.id, recipientId, subject: subject.trim(), text, type: "E" },
+  })
+}
+
 export async function sendChatMessage(recipientId: string, text: string): Promise<ChatMessage> {
   const sender = await getCurrentMember()
   if (sender.id === recipientId) throw new Error("Cannot message yourself")
 
   const message = await prisma.message.create({
-    data: { senderId: sender.id, recipientId, text },
+    data: { senderId: sender.id, recipientId, text, type: "C" },
     select: { id: true, text: true, createdAt: true, senderId: true, recipientId: true, dateRead: true },
   })
 
@@ -131,15 +200,20 @@ export async function sendChatMessage(recipientId: string, text: string): Promis
 export async function fetchMoreMembers(
   skip: number,
   distanceFilter: number,
+  selectedLocationId: string = "",
 ): Promise<DashboardMemberData[]> {
   const current = await getCurrentMember()
 
-  const currentMemberFull = await prisma.member.findUnique({
-    where: { id: current.id },
-    select: { location: { select: { lat: true, lng: true } } },
-  })
-
-  const myLocation = currentMemberFull?.location ?? null
+  // Use selected location as the distance origin, or fall back to the current member's location
+  const myLocation = selectedLocationId
+    ? await prisma.location.findUnique({
+        where: { id: selectedLocationId },
+        select: { lat: true, lng: true },
+      })
+    : (await prisma.member.findUnique({
+        where: { id: current.id },
+        select: { location: { select: { lat: true, lng: true } } },
+      }))?.location ?? null
   let nearbyLocationIds: string[] | undefined
   const locationDistanceMap = new Map<string, number>()
 

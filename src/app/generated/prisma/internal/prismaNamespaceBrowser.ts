@@ -180,12 +180,14 @@ export type PhotoScalarFieldEnum = (typeof PhotoScalarFieldEnum)[keyof typeof Ph
 export const MessageScalarFieldEnum = {
   id: 'id',
   senderId: 'senderId',
+  subject: 'subject',
   text: 'text',
   createdAt: 'createdAt',
   recipientId: 'recipientId',
   dateRead: 'dateRead',
   senderDeleted: 'senderDeleted',
-  recipientDeleted: 'recipientDeleted'
+  recipientDeleted: 'recipientDeleted',
+  type: 'type'
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]

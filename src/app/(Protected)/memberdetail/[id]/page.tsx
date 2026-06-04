@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import { headers } from "next/headers"
 import { notFound, redirect } from "next/navigation"
 import { auth } from "@/lib/auth"
@@ -76,13 +77,15 @@ export default async function MemberDetailPage({ params }: Props) {
         />
 
         {/* Tabbed content */}
-        <MemberDetailTabs
-          description={member.description}
-          whatareWelookingFor={member.whatareWelookingFor}
-          location={member.location}
-          createdAt={member.createdAt}
-          photos={photos}
-        />
+        <Suspense>
+          <MemberDetailTabs
+            description={member.description}
+            whatareWelookingFor={member.whatareWelookingFor}
+            photos={photos}
+            currentMemberId={currentMember.id}
+            otherMember={{ id: member.id, displayName: member.displayName }}
+          />
+        </Suspense>
       </div>
     </div>
   )

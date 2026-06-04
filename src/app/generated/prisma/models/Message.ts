@@ -27,34 +27,40 @@ export type AggregateMessage = {
 export type MessageMinAggregateOutputType = {
   id: string | null
   senderId: string | null
+  subject: string | null
   text: string | null
   createdAt: Date | null
   recipientId: string | null
   dateRead: Date | null
   senderDeleted: boolean | null
   recipientDeleted: boolean | null
+  type: string | null
 }
 
 export type MessageMaxAggregateOutputType = {
   id: string | null
   senderId: string | null
+  subject: string | null
   text: string | null
   createdAt: Date | null
   recipientId: string | null
   dateRead: Date | null
   senderDeleted: boolean | null
   recipientDeleted: boolean | null
+  type: string | null
 }
 
 export type MessageCountAggregateOutputType = {
   id: number
   senderId: number
+  subject: number
   text: number
   createdAt: number
   recipientId: number
   dateRead: number
   senderDeleted: number
   recipientDeleted: number
+  type: number
   _all: number
 }
 
@@ -62,34 +68,40 @@ export type MessageCountAggregateOutputType = {
 export type MessageMinAggregateInputType = {
   id?: true
   senderId?: true
+  subject?: true
   text?: true
   createdAt?: true
   recipientId?: true
   dateRead?: true
   senderDeleted?: true
   recipientDeleted?: true
+  type?: true
 }
 
 export type MessageMaxAggregateInputType = {
   id?: true
   senderId?: true
+  subject?: true
   text?: true
   createdAt?: true
   recipientId?: true
   dateRead?: true
   senderDeleted?: true
   recipientDeleted?: true
+  type?: true
 }
 
 export type MessageCountAggregateInputType = {
   id?: true
   senderId?: true
+  subject?: true
   text?: true
   createdAt?: true
   recipientId?: true
   dateRead?: true
   senderDeleted?: true
   recipientDeleted?: true
+  type?: true
   _all?: true
 }
 
@@ -168,12 +180,14 @@ export type MessageGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type MessageGroupByOutputType = {
   id: string
   senderId: string | null
+  subject: string | null
   text: string
   createdAt: Date
   recipientId: string | null
   dateRead: Date | null
   senderDeleted: boolean
   recipientDeleted: boolean
+  type: string
   _count: MessageCountAggregateOutputType | null
   _min: MessageMinAggregateOutputType | null
   _max: MessageMaxAggregateOutputType | null
@@ -200,12 +214,14 @@ export type MessageWhereInput = {
   NOT?: Prisma.MessageWhereInput | Prisma.MessageWhereInput[]
   id?: Prisma.StringFilter<"Message"> | string
   senderId?: Prisma.StringNullableFilter<"Message"> | string | null
+  subject?: Prisma.StringNullableFilter<"Message"> | string | null
   text?: Prisma.StringFilter<"Message"> | string
   createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
   recipientId?: Prisma.StringNullableFilter<"Message"> | string | null
   dateRead?: Prisma.DateTimeNullableFilter<"Message"> | Date | string | null
   senderDeleted?: Prisma.BoolFilter<"Message"> | boolean
   recipientDeleted?: Prisma.BoolFilter<"Message"> | boolean
+  type?: Prisma.StringFilter<"Message"> | string
   sender?: Prisma.XOR<Prisma.MemberNullableScalarRelationFilter, Prisma.MemberWhereInput> | null
   recipient?: Prisma.XOR<Prisma.MemberNullableScalarRelationFilter, Prisma.MemberWhereInput> | null
 }
@@ -213,12 +229,14 @@ export type MessageWhereInput = {
 export type MessageOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   senderId?: Prisma.SortOrderInput | Prisma.SortOrder
+  subject?: Prisma.SortOrderInput | Prisma.SortOrder
   text?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   recipientId?: Prisma.SortOrderInput | Prisma.SortOrder
   dateRead?: Prisma.SortOrderInput | Prisma.SortOrder
   senderDeleted?: Prisma.SortOrder
   recipientDeleted?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   sender?: Prisma.MemberOrderByWithRelationInput
   recipient?: Prisma.MemberOrderByWithRelationInput
 }
@@ -229,12 +247,14 @@ export type MessageWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.MessageWhereInput[]
   NOT?: Prisma.MessageWhereInput | Prisma.MessageWhereInput[]
   senderId?: Prisma.StringNullableFilter<"Message"> | string | null
+  subject?: Prisma.StringNullableFilter<"Message"> | string | null
   text?: Prisma.StringFilter<"Message"> | string
   createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
   recipientId?: Prisma.StringNullableFilter<"Message"> | string | null
   dateRead?: Prisma.DateTimeNullableFilter<"Message"> | Date | string | null
   senderDeleted?: Prisma.BoolFilter<"Message"> | boolean
   recipientDeleted?: Prisma.BoolFilter<"Message"> | boolean
+  type?: Prisma.StringFilter<"Message"> | string
   sender?: Prisma.XOR<Prisma.MemberNullableScalarRelationFilter, Prisma.MemberWhereInput> | null
   recipient?: Prisma.XOR<Prisma.MemberNullableScalarRelationFilter, Prisma.MemberWhereInput> | null
 }, "id">
@@ -242,12 +262,14 @@ export type MessageWhereUniqueInput = Prisma.AtLeast<{
 export type MessageOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   senderId?: Prisma.SortOrderInput | Prisma.SortOrder
+  subject?: Prisma.SortOrderInput | Prisma.SortOrder
   text?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   recipientId?: Prisma.SortOrderInput | Prisma.SortOrder
   dateRead?: Prisma.SortOrderInput | Prisma.SortOrder
   senderDeleted?: Prisma.SortOrder
   recipientDeleted?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   _count?: Prisma.MessageCountOrderByAggregateInput
   _max?: Prisma.MessageMaxOrderByAggregateInput
   _min?: Prisma.MessageMinOrderByAggregateInput
@@ -259,21 +281,25 @@ export type MessageScalarWhereWithAggregatesInput = {
   NOT?: Prisma.MessageScalarWhereWithAggregatesInput | Prisma.MessageScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Message"> | string
   senderId?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
+  subject?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
   text?: Prisma.StringWithAggregatesFilter<"Message"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Message"> | Date | string
   recipientId?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
   dateRead?: Prisma.DateTimeNullableWithAggregatesFilter<"Message"> | Date | string | null
   senderDeleted?: Prisma.BoolWithAggregatesFilter<"Message"> | boolean
   recipientDeleted?: Prisma.BoolWithAggregatesFilter<"Message"> | boolean
+  type?: Prisma.StringWithAggregatesFilter<"Message"> | string
 }
 
 export type MessageCreateInput = {
   id?: string
+  subject?: string | null
   text: string
   createdAt?: Date | string
   dateRead?: Date | string | null
   senderDeleted?: boolean
   recipientDeleted?: boolean
+  type?: string
   sender?: Prisma.MemberCreateNestedOneWithoutSenderMessagesInput
   recipient?: Prisma.MemberCreateNestedOneWithoutRecipientMessagesInput
 }
@@ -281,21 +307,25 @@ export type MessageCreateInput = {
 export type MessageUncheckedCreateInput = {
   id?: string
   senderId?: string | null
+  subject?: string | null
   text: string
   createdAt?: Date | string
   recipientId?: string | null
   dateRead?: Date | string | null
   senderDeleted?: boolean
   recipientDeleted?: boolean
+  type?: string
 }
 
 export type MessageUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dateRead?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   senderDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   recipientDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   sender?: Prisma.MemberUpdateOneWithoutSenderMessagesNestedInput
   recipient?: Prisma.MemberUpdateOneWithoutRecipientMessagesNestedInput
 }
@@ -303,43 +333,51 @@ export type MessageUpdateInput = {
 export type MessageUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   senderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateRead?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   senderDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   recipientDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type MessageCreateManyInput = {
   id?: string
   senderId?: string | null
+  subject?: string | null
   text: string
   createdAt?: Date | string
   recipientId?: string | null
   dateRead?: Date | string | null
   senderDeleted?: boolean
   recipientDeleted?: boolean
+  type?: string
 }
 
 export type MessageUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dateRead?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   senderDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   recipientDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type MessageUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   senderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateRead?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   senderDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   recipientDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type MessageListRelationFilter = {
@@ -355,34 +393,40 @@ export type MessageOrderByRelationAggregateInput = {
 export type MessageCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   senderId?: Prisma.SortOrder
+  subject?: Prisma.SortOrder
   text?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   recipientId?: Prisma.SortOrder
   dateRead?: Prisma.SortOrder
   senderDeleted?: Prisma.SortOrder
   recipientDeleted?: Prisma.SortOrder
+  type?: Prisma.SortOrder
 }
 
 export type MessageMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   senderId?: Prisma.SortOrder
+  subject?: Prisma.SortOrder
   text?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   recipientId?: Prisma.SortOrder
   dateRead?: Prisma.SortOrder
   senderDeleted?: Prisma.SortOrder
   recipientDeleted?: Prisma.SortOrder
+  type?: Prisma.SortOrder
 }
 
 export type MessageMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   senderId?: Prisma.SortOrder
+  subject?: Prisma.SortOrder
   text?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   recipientId?: Prisma.SortOrder
   dateRead?: Prisma.SortOrder
   senderDeleted?: Prisma.SortOrder
   recipientDeleted?: Prisma.SortOrder
+  type?: Prisma.SortOrder
 }
 
 export type MessageCreateNestedManyWithoutSenderInput = {
@@ -471,22 +515,26 @@ export type MessageUncheckedUpdateManyWithoutRecipientNestedInput = {
 
 export type MessageCreateWithoutSenderInput = {
   id?: string
+  subject?: string | null
   text: string
   createdAt?: Date | string
   dateRead?: Date | string | null
   senderDeleted?: boolean
   recipientDeleted?: boolean
+  type?: string
   recipient?: Prisma.MemberCreateNestedOneWithoutRecipientMessagesInput
 }
 
 export type MessageUncheckedCreateWithoutSenderInput = {
   id?: string
+  subject?: string | null
   text: string
   createdAt?: Date | string
   recipientId?: string | null
   dateRead?: Date | string | null
   senderDeleted?: boolean
   recipientDeleted?: boolean
+  type?: string
 }
 
 export type MessageCreateOrConnectWithoutSenderInput = {
@@ -501,22 +549,26 @@ export type MessageCreateManySenderInputEnvelope = {
 
 export type MessageCreateWithoutRecipientInput = {
   id?: string
+  subject?: string | null
   text: string
   createdAt?: Date | string
   dateRead?: Date | string | null
   senderDeleted?: boolean
   recipientDeleted?: boolean
+  type?: string
   sender?: Prisma.MemberCreateNestedOneWithoutSenderMessagesInput
 }
 
 export type MessageUncheckedCreateWithoutRecipientInput = {
   id?: string
   senderId?: string | null
+  subject?: string | null
   text: string
   createdAt?: Date | string
   dateRead?: Date | string | null
   senderDeleted?: boolean
   recipientDeleted?: boolean
+  type?: string
 }
 
 export type MessageCreateOrConnectWithoutRecipientInput = {
@@ -551,12 +603,14 @@ export type MessageScalarWhereInput = {
   NOT?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
   id?: Prisma.StringFilter<"Message"> | string
   senderId?: Prisma.StringNullableFilter<"Message"> | string | null
+  subject?: Prisma.StringNullableFilter<"Message"> | string | null
   text?: Prisma.StringFilter<"Message"> | string
   createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
   recipientId?: Prisma.StringNullableFilter<"Message"> | string | null
   dateRead?: Prisma.DateTimeNullableFilter<"Message"> | Date | string | null
   senderDeleted?: Prisma.BoolFilter<"Message"> | boolean
   recipientDeleted?: Prisma.BoolFilter<"Message"> | boolean
+  type?: Prisma.StringFilter<"Message"> | string
 }
 
 export type MessageUpsertWithWhereUniqueWithoutRecipientInput = {
@@ -577,82 +631,98 @@ export type MessageUpdateManyWithWhereWithoutRecipientInput = {
 
 export type MessageCreateManySenderInput = {
   id?: string
+  subject?: string | null
   text: string
   createdAt?: Date | string
   recipientId?: string | null
   dateRead?: Date | string | null
   senderDeleted?: boolean
   recipientDeleted?: boolean
+  type?: string
 }
 
 export type MessageCreateManyRecipientInput = {
   id?: string
   senderId?: string | null
+  subject?: string | null
   text: string
   createdAt?: Date | string
   dateRead?: Date | string | null
   senderDeleted?: boolean
   recipientDeleted?: boolean
+  type?: string
 }
 
 export type MessageUpdateWithoutSenderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dateRead?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   senderDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   recipientDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   recipient?: Prisma.MemberUpdateOneWithoutRecipientMessagesNestedInput
 }
 
 export type MessageUncheckedUpdateWithoutSenderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateRead?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   senderDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   recipientDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type MessageUncheckedUpdateManyWithoutSenderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateRead?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   senderDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   recipientDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type MessageUpdateWithoutRecipientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dateRead?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   senderDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   recipientDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   sender?: Prisma.MemberUpdateOneWithoutSenderMessagesNestedInput
 }
 
 export type MessageUncheckedUpdateWithoutRecipientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   senderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dateRead?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   senderDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   recipientDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type MessageUncheckedUpdateManyWithoutRecipientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   senderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dateRead?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   senderDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   recipientDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -660,12 +730,14 @@ export type MessageUncheckedUpdateManyWithoutRecipientInput = {
 export type MessageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   senderId?: boolean
+  subject?: boolean
   text?: boolean
   createdAt?: boolean
   recipientId?: boolean
   dateRead?: boolean
   senderDeleted?: boolean
   recipientDeleted?: boolean
+  type?: boolean
   sender?: boolean | Prisma.Message$senderArgs<ExtArgs>
   recipient?: boolean | Prisma.Message$recipientArgs<ExtArgs>
 }, ExtArgs["result"]["message"]>
@@ -673,12 +745,14 @@ export type MessageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 export type MessageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   senderId?: boolean
+  subject?: boolean
   text?: boolean
   createdAt?: boolean
   recipientId?: boolean
   dateRead?: boolean
   senderDeleted?: boolean
   recipientDeleted?: boolean
+  type?: boolean
   sender?: boolean | Prisma.Message$senderArgs<ExtArgs>
   recipient?: boolean | Prisma.Message$recipientArgs<ExtArgs>
 }, ExtArgs["result"]["message"]>
@@ -686,12 +760,14 @@ export type MessageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type MessageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   senderId?: boolean
+  subject?: boolean
   text?: boolean
   createdAt?: boolean
   recipientId?: boolean
   dateRead?: boolean
   senderDeleted?: boolean
   recipientDeleted?: boolean
+  type?: boolean
   sender?: boolean | Prisma.Message$senderArgs<ExtArgs>
   recipient?: boolean | Prisma.Message$recipientArgs<ExtArgs>
 }, ExtArgs["result"]["message"]>
@@ -699,15 +775,17 @@ export type MessageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type MessageSelectScalar = {
   id?: boolean
   senderId?: boolean
+  subject?: boolean
   text?: boolean
   createdAt?: boolean
   recipientId?: boolean
   dateRead?: boolean
   senderDeleted?: boolean
   recipientDeleted?: boolean
+  type?: boolean
 }
 
-export type MessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "senderId" | "text" | "createdAt" | "recipientId" | "dateRead" | "senderDeleted" | "recipientDeleted", ExtArgs["result"]["message"]>
+export type MessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "senderId" | "subject" | "text" | "createdAt" | "recipientId" | "dateRead" | "senderDeleted" | "recipientDeleted" | "type", ExtArgs["result"]["message"]>
 export type MessageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sender?: boolean | Prisma.Message$senderArgs<ExtArgs>
   recipient?: boolean | Prisma.Message$recipientArgs<ExtArgs>
@@ -730,12 +808,14 @@ export type $MessagePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     senderId: string | null
+    subject: string | null
     text: string
     createdAt: Date
     recipientId: string | null
     dateRead: Date | null
     senderDeleted: boolean
     recipientDeleted: boolean
+    type: string
   }, ExtArgs["result"]["message"]>
   composites: {}
 }
@@ -1163,12 +1243,14 @@ export interface Prisma__MessageClient<T, Null = never, ExtArgs extends runtime.
 export interface MessageFieldRefs {
   readonly id: Prisma.FieldRef<"Message", 'String'>
   readonly senderId: Prisma.FieldRef<"Message", 'String'>
+  readonly subject: Prisma.FieldRef<"Message", 'String'>
   readonly text: Prisma.FieldRef<"Message", 'String'>
   readonly createdAt: Prisma.FieldRef<"Message", 'DateTime'>
   readonly recipientId: Prisma.FieldRef<"Message", 'String'>
   readonly dateRead: Prisma.FieldRef<"Message", 'DateTime'>
   readonly senderDeleted: Prisma.FieldRef<"Message", 'Boolean'>
   readonly recipientDeleted: Prisma.FieldRef<"Message", 'Boolean'>
+  readonly type: Prisma.FieldRef<"Message", 'String'>
 }
     
 
