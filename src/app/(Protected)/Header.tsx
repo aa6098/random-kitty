@@ -195,8 +195,8 @@ export function Header() {
             href="/dashboard"
             className="flex items-center gap-2.5 hover:opacity-85 transition-opacity"
           >
-            <Image src={logo} alt="Random Kitty" width={75} height={75} />
-            <span className="text-base hidden md:block font-semibold tracking-tight">Random Kitty</span>
+            <Image src={logo} alt="Vashikar" width={75} height={75} />
+            <span className="text-base hidden md:block font-semibold tracking-tight">Vashikar</span>
           </Link>
         </div>
 
